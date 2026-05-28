@@ -8,9 +8,9 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 const CATEGORIES = [
   { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' },
   { id: 'nails', label: 'Nails', image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?auto=format&fit=crop&w=400&q=80' },
-  { id: 'spa', label: 'Spa', image: 'https://images.unsplash.com/photo-1540555768197-be656005c935?auto=format&fit=crop&w=400&q=80' },
-  { id: 'makeup', label: 'Makeup', image: 'https://images.unsplash.com/photo-1522338242967-57daa675667a?auto=format&fit=crop&w=400&q=80' },
-  { id: 'facial', label: 'Facial', image: 'https://images.unsplash.com/photo-1570172619644-60776839737a?auto=format&fit=crop&w=400&q=80' },
+  { id: 'spa', label: 'Spa', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80' },
+  { id: 'makeup', label: 'Makeup', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'facial', label: 'Facial', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=400&q=80' },
 ];
 
 const NEARBY_SALONS = [
@@ -21,7 +21,7 @@ const NEARBY_SALONS = [
     reviews: 128,
     distance: '1.2 km',
     price: '₹499',
-    image: 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'salon2',
@@ -30,7 +30,7 @@ const NEARBY_SALONS = [
     reviews: 85,
     distance: '2.5 km',
     price: '₹899',
-    image: 'https://images.unsplash.com/photo-1521566626196-f77d7737307a?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'salon3',
@@ -39,15 +39,15 @@ const NEARBY_SALONS = [
     reviews: 210,
     distance: '0.8 km',
     price: '₹399',
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
   },
 ];
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const heroImage = 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?auto=format&fit=crop&w=1000&q=80';
-  const placeholder = 'https://via.placeholder.com/1000x600?text=LuxeSalon';
+  const heroImage = 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1200&q=80';
+  const placeholder = '/placeholder.svg';
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
