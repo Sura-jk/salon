@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ServiceCard from '@/components/ServiceCard';
-import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown, Wand2, Flower2, ChevronLeft } from 'lucide-react';
+import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown, Wand2, Flower2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem 
+} from '@/components/ui/carousel';
+import type { CarouselApi } from '@/components/ui/carousel';
 import { showSuccess } from '@/utils/toast';
 import { cn } from '@/lib/utils';
 
@@ -155,6 +161,7 @@ const Services = () => {
   const [activeTab, setActiveTab] = useState(categoryParam && SERVICES_DATA[categoryParam as keyof typeof SERVICES_DATA] ? categoryParam : 'hair');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   useEffect(() => {
     if (categoryParam && SERVICES_DATA[categoryParam as keyof typeof SERVICES_DATA]) {
@@ -240,27 +247,47 @@ const Services = () => {
           <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">The Treatment Gallery</h1>
         </header>
 
-        {/* Custom Premium Horizontal Pill Navigation */}
-        <div className="flex gap-2 overflow-x-auto pb-6 pt-1 no-scrollbar scroll-smooth -mx-6 px-6">
-          {Object.entries(SERVICES_DATA).map(([key, value]) => {
-            const isActive = activeTab === key;
-            const Icon = value.icon;
-            return (
-              <button
-                key={key}
-                onClick={() => handleTabChange(key)}
-                className={cn(
-                  "flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 border whitespace-nowrap active:scale-95",
-                  isActive 
-                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10" 
-                    : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
-                )}
-              >
-                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary" : "text-muted-foreground")} />
-                <span>{value.label}</span>
-              </button>
-            );
-          })}
+        {/* Custom Premium Horizontal Pill Navigation - Transformed to a beautiful Slider */}
+        <div className="relative w-full mb-8">
+          <Carousel setApi={setCarouselApi} className="w-full relative px-2">
+            <CarouselContent className="-ml-2">
+              {Object.entries(SERVICES_DATA).map(([key, value]) => {
+                const isActive = activeTab === key;
+                const Icon = value.icon;
+                return (
+                  <CarouselItem key={key} className="pl-2 basis-[42%] xs:basis-[36%] flex-shrink-0">
+                    <button
+                      onClick={() => handleTabChange(key)}
+                      className={cn(
+                        "w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs font-bold transition-all duration-300 border whitespace-nowrap active:scale-95",
+                        isActive 
+                          ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10" 
+                          : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
+                      )}
+                    >
+                      <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary" : "text-muted-foreground")} />
+                      <span>{value.label}</span>
+                    </button>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+
+            <button 
+              onClick={() => carouselApi?.scrollPrev()}
+              className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              aria-label="Previous tab"
+            >
+              <ChevronLeft className="w-3 h-3 stroke-[2]" />
+            </button>
+            <button 
+              onClick={() => carouselApi?.scrollNext()}
+              className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              aria-label="Next tab"
+            >
+              <ChevronRight className="w-3 h-3 stroke-[2]" />
+            </button>
+          </Carousel>
         </div>
 
         {/* Services List Grid */}
