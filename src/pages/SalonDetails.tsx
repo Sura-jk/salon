@@ -15,8 +15,8 @@ const SALON_DATA = {
     timing: '09:00 AM - 08:00 PM',
     images: [
       'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1000&q=80',
     ],
     services: [
       { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499, category: 'Hair' },
@@ -27,8 +27,52 @@ const SALON_DATA = {
     ],
     staff: [
       { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
-      { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', exp: '5 years', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80' },
-      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
+    ]
+  },
+  salon2: {
+    name: 'Velvet Touch Spa',
+    rating: 4.7,
+    reviews: 85,
+    address: '456 Serenity Blvd, Juhu, Mumbai',
+    timing: '08:00 AM - 09:00 PM',
+    images: [
+      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80', // Beautiful modern Spa setting
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80', // Zen massage therapist
+      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=1000&q=80', // Aromatherapy stones
+    ],
+    services: [
+      { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
+      { id: 's2_1', name: 'Aromatherapy Body Massage', duration: '90 min', price: 1899, category: 'Skin' },
+      { id: 's2_2', name: 'Hot Stone Therapy', duration: '75 min', price: 2199, category: 'Skin' },
+      { id: 's2_3', name: 'Sea Salt Scrub & Polish', duration: '45 min', price: 1199, category: 'Skin' },
+    ],
+    staff: [
+      { id: 'st3', name: 'Sophia Chen', role: 'Therapeutic Masseuse', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st1', name: 'Elena Rose', role: 'Aroma Expert', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
+    ]
+  },
+  salon3: {
+    name: 'Golden Glow Parlour',
+    rating: 4.8,
+    reviews: 210,
+    address: '789 Glittering Row, Colaba, Mumbai',
+    timing: '10:00 AM - 08:30 PM',
+    images: [
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80', // Glow/Salon vanity
+      'https://images.unsplash.com/photo-1604654771876-22273993930a?auto=format&fit=crop&w=1000&q=80', // Premium nails
+      'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1000&q=80', // High-end beauty tools
+    ],
+    services: [
+      { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails' },
+      { id: 's3_1', name: 'Imperial Gel Pedicure', duration: '60 min', price: 899, category: 'Nails' },
+      { id: 's3_2', name: 'Diamond Glow Whitening Facial', duration: '60 min', price: 1599, category: 'Facial' },
+      { id: 's3_3', name: 'Luxury Makeup Makeover', duration: '75 min', price: 2999, category: 'Skin' },
+    ],
+    staff: [
+      { id: 'st2', name: 'Marcus Thorne', role: 'Creative Director / Makeup', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Nail Art Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
     ]
   }
 };
