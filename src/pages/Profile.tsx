@@ -1,6 +1,6 @@
-import React from 'react-router-dom';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, CreditCard, Heart, LogOut, Bell } from 'lucide-react';
+import { User, Settings, CreditCard, Heart, LogOut, Bell, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Profile = () => {
@@ -40,7 +40,7 @@ const Profile = () => {
             </div>
             <div className="px-4 py-2 rounded-full bg-card border border-border text-center">
               <span className="block text-lg font-bold text-primary">12</span>
- la- <span className="text-[10px] uppercase font-bold text-muted-foreground">Visits</span>
+              <span className="text-[10px] uppercase font-bold text-muted-foreground">Visits</span>
             </div>
           </div>
         </div>
@@ -74,9 +74,5 @@ const Profile = () => {
     </div>
   );
 };
-
-function ChevronRight(props: any) {
-  return <div className="w-4 h-4 text-muted-foreground">→</div>;
-}
 
 export default Profile;
