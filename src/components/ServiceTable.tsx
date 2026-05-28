@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 interface Service {
@@ -33,47 +32,47 @@ export const ServiceTable = ({ services, onRemove }: ServiceTableProps) => {
   if (services.length === 0) return null;
 
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-serif font-medium mb-3">Selected Services</h3>
+    <div className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Selected Services</h3>
       <div className="relative">
         {/* Left Arrow */}
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background/60"
+          className="absolute -left-2 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border-secondary/20 rounded-full w-8 h-8 flex items-center justify-center shadow-md text-secondary"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-4 h-4" />
         </Button>
 
         {/* Scrollable Table */}
         <div
           ref={scrollRef}
-          className="overflow-x-auto whitespace-nowrap scrollbar-none pl-10 pr-10"
+          className="overflow-x-auto whitespace-nowrap no-scrollbar pl-8 pr-8 w-full"
         >
-          <table className="min-w-full border border-border/30 rounded-xl bg-card">
-            <thead className="bg-muted/30">
+          <table className="min-w-full border border-border/40 rounded-2xl bg-card overflow-hidden">
+            <thead className="bg-muted/40">
               <tr>
-                <th className="px-4 py-2 text-left text-sm font-medium">Service</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Duration</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Price</th>
-                <th className="px-4 py-2"></th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-muted-foreground">Service</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-muted-foreground">Duration</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-muted-foreground">Price</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-border/20">
               {services.map((svc) => (
-                <tr key={svc.id} className="border-t border-border/20">
-                  <td className="px-4 py-2 text-sm">{svc.name}</td>
-                  <td className="px-4 py-2 text-sm">{svc.duration}</td>
-                  <td className="px-4 py-2 text-sm font-bold text-primary">₹{svc.price}</td>
-                  <td className="px-2 py-2">
+                <tr key={svc.id} className="hover:bg-muted/10 transition-colors">
+                  <td className="px-4 py-3 text-sm font-medium text-foreground">{svc.name}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{svc.duration}</td>
+                  <td className="px-4 py-3 text-sm font-bold text-secondary">₹{svc.price}</td>
+                  <td className="px-2 py-3 text-right">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => onRemove(svc.id)}
-                      className="text-destructive hover:bg-destructive/10"
+                      className="text-destructive hover:bg-destructive/10 h-7 w-7 p-0 rounded-full"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3.5 h-3.5" />
                     </Button>
                   </td>
                 </tr>
@@ -84,12 +83,12 @@ export const ServiceTable = ({ services, onRemove }: ServiceTableProps) => {
 
         {/* Right Arrow */}
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background/60"
+          className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 bg-background/90 hover:bg-background border-secondary/20 rounded-full w-8 h-8 flex items-center justify-center shadow-md text-secondary"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
     </div>

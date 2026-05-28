@@ -107,7 +107,6 @@ const SalonDetails = () => {
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
   const handleBack = () => {
-    // If we have history entries to go back to, go back. Otherwise go to Home "/" safely.
     if (window.history.length > 1) {
       navigate(-1);
     } else {
@@ -178,14 +177,14 @@ const SalonDetails = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Top Navigation - Smaller icons and text */}
+      {/* Top Navigation */}
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-4 py-2.5">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBack}
-            className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0"
+            className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0 text-foreground"
           >
             <ChevronLeft className="w-4 h-4" />
           </Button>
@@ -226,14 +225,14 @@ const SalonDetails = () => {
               key={idx}
               className={cn(
                 'w-1.5 h-1.5 rounded-full transition-all',
-                idx === activeImageIdx ? 'bg-white w-4' : 'bg-white/40'
+                idx === activeImageIdx ? 'bg-secondary w-4' : 'bg-white/40'
               )}
             />
           ))}
         </div>
       </div>
 
-      {/* Salon Info - Smaller text */}
+      {/* Salon Info */}
       <div className="px-4 py-4 space-y-2.5">
         <div className="flex justify-between items-start">
           <div>
@@ -268,21 +267,25 @@ const SalonDetails = () => {
       <div className="px-4 py-3">
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-base font-serif font-medium">Services</h3>
+          {/* Scrollable Categories List - Enhanced selected state with secondary highlights */}
           <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  'px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap',
-                  activeCategory === cat
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-card border border-border text-muted-foreground'
-                )}
-              >
-                {cat}
-              </button>
-            ))}
+            {categories.map(cat => {
+              const isSelected = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={cn(
+                    'px-3.5 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap border',
+                    isSelected
+                      ? 'bg-secondary text-primary border-secondary shadow-md scale-105 font-black'
+                      : 'bg-card border-border text-muted-foreground hover:border-secondary/40'
+                  )}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -318,7 +321,7 @@ const SalonDetails = () => {
           })}
         </div>
 
-        {/* Table of selected services with arrow navigation */}
+        {/* Table of selected services with horizontal arrow navigation */}
         <ServiceTable services={selectedServiceDetails} onRemove={removeService} />
       </div>
 
@@ -339,7 +342,7 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Stand‑alone Promo Code Section with visible clickable codes */}
+      {/* Promo Code Section with highlight active code state */}
       <div className="px-4 py-3">
         <div className="p-3 rounded-2xl bg-card border border-border/50 shadow-sm">
           <div className="flex items-center gap-1.5 mb-1.5">
@@ -347,23 +350,36 @@ const SalonDetails = () => {
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Available Promo Codes</h3>
           </div>
           
-          {/* List of Clickable Codes outside input */}
+          {/* List of Clickable Codes outside input with custom highlights */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {AVAILABLE_PROMOS.map((promo) => (
-              <button
-                key={promo.code}
-                onClick={() => {
-                  setPromoInput(promo.code);
-                  handleApplyPromoCode(promo.code);
-                }}
-                className={cn(
-                  "px-2.5 py-1.5 rounded-xl border border-dashed border-secondary/40 bg-secondary/5 text-secondary text-xs font-semibold hover:bg-secondary/15 transition-all flex flex-col items-start gap-0.5"
-                )}
-              >
-                <span className="font-bold tracking-wider">{promo.code}</span>
-                <span className="text-[9px] opacity-70 font-normal">{promo.description}</span>
-              </button>
-            ))}
+            {AVAILABLE_PROMOS.map((promo) => {
+              const isApplied = activeDiscount?.code === promo.code;
+              return (
+                <button
+                  key={promo.code}
+                  onClick={() => {
+                    setPromoInput(promo.code);
+                    handleApplyPromoCode(promo.code);
+                  }}
+                  className={cn(
+                    "px-3 py-2 rounded-xl border text-xs font-bold transition-all flex flex-col items-start gap-0.5",
+                    isApplied
+                      ? "border-secondary bg-secondary text-primary-foreground shadow-sm scale-105"
+                      : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
+                  )}
+                >
+                  <span className="tracking-wider flex items-center gap-1">
+                    {promo.code} {isApplied && <Check className="w-3 h-3 text-primary-foreground" />}
+                  </span>
+                  <span className={cn(
+                    "text-[9px] font-normal",
+                    isApplied ? "text-primary-foreground/80" : "opacity-70"
+                  )}>
+                    {promo.description}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex gap-1.5">
@@ -383,14 +399,14 @@ const SalonDetails = () => {
             </Button>
           </div>
           {activeDiscount && (
-            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1">
-              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
+            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1 animate-pulse">
+              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; active! ({activeDiscount.percent}% discount)
             </p>
           )}
         </div>
       </div>
 
-      {/* Floating Checkout - Smaller */}
+      {/* Floating Checkout */}
       <div className={cn(
         'fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/90 to-transparent z-50 transition-all duration-500',
         selectedServices.length > 0 ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'
@@ -411,7 +427,7 @@ const SalonDetails = () => {
               placeholder="Code"
               value={bottomCouponInput}
               onChange={(e) => setBottomCouponInput(e.target.value)}
-              className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none"
+              className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none text-foreground"
             />
             <Button
               variant="outline"
