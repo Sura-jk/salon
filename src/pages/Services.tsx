@@ -17,7 +17,7 @@ const SERVICES_DATA = {
         description: 'Precision cutting and styling tailored to your unique facial structure.', 
         price: '₹850', 
         duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'h2', 
@@ -25,7 +25,7 @@ const SERVICES_DATA = {
         description: 'Hand-painted highlights for a natural, sun-kissed look.', 
         price: '₹2499', 
         duration: '180 min',
-        image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'h3', 
@@ -33,7 +33,7 @@ const SERVICES_DATA = {
         description: 'Intense hydration and repair for damaged hair.', 
         price: '₹599', 
         duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'h4', 
@@ -41,7 +41,7 @@ const SERVICES_DATA = {
         description: 'Classic grooming with a modern touch and scalp massage.', 
         price: '₹600', 
         duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=800&auto=format&fit=crop'
       },
     ]
   },
@@ -55,7 +55,7 @@ const SERVICES_DATA = {
         description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.', 
         price: '₹1299', 
         duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 's2', 
@@ -63,7 +63,7 @@ const SERVICES_DATA = {
         description: 'Deep exfoliation for a smoother, clearer complexion.', 
         price: '₹1599', 
         duration: '75 min',
-        image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 's3', 
@@ -71,7 +71,7 @@ const SERVICES_DATA = {
         description: 'Targeted treatment to reduce fine lines and wrinkles.', 
         price: '₹1799', 
         duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 's4', 
@@ -79,7 +79,7 @@ const SERVICES_DATA = {
         description: 'Intense hydration and lifting for a youthful glow.', 
         price: '₹1400', 
         duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop'
       },
     ]
   },
@@ -93,7 +93,7 @@ const SERVICES_DATA = {
         description: 'Complete hand care with a premium polish and relaxing massage.', 
         price: '₹499', 
         duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1610992015732-2449b0c26670?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'n2', 
@@ -101,7 +101,7 @@ const SERVICES_DATA = {
         description: 'Luxury foot care with exfoliating scrub and hot stone massage.', 
         price: '₹699', 
         duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'n3', 
@@ -109,7 +109,7 @@ const SERVICES_DATA = {
         description: 'Durable and elegant nail extensions with custom art styling.', 
         price: '₹899', 
         duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'n4', 
@@ -117,7 +117,7 @@ const SERVICES_DATA = {
         description: 'Custom hand-drawn detailed designs for a bold personal statement.', 
         price: '₹300', 
         duration: '30 min',
-        image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=800&auto=format&fit=crop'
       },
     ]
   }

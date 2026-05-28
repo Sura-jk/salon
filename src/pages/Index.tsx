@@ -1,34 +1,37 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import ServiceCard from '@/components/ServiceCard';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
 const FEATURED_SERVICES = [
   {
-    id: '1',
+    id: 's1',
     name: 'Signature Glow Facial',
     description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.',
-    price: '$120',
+    price: '₹1299',
     duration: '60 min',
     category: 'Skincare',
+    image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '2',
+    id: 'h1',
     name: 'Luxury Hair Sculpt',
     description: 'Precision cutting and styling tailored to your unique facial structure.',
-    price: '$85',
+    price: '₹850',
     duration: '90 min',
     category: 'Hair',
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '3',
+    id: 'n1',
     name: 'Royal Manicure',
     description: 'Complete hand care with a premium polish and relaxing massage.',
-    price: '$45',
+    price: '₹499',
     duration: '45 min',
     category: 'Nails',
+    image: 'https://images.unsplash.com/photo-1610992015732-2449b0c26670?q=80&w=800&auto=format&fit=crop'
   },
 ];
 
@@ -97,35 +100,21 @@ const Index = () => {
             <CarouselContent>
               {FEATURED_SERVICES.map((service) => (
                 <CarouselItem key={service.id} className="basis-full px-0">
-                  <ServiceCard 
-                    {...service} 
-                    featured 
-                    onClick={() => navigate(`/book?service=${service.id}`)} 
-                  />
+                  <div className="px-1">
+                    <ServiceCard 
+                      {...service} 
+                      featured 
+                      onClick={() => navigate(`/book?service=${service.id}`)} 
+                    />
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center gap-2 mt-6">
-              {FEATURED_SERVICES.map((_, idx) => (
-                <div 
-                  key={idx} 
-                  className={cn(
-                    "h-1.5 rounded-full transition-all duration-300",
-                    idx === 0 ? "w-6 bg-primary" : "w-1.5 bg-muted"
-                  )} 
-                />
-              ))}
-            </div>
           </Carousel>
         </div>
       </section>
     </div>
   );
 };
-
-// Helper for the carousel dots (since we can't easily use the carousel's internal state here without a custom hook)
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
-}
 
 export default Index;
