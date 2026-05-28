@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Star, MapPin, Clock, ChevronLeft, Plus, Check, Sparkles, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 
@@ -68,17 +69,14 @@ const SalonDetails = () => {
     return acc + mins;
   }, 0);
 
-  const placeholder = '/placeholder.svg';
-
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32">
       {/* Hero Header Gallery */}
       <div className="relative h-80 w-full overflow-hidden">
-        <img 
+        <ImageWithFallback 
           src={salon.images[0]} 
-          onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
-          className="h-full w-full object-cover transition-transform duration-1000 scale-100 hover:scale-105" 
           alt={salon.name} 
+          className="h-full w-full object-cover transition-transform duration-1000 scale-100 hover:scale-105" 
         />
         <div className="absolute top-6 left-6 z-20">
           <Button 
@@ -215,11 +213,10 @@ const SalonDetails = () => {
             {salon.staff.map((member) => (
               <div key={member.id} className="flex flex-col items-center gap-2.5 min-w-[90px] group">
                 <div className="relative">
-                  <img 
+                  <ImageWithFallback 
                     src={member.image} 
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+                    alt={member.name}
                     className="w-20 h-20 rounded-full object-cover border-2 border-secondary/40 p-1 group-hover:border-secondary transition-all duration-500" 
-                    alt={member.name} 
                   />
                   <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full shadow" />
                 </div>

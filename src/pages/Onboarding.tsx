@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Sparkles, Calendar, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 
 const ONBOARDING_STEPS = [
@@ -28,7 +29,6 @@ const ONBOARDING_STEPS = [
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
-  const placeholder = '/placeholder.svg';
 
   const nextStep = () => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
@@ -45,11 +45,10 @@ const Onboarding = () => {
           key={currentStep}
           className="absolute inset-0 transition-all duration-700 ease-in-out animate-in fade-in slide-in-from-right-12"
         >
-          <img 
+          <ImageWithFallback 
             src={ONBOARDING_STEPS[currentStep].image} 
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
-            className="h-full w-full object-cover opacity-70" 
             alt="Onboarding"
+            className="h-full w-full object-cover opacity-70" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
           

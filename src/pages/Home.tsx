@@ -4,6 +4,7 @@ import { Search, MapPin, Bell, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
 const CATEGORIES = [
@@ -65,7 +66,6 @@ const Home = () => {
   };
 
   const heroImage = 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1200&q=80';
-  const placeholder = '/placeholder.svg';
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
@@ -107,10 +107,9 @@ const Home = () => {
                 onClick={handleClaimOffer}
                 className="relative h-64 rounded-[2rem] overflow-hidden group cursor-pointer shadow-2xl"
               >
-                <img 
+                <ImageWithFallback 
                   src={heroImage}
-                  alt="Featured Offer"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+                  alt="Summer Glow"
                   className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end px-6 pb-8">
@@ -158,10 +157,9 @@ const Home = () => {
               onClick={() => navigate('/services')}
             >
               <div className="w-20 h-20 rounded-3xl overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-md group-hover:shadow-secondary/20">
-                <img 
+                <ImageWithFallback 
                   src={cat.image} 
                   alt={cat.label} 
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                 />
               </div>
@@ -193,10 +191,9 @@ const Home = () => {
               className="group bg-card rounded-[2rem] overflow-hidden border border-border luxury-shadow cursor-pointer transition-all hover:border-secondary hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="relative h-52">
-                <img 
+                <ImageWithFallback 
                   src={salon.image} 
                   alt={salon.name}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 />
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-sm border border-border">
