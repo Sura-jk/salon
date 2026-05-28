@@ -18,9 +18,9 @@ const SALON_DATA = {
     address: '123 Luxury Lane, Bandra West, Mumbai',
     timing: '09:00 AM - 08:00 PM',
     images: [
-      'https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1527799822367-3188572f481b?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499, category: 'Hair' },
@@ -43,7 +43,7 @@ const SALON_DATA = {
     timing: '08:00 AM - 09:00 PM',
     images: [
       'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=1000&auto=format&fit=crop',
     ],
     services: [
