@@ -107,7 +107,6 @@ const SalonDetails = () => {
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
   const handleBack = () => {
-    // If we have history entries to go back to, go back. Otherwise go to Home "/" safely.
     if (window.history.length > 1) {
       navigate(-1);
     } else {
@@ -274,10 +273,10 @@ const SalonDetails = () => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  'px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap',
+                  'px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap border',
                   activeCategory === cat
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-card border border-border text-muted-foreground'
+                    ? 'bg-secondary text-primary border-secondary font-extrabold shadow-sm scale-105'
+                    : 'bg-card border-border text-muted-foreground hover:border-secondary/50'
                 )}
               >
                 {cat}
@@ -295,7 +294,7 @@ const SalonDetails = () => {
                 onClick={() => toggleService(service.id, service.name)}
                 className={cn(
                   'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer',
-                  isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
+                  isSelected ? 'border-secondary bg-secondary/10 shadow-sm' : 'border-border bg-card hover:border-secondary/50'
                 )}
               >
                 <div className="flex-1 min-w-0">
@@ -347,23 +346,29 @@ const SalonDetails = () => {
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Available Promo Codes</h3>
           </div>
           
-          {/* List of Clickable Codes outside input */}
+          {/* List of Clickable Codes outside input with active highlighting */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {AVAILABLE_PROMOS.map((promo) => (
-              <button
-                key={promo.code}
-                onClick={() => {
-                  setPromoInput(promo.code);
-                  handleApplyPromoCode(promo.code);
-                }}
-                className={cn(
-                  "px-2.5 py-1.5 rounded-xl border border-dashed border-secondary/40 bg-secondary/5 text-secondary text-xs font-semibold hover:bg-secondary/15 transition-all flex flex-col items-start gap-0.5"
-                )}
-              >
-                <span className="font-bold tracking-wider">{promo.code}</span>
-                <span className="text-[9px] opacity-70 font-normal">{promo.description}</span>
-              </button>
-            ))}
+            {AVAILABLE_PROMOS.map((promo) => {
+              const isCouponActive = activeDiscount?.code === promo.code;
+              return (
+                <button
+                  key={promo.code}
+                  onClick={() => {
+                    setPromoInput(promo.code);
+                    handleApplyPromoCode(promo.code);
+                  }}
+                  className={cn(
+                    "px-3 py-2 rounded-xl border transition-all flex flex-col items-start gap-0.5",
+                    isCouponActive
+                      ? "bg-secondary text-primary border-secondary shadow-md scale-105 font-bold"
+                      : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
+                  )}
+                >
+                  <span className="font-black tracking-wider text-xs">{promo.code}</span>
+                  <span className="text-[9px] opacity-85 font-normal">{promo.description}</span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex gap-1.5">
@@ -372,7 +377,7 @@ const SalonDetails = () => {
               placeholder="Or enter custom code"
               value={promoInput}
               onChange={(e) => setPromoInput(e.target.value)}
-              className="flex-1 rounded-xl border border-border/40 bg-card/50 px-3 py-1.5 text-sm focus:ring-secondary outline-none"
+              className="flex-1 rounded-xl border border-border/40 bg-card/50 px-3 py-1.5 text-sm focus:ring-secondary outline-none animate-none"
             />
             <Button
               variant="outline"
@@ -384,7 +389,7 @@ const SalonDetails = () => {
           </div>
           {activeDiscount && (
             <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1">
-              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
+              <Check className="w-3.5 h-3.5 animate-bounce" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
             </p>
           )}
         </div>
@@ -411,7 +416,7 @@ const SalonDetails = () => {
               placeholder="Code"
               value={bottomCouponInput}
               onChange={(e) => setBottomCouponInput(e.target.value)}
-              className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none"
+              className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none text-foreground"
             />
             <Button
               variant="outline"
@@ -424,7 +429,7 @@ const SalonDetails = () => {
 
           <Button
             onClick={() => navigate('/book')}
-            className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2"
+            className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2 animate-pulse-slow"
           >
             Book
           </Button>
