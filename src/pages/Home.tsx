@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
+  CarouselItem
 } from '@/components/ui/carousel';
+import type { CarouselApi } from '@/components/ui/carousel';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
@@ -124,6 +123,7 @@ const NEARBY_SALONS = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   const handleClaimOffer = () => {
     const toastId = showLoading("Activating Summer promo discount...");
@@ -264,9 +264,9 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Expertise Categories Selection Slider with Navigation Arrows */}
+      {/* Expertise Categories Selection Slider with Premium Custom Navigation Controls */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
-        <Carousel className="w-full relative">
+        <Carousel setApi={setCarouselApi} className="w-full relative">
           <div className="flex justify-between items-end mb-6">
             <div>
               <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
@@ -277,14 +277,27 @@ const Home = () => {
               <Button 
                 variant="ghost" 
                 onClick={() => navigate('/services')}
-                className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
+                className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em] transition-colors hover:text-primary"
               >
                 All Services
               </Button>
-              {/* Elegant Navigation Arrows */}
+              
+              {/* Premium Custom Navigation Arrows */}
               <div className="flex gap-1.5">
-                <CarouselPrevious className="static translate-y-0 h-8 w-8 rounded-full border border-border/60 bg-card/40 backdrop-blur-md hover:bg-secondary/20 hover:text-primary transition-all text-secondary" />
-                <CarouselNext className="static translate-y-0 h-8 w-8 rounded-full border border-border/60 bg-card/40 backdrop-blur-md hover:bg-secondary/20 hover:text-primary transition-all text-secondary" />
+                <button 
+                  onClick={() => carouselApi?.scrollPrev()}
+                  className="flex items-center justify-center h-9 w-9 rounded-full border border-secondary/30 bg-card/65 text-secondary hover:bg-secondary/10 hover:border-secondary active:scale-90 transition-all duration-300 shadow-sm"
+                  aria-label="Previous category"
+                >
+                  <ChevronLeft className="w-4 h-4 stroke-[1.75]" />
+                </button>
+                <button 
+                  onClick={() => carouselApi?.scrollNext()}
+                  className="flex items-center justify-center h-9 w-9 rounded-full border border-secondary/30 bg-card/65 text-secondary hover:bg-secondary/10 hover:border-secondary active:scale-90 transition-all duration-300 shadow-sm"
+                  aria-label="Next category"
+                >
+                  <ChevronRight className="w-4 h-4 stroke-[1.75]" />
+                </button>
               </div>
             </div>
           </div>
