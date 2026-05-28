@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
+import { ServiceTable } from '@/components/ServiceTable';
 
 type CouponDiscount = { code: string; percent: number };
 
@@ -88,11 +89,9 @@ const SalonDetails = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
-  // ---------- Promo‑code state (stand‑alone) ----------
+  // Promo‑code states
   const [promoInput, setPromoInput] = useState('');
   const [activeDiscount, setActiveDiscount] = useState<CouponDiscount | null>(null);
-
-  // ---------- Bottom‑section promo‑code state ----------
   const [bottomCouponInput, setBottomCouponInput] = useState('');
 
   useEffect(() => {
@@ -113,6 +112,10 @@ const SalonDetails = () => {
     });
   };
 
+  const removeService = (serviceId: string) => {
+    setSelectedServices(prev => prev.filter(id => id !== serviceId));
+  };
+
   const handleApplyPromo = () => {
     const code = promoInput.trim().toUpperCase();
     if (!code) return;
@@ -129,14 +132,6 @@ const SalonDetails = () => {
     }
   };
 
-  const handleRemoveCoupon = () => {
-    if (activeDiscount) {
-      showSuccess(`Promo code "${activeDiscount.code}" removed.`);
-      setActiveDiscount(null);
-    }
-  };
-
-  // Bottom‑section handler
   const handleApplyBottomCoupon = () => {
     const code = bottomCouponInput.trim().toUpperCase();
     if (!code) return;
@@ -167,39 +162,29 @@ const SalonDetails = () => {
     ? salon.services
     : salon.services.filter(s => s.category === activeCategory);
 
-  const baseTotalPrice = selectedServices.reduce((acc, id) => {
-    const service = salon.services.find(s => s.id === id);
-    return acc + (service?.price || 0);
-  }, 0);
+  const selectedServiceDetails = selectedServices
+    .map(id => salon.services.find(s => s.id === id))
+    .filter(Boolean) as typeof salon.services;
 
+  const baseTotalPrice = selectedServiceDetails.reduce((acc, svc) => acc + (svc.price || 0), 0);
   const discountAmount = activeDiscount ? Math.round((baseTotalPrice * activeDiscount.percent) / 100) : 0;
   const finalTotalPrice = baseTotalPrice - discountAmount;
-
-  const totalDuration = selectedServices.reduce((acc, id) => {
-    const service = salon.services.find(s => s.id === id);
-    const mins = parseInt(service?.duration.split(' ')[0] || '0');
-    return acc + mins;
-  }, 0);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Top Navigation */}
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-6 py-4">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => navigate(-1)}
             className="rounded-full bg-card/50 border border-border/50"
           >
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <h2 className="text-lg font-serif font-medium">{salon.name}</h2>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="rounded-full bg-card/50 border border-border/50"
-          >
+          <Button variant="ghost" size="icon" className="rounded-full bg-card/50 border border-border/50">
             <Heart className="w-5 h-5" />
           </Button>
         </div>
@@ -207,35 +192,31 @@ const SalonDetails = () => {
 
       {/* Hero Image Carousel */}
       <div className="relative h-80 w-full overflow-hidden">
-        <ImageWithFallback 
-          src={salon.images[activeImageIdx]} 
+        <ImageWithFallback
+          src={salon.images[activeImageIdx]}
           alt={salon.name}
-          className="h-full w-full object-cover transition-transform duration-1000" 
+          className="h-full w-full object-cover transition-transform duration-1000"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        
-        {/* Image Navigation */}
-        <button 
+        <button
           onClick={prevImage}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <button 
+        <button
           onClick={nextImage}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
-
-        {/* Image Indicators */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {salon.images.map((_, idx) => (
-            <div 
+            <div
               key={idx}
               className={cn(
-                "w-2 h-2 rounded-full transition-all",
-                idx === activeImageIdx ? "bg-white w-6" : "bg-white/40"
+                'w-2 h-2 rounded-full transition-all',
+                idx === activeImageIdx ? 'bg-white w-6' : 'bg-white/40'
               )}
             />
           ))}
@@ -283,10 +264,10 @@ const SalonDetails = () => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  "px-3 py-1.5 rounded-xl text-xs font-bold transition-all",
-                  activeCategory === cat 
-                    ? "bg-primary text-primary-foreground" 
-                    : "bg-card border border-border text-muted-foreground"
+                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-all',
+                  activeCategory === cat
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card border border-border text-muted-foreground'
                 )}
               >
                 {cat}
@@ -299,14 +280,12 @@ const SalonDetails = () => {
           {filteredServices.map((service) => {
             const isSelected = selectedServices.includes(service.id);
             return (
-              <div 
+              <div
                 key={service.id}
                 onClick={() => toggleService(service.id, service.name)}
                 className={cn(
-                  "flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer",
-                  isSelected 
-                    ? "border-secondary bg-secondary/10" 
-                    : "border-border bg-card hover:border-secondary/50"
+                  'flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer',
+                  isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
                 )}
               >
                 <div className="flex-1">
@@ -315,10 +294,12 @@ const SalonDetails = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-primary">₹{service.price}</span>
-                  <div className={cn(
-                    "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-                    isSelected ? "border-secondary bg-secondary" : "border-border"
-                  )}>
+                  <div
+                    className={cn(
+                      'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all',
+                      isSelected ? 'border-secondary bg-secondary' : 'border-border'
+                    )}
+                  >
                     {isSelected && <Check className="w-4 h-4 text-primary" />}
                   </div>
                 </div>
@@ -326,6 +307,9 @@ const SalonDetails = () => {
             );
           })}
         </div>
+
+        {/* Table of selected services with arrow navigation */}
+        <ServiceTable services={selectedServiceDetails} onRemove={removeService} />
       </div>
 
       {/* Staff Section */}
@@ -334,11 +318,7 @@ const SalonDetails = () => {
         <div className="space-y-3">
           {salon.staff.map((staff) => (
             <div key={staff.id} className="flex items-center gap-4 p-3 rounded-2xl bg-card border border-border">
-              <img 
-                src={staff.image} 
-                alt={staff.name}
-                className="w-14 h-14 rounded-full object-cover"
-              />
+              <img src={staff.image} alt={staff.name} className="w-14 h-14 rounded-full object-cover" />
               <div className="flex-1">
                 <span className="font-medium block text-foreground">{staff.name}</span>
                 <span className="text-xs text-muted-foreground">{staff.role}</span>
@@ -349,7 +329,7 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Stand-alone Promo Code Section */}
+      {/* Stand‑alone Promo Code Section */}
       <div className="px-6 py-4">
         <div className="p-4 rounded-3xl bg-card border border-border/50 shadow-sm">
           <div className="flex items-center gap-2 mb-2">
@@ -377,8 +357,8 @@ const SalonDetails = () => {
 
       {/* Floating Checkout */}
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent z-50 transition-all duration-500",
-        selectedServices.length > 0 ? "translate-y-0 opacity-100" : "translate-y-32 opacity-0 pointer-events-none"
+        'fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent z-50 transition-all duration-500',
+        selectedServices.length > 0 ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0 pointer-events-none'
       )}>
         <div className="max-w-md mx-auto flex items-center justify-between p-5 rounded-3xl bg-primary text-primary-foreground shadow-2xl border border-secondary/20">
           <div className="flex flex-col">
@@ -389,7 +369,25 @@ const SalonDetails = () => {
             </div>
           </div>
 
-          <Button 
+          {/* Bottom promo‑code input */}
+          <div className="mt-2 flex flex-col gap-1">
+            <input
+              type="text"
+              placeholder="Enter promo code (e.g. LUXE20)"
+              value={bottomCouponInput}
+              onChange={(e) => setBottomCouponInput(e.target.value)}
+              className="w-full rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
+            />
+            <Button
+              variant="outline"
+              onClick={handleApplyBottomCoupon}
+              className="w-full rounded-2xl bg-primary text-primary-foreground text-sm hover:bg-primary/90"
+            >
+              Apply
+            </Button>
+          </div>
+
+          <Button
             onClick={() => navigate('/book')}
             className="rounded-2xl bg-secondary text-primary font-bold px-6 py-3 hover:bg-secondary/90"
           >
