@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -84,6 +84,14 @@ const SalonDetails = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+
+  // Always scroll to the top of the viewport when opening any Salon Details page
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    });
+  }, [id]);
 
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
