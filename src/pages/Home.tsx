@@ -11,12 +11,12 @@ const CATEGORIES = [
   { 
     id: 'hair', 
     label: 'Hair', 
-    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
     label: 'Nails', 
-    image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=400&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'spa', 
@@ -154,7 +154,7 @@ const Home = () => {
               </div>
             </CarouselItem>
           </CarouselContent>
-        </Carousel>
+</Carousel>
       </section>
 
       {/* Categories */}
