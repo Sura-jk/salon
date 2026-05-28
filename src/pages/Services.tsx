@@ -17,7 +17,7 @@ const SERVICES_DATA = {
         description: 'Precision cutting and styling tailored to your unique facial structure.', 
         price: '₹850', 
         duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'h2', 
@@ -25,7 +25,7 @@ const SERVICES_DATA = {
         description: 'Hand-painted highlights for a natural, sun-kissed look.', 
         price: '₹2499', 
         duration: '180 min',
-        image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?q=80&w=800&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1605497746444-ac9dbd324486?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'h3', 
@@ -41,7 +41,7 @@ const SERVICES_DATA = {
         description: 'Classic grooming with a modern touch and scalp massage.', 
         price: '₹600', 
         duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=800&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=800&auto=format&fit=crop'
       },
     ]
   },
@@ -93,7 +93,7 @@ const SERVICES_DATA = {
         description: 'Complete hand care with a premium polish and relaxing massage.', 
         price: '₹499', 
         duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1610992015732-2449b0c26670?q=80&w=800&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=800&auto=format&fit=crop'
       },
       { 
         id: 'n2', 
