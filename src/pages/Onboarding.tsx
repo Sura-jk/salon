@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Sparkles, Calendar, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const ONBOARDING_STEPS = [
   {
@@ -41,17 +42,17 @@ const Onboarding = () => {
       <div className="flex-1 relative">
         <div 
           key={currentStep}
-          className="absolute inset-0 transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-right-10"
+          className="absolute inset-0 transition-all duration-700 ease-in-out animate-in fade-in slide-in-from-right-12"
         >
           <img 
             src={ONBOARDING_STEPS[currentStep].image} 
-            className="h-full w-full object-cover opacity-60" 
+            className="h-full w-full object-cover opacity-70" 
             alt="Onboarding"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
           
           <div className="absolute bottom-0 left-0 right-0 px-8 pb-20">
-            <div className="flex items-center justify-center w-16 h-16 bg-secondary rounded-2xl mb-6 shadow-xl">
+            <div className="flex items-center justify-center w-16 h-16 bg-secondary rounded-2xl mb-6 shadow-2xl text-primary animate-in zoom-in duration-500">
               {ONBOARDING_STEPS[currentStep].icon}
             </div>
             <h1 className="text-4xl font-serif font-medium text-foreground mb-4 leading-tight">
@@ -70,7 +71,7 @@ const Onboarding = () => {
             <div 
               key={idx} 
               className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
+                "h-1.5 rounded-full transition-all duration-500",
                 idx === currentStep ? "w-8 bg-secondary" : "w-2 bg-muted"
               )} 
             />
@@ -82,7 +83,7 @@ const Onboarding = () => {
             <Button 
               variant="ghost" 
               onClick={() => setCurrentStep(s => s - 1)}
-              className="text-muted-foreground"
+              className="text-muted-foreground font-medium"
             >
               Back
             </Button>
@@ -91,7 +92,7 @@ const Onboarding = () => {
           <div className="flex-1 flex justify-end">
             <Button 
               onClick={nextStep}
-              className="px-8 py-6 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20 flex items-center gap-2"
+              className="px-8 py-6 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all active:scale-95 shadow-xl shadow-primary/20 flex items-center gap-2 font-bold"
             >
               {currentStep === ONBOARDING_STEPS.length - 1 ? "Get Started" : "Continue"}
               <ChevronRight className="w-4 h-4" />
@@ -102,9 +103,5 @@ const Onboarding = () => {
     </div>
   );
 };
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
-}
 
 export default Onboarding;

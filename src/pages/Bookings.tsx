@@ -41,73 +41,75 @@ const Bookings = () => {
         </div>
 
         <div className="flex gap-4 mb-6">
-          <Button variant="default" className="flex-1 rounded-xl bg-primary text-primary-foreground">Upcoming</Button>
-          <Button variant="outline" className="flex-1 rounded-xl border-border">Completed</Button>
+          <Button variant="default" className="flex-1 rounded-xl bg-primary text-primary-foreground font-bold">Upcoming</Button>
+          <Button variant="outline" className="flex-1 rounded-xl border-border font-medium">Completed</Button>
         </div>
 
         <div className="space-y-6">
           {bookings.map((booking) => (
-            <Card key={booking.id} className="p-5 border-border/50 rounded-3xl luxury-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">
-                    {booking.salonName[0]}
+            <Card key={booking.id} className="p-0 overflow-hidden border-border/50 rounded-3xl luxury-shadow bg-card">
+              <div className="p-5">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">
+                      {booking.salonName[0]}
+                    </div>
+                    <div className="flex flex-col">
+                      <h3 className="font-serif font-medium text-lg text-foreground leading-tight">{booking.salonName}</h3>
+                      <span className="text-xs text-muted-foreground">{booking.serviceName}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-serif font-medium text-lg text-foreground">{booking.salonName}</h3>
-                    <span className="text-xs text-muted-foreground">{booking.serviceName}</span>
+                  <Badge className={cn(
+                    "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full",
+                    booking.status === 'upcoming' ? "bg-secondary text-primary" : "bg-muted text-muted-foreground"
+                  )}>
+                    {booking.status}
+                  </Badge>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 py-4 border-y border-border/50 mb-4">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <CalendarDays className="w-3.5 h-3.5 text-secondary" />
+                    <span>{new Date(booking.date).toDateString()}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="w-3.5 h-3.5 text-secondary" />
+                    <span>{booking.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <User className="w-3.5 h-3.5 text-secondary" />
+                    <span>{booking.stylistName}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-primary">
+                    <span>Total: {booking.price}</span>
                   </div>
                 </div>
-                <Badge className={cn(
-                  "text-[10px] uppercase font-bold px-2 py-0.5",
-                  booking.status === 'upcoming' ? "bg-secondary text-primary" : "bg-muted text-muted-foreground"
-                )}>
-                  {booking.status}
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 py-4 border-y border-border/50 mb-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CalendarDays className="w-4 h-4" />
-                  <span>{new Date(booking.date).toDateString()}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="w-4 h-4" />
-                  <span>{booking.time}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <User className="w-4 h-4" />
-                  <span>{booking.stylistName}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm font-bold text-primary">
-                  <span>Total: {booking.price}</span>
-                </div>
-              </div>
 
-              <div className="flex gap-3">
-                {booking.status === 'upcoming' ? (
-                  <>
+                <div className="flex gap-3">
+                  {booking.status === 'upcoming' ? (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
+                      >
+                        <RotateCcw className="w-3 h-3" /> Reschedule
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        className="p-6 rounded-2xl text-destructive hover:bg-destructive/10 transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </>
+                  ) : (
                     <Button 
                       variant="outline" 
-                      className="flex-1 py-6 rounded-2xl text-xs font-medium border-border flex items-center gap-2"
+                      className="w-full py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
                     >
-                      <RotateCcw className="w-3 h-3" /> Reschedule
+                      <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Rate Experience
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      className="p-6 rounded-2xl text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </>
-                ) : (
-                  <Button 
-                    variant="outline" 
-                    className="w-full py-6 rounded-2xl text-xs font-medium border-border flex items-center justify-center gap-2"
-                  >
-                    <Star className="w-3 h-3" /> Rate Experience
-                  </Button>
-                )}
+                  )}
+                </div>
               </div>
             </Card>
           ))}
