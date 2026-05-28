@@ -40,8 +40,9 @@ const ServiceCard = ({
 
   return (
     <Card 
+      onClick={onClick}
       className={cn(
-        "group relative overflow-hidden transition-all duration-300 hover:shadow-xl border-border/50 flex flex-row items-stretch min-h-[140px]",
+        "group relative overflow-hidden transition-all duration-300 hover:shadow-xl border-border/50 flex flex-row items-stretch min-h-[140px] cursor-pointer active:scale-[0.98]",
         featured ? "border-secondary ring-1 ring-secondary" : ""
       )}
     >
@@ -67,7 +68,7 @@ const ServiceCard = ({
             </span>
           </div>
           
-          <h3 className="text-base font-serif font-medium text-foreground mb-1 group-hover:text-primary transition-colors line-clamp-1">
+          <h3 className="text-base font-serif font-medium text-foreground mb-1 group-hover:text-secondary transition-colors line-clamp-1">
             {name}
           </h3>
           
@@ -82,15 +83,10 @@ const ServiceCard = ({
             <span>{duration}</span>
           </div>
           
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={onClick}
-            className="p-0 h-auto text-primary hover:bg-transparent hover:text-secondary transition-colors group/btn"
-          >
-            <span className="text-[10px] font-bold uppercase tracking-tight mr-1">Book</span>
-            <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
-          </Button>
+          <div className="flex items-center gap-1 text-primary group-hover:text-secondary transition-colors">
+            <span className="text-[10px] font-bold uppercase tracking-tight">Details</span>
+            <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+          </div>
         </div>
       </div>
     </Card>
