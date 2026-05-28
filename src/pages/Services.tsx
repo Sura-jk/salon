@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ServiceCard from '@/components/ServiceCard';
-import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown, Wand2, Flower2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,8 +21,8 @@ const SERVICES_DATA = {
     icon: Scissors,
     items: [
       { 
-        id: 'h1', 
-        name: 'Luxury Hair Sculpt', 
+        id: 'hair_1', 
+        name: 'Signature Hair Sculpt', 
         description: 'Precision cutting and styling tailored to your unique facial structure.', 
         price: '₹850', 
         numericPrice: 850,
@@ -30,8 +30,8 @@ const SERVICES_DATA = {
         image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 'h2', 
-        name: 'Balayage Artistry', 
+        id: 'hair_2', 
+        name: 'Artisan Balayage', 
         description: 'Hand-painted highlights for a natural, sun-kissed look.', 
         price: '₹2499', 
         numericPrice: 2499,
@@ -39,18 +39,18 @@ const SERVICES_DATA = {
         image: 'https://images.unsplash.com/photo-1605497746444-ac9dbd324486?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 'h3', 
-        name: 'Deep Conditioning', 
-        description: 'Intense hydration and repair for damaged hair.', 
-        price: '₹599', 
-        numericPrice: 599,
-        duration: '60 min',
+        id: 'hair_3', 
+        name: 'Keratin Infusion', 
+        description: 'Deep repair and smoothing treatment for silk-like texture.', 
+        price: '₹1800', 
+        numericPrice: 1800,
+        duration: '120 min',
         image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 'h4', 
-        name: "Men's Executive Cut", 
-        description: 'Classic grooming with a modern touch and scalp massage.', 
+        id: 'hair_4', 
+        name: "Classic Grooming", 
+        description: 'Refined cut with an invigorating scalp massage and hot towel finish.', 
         price: '₹600', 
         numericPrice: 600,
         duration: '45 min',
@@ -63,40 +63,31 @@ const SERVICES_DATA = {
     icon: Sparkles,
     items: [
       { 
-        id: 's1', 
-        name: 'Signature Glow Facial', 
-        description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.', 
+        id: 'skin_1', 
+        name: 'Cellular Glow Facial', 
+        description: 'Oxygenating treatment that revives dull skin and boosts radiance.', 
         price: '₹1299', 
         numericPrice: 1299,
         duration: '60 min',
         image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 's2', 
-        name: 'Diamond Microdermabrasion', 
-        description: 'Deep exfoliation for a smoother, clearer complexion.', 
+        id: 'skin_2', 
+        name: 'Diamond Polishing', 
+        description: 'Non-invasive resurfacing for velvet-smooth complexion.', 
         price: '₹1599', 
         numericPrice: 1599,
         duration: '75 min',
         image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 's3', 
-        name: 'Anti-Aging Ritual', 
-        description: 'Targeted treatment to reduce fine lines and wrinkles.', 
-        price: '₹1799', 
-        numericPrice: 1799,
+        id: 'skin_3', 
+        name: 'Age-Defying Ritual', 
+        description: 'Collagen-boosting therapy to target fine lines and improve elasticity.', 
+        price: '₹2100', 
+        numericPrice: 2100,
         duration: '90 min',
         image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 's4', 
-        name: 'Hydra-Lift Treatment', 
-        description: 'Intense hydration and lifting for a youthful glow.', 
-        price: '₹1400', 
-        numericPrice: 1400,
-        duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=600&auto=format&fit=crop'
       },
     ]
   },
@@ -105,40 +96,79 @@ const SERVICES_DATA = {
     icon: Palette,
     items: [
       { 
-        id: 'n1', 
-        name: 'Royal Manicure', 
-        description: 'Complete hand care with a premium polish and relaxing massage.', 
+        id: 'nail_1', 
+        name: 'Luxe Manicure', 
+        description: 'Exfoliation, cuticle care, and premium gel polish finish.', 
         price: '₹499', 
         numericPrice: 499,
         duration: '45 min',
         image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 'n2', 
-        name: 'Imperial Pedicure', 
-        description: 'Luxury foot care with exfoliating scrub and hot stone massage.', 
+        id: 'nail_2', 
+        name: 'Spa Pedicure', 
+        description: 'Detoxifying soak followed by a tension-releasing foot massage.', 
         price: '₹699', 
         numericPrice: 699,
         duration: '60 min',
         image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=600&auto=format&fit=crop'
       },
       { 
-        id: 'n3', 
-        name: 'Gel Extensions', 
-        description: 'Durable and elegant nail extensions with custom art styling.', 
-        price: '₹899', 
-        numericPrice: 899,
-        duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 'n4', 
-        name: 'Nail Art Session', 
-        description: 'Custom hand-drawn detailed designs for a bold personal statement.', 
-        price: '₹300', 
-        numericPrice: 300,
+        id: 'nail_3', 
+        name: 'Aesthetic Nail Art', 
+        description: 'Custom hand-drawn illustrations and minimalist patterns.', 
+        price: '₹350', 
+        numericPrice: 350,
         duration: '30 min',
         image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=600&auto=format&fit=crop'
+      },
+    ]
+  },
+  makeup: {
+    label: 'Makeup',
+    icon: Wand2,
+    items: [
+      { 
+        id: 'makeup_1', 
+        name: 'Elite Glamour Look', 
+        description: 'Sophisticated full-face makeup for red-carpet-ready events.', 
+        price: '₹2999', 
+        numericPrice: 2999,
+        duration: '90 min',
+        image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'makeup_2', 
+        name: 'Bridal Artistry', 
+        description: 'Timeless and durable beauty curation for your special day.', 
+        price: '₹5500', 
+        numericPrice: 5500,
+        duration: '150 min',
+        image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop'
+      },
+    ]
+  },
+  spa: {
+    label: 'Spa',
+    icon: Flower2,
+    items: [
+      { 
+        id: 'spa_1', 
+        name: 'Deep Tissue Relief', 
+        description: 'Intense massage to release muscle knots and chronic tension.', 
+        price: '₹1899', 
+        numericPrice: 1899,
+        duration: '90 min',
+        image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'spa_2', 
+        name: 'Aroma Zen Therapy', 
+        description: 'Calming Swedish massage with organic essential oils.', 
+        price: '₹1499', 
+        numericPrice: 1499,
+        duration: '60 min',
+        image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop'
       },
     ]
   }
@@ -230,18 +260,18 @@ const Services = () => {
         </div>
 
         <Tabs defaultValue="hair" value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="flex w-full bg-muted/40 p-1.5 rounded-2xl mb-12 backdrop-blur-md border border-border/50">
+          <TabsList className="flex w-full bg-muted/40 p-1.5 rounded-2xl mb-12 backdrop-blur-md border border-border/50 overflow-x-auto no-scrollbar">
             {Object.entries(SERVICES_DATA).map(([key, value]) => {
               const Icon = value.icon;
               return (
                 <TabsTrigger 
                   key={key} 
                   value={key} 
-                  className="flex-1 rounded-xl transition-all duration-500 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-bold text-[10px] uppercase tracking-widest py-3"
+                  className="flex-1 rounded-xl transition-all duration-500 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-bold text-[10px] uppercase tracking-widest py-3 px-4 whitespace-nowrap"
                 >
                   <div className="flex items-center gap-2">
                     <Icon className="w-3.5 h-3.5" />
-                    <span className="hidden xs:inline">{value.label}</span>
+                    <span>{value.label}</span>
                   </div>
                 </TabsTrigger>
               );

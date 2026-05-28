@@ -15,24 +15,29 @@ const STYLISTS = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
-// Mock services for quick lookups from query param
+// Unified Service Lookup synchronized with Services.tsx
 const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string }> = {
-  's1': { name: 'Signature Glow Facial', price: '₹1299', duration: '60 min' },
-  's2': { name: 'Balayage Color', price: '₹2499', duration: '120 min' },
-  's3': { name: 'Luxury Facial', price: '₹1299', duration: '60 min' },
-  's4': { name: 'Royal Manicure', price: '₹699', duration: '45 min' },
-  's5': { name: 'Glow Skincare Ritual', price: '₹1599', duration: '75 min' },
-  'h1': { name: 'Luxury Hair Sculpt', price: '₹850', duration: '90 min' },
-  'h2': { name: 'Balayage Artistry', price: '₹1800', duration: '180 min' },
-  'h3': { name: 'Deep Conditioning', price: '₹500', duration: '60 min' },
-  'h4': { name: 'Men\'s Executive Cut', price: '₹600', duration: '45 min' },
+  'hair_1': { name: 'Signature Hair Sculpt', price: '₹850', duration: '90 min' },
+  'hair_2': { name: 'Artisan Balayage', price: '₹2499', duration: '180 min' },
+  'hair_3': { name: 'Keratin Infusion', price: '₹1800', duration: '120 min' },
+  'hair_4': { name: 'Classic Grooming', price: '₹600', duration: '45 min' },
+  'skin_1': { name: 'Cellular Glow Facial', price: '₹1299', duration: '60 min' },
+  'skin_2': { name: 'Diamond Polishing', price: '₹1599', duration: '75 min' },
+  'skin_3': { name: 'Age-Defying Ritual', price: '₹2100', duration: '90 min' },
+  'nail_1': { name: 'Luxe Manicure', price: '₹499', duration: '45 min' },
+  'nail_2': { name: 'Spa Pedicure', price: '₹699', duration: '60 min' },
+  'nail_3': { name: 'Aesthetic Nail Art', price: '₹350', duration: '30 min' },
+  'makeup_1': { name: 'Elite Glamour Look', price: '₹2999', duration: '90 min' },
+  'makeup_2': { name: 'Bridal Artistry', price: '₹5500', duration: '150 min' },
+  'spa_1': { name: 'Deep Tissue Relief', price: '₹1899', duration: '90 min' },
+  'spa_2': { name: 'Aroma Zen Therapy', price: '₹1499', duration: '60 min' },
 };
 
 const BookingFlow = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const serviceId = searchParams.get('service') || 's1';
-  const activeService = SERVICES_LOOKUP[serviceId] || SERVICES_LOOKUP['s1'];
+  const serviceId = searchParams.get('service') || 'hair_1';
+  const activeService = SERVICES_LOOKUP[serviceId] || SERVICES_LOOKUP['hair_1'];
 
   const [step, setStep] = useState(1);
   const [selectedStylist, setSelectedStylist] = useState('');
