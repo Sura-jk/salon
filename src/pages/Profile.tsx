@@ -21,6 +21,10 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState<TabId>(null);
   const [points, setPoints] = useState(0);
   const [visits, setVisits] = useState(0);
+  const [paymentMethods, setPaymentMethods] = useState([
+    { id: 1, type: 'Visa', last4: '4242', expiry: '12/25', primary: true },
+    { id: 2, type: 'Mastercard', last4: '8812', expiry: '09/24', primary: false }
+  ]);
 
   useEffect(() => {
     const targetPoints = 1250;
@@ -33,6 +37,11 @@ const Profile = () => {
   const handleLogout = () => {
     showSuccess("Logged out successfully.");
     navigate('/auth');
+  };
+
+  const removePaymentMethod = (id: number) => {
+    setPaymentMethods(prev => prev.filter(m => m.id !== id));
+    showSuccess("Payment method removed.");
   };
 
   const renderHeader = (title: string) => (
@@ -79,7 +88,7 @@ const Profile = () => {
             <Input defaultValue="+91 98765 43210" className="rounded-xl py-6 border-border/60" />
           </div>
         </div>
-        <Button className="w-full py-7 rounded-2xl bg-primary mt-4" onClick={() => { showSuccess("Profile updated!"); setActiveTab(null); }}>
+        <Button className="w-full py-7 rounded-2xl bg-primary mt-8 mb-12 shadow-lg shadow-primary/20" onClick={() => { showSuccess("Profile updated!"); setActiveTab(null); }}>
           <Save className="w-4 h-4 mr-2" /> Save Changes
         </Button>
       </div>
@@ -90,27 +99,37 @@ const Profile = () => {
     <div className="animate-in slide-in-from-right-4 duration-500">
       {renderHeader("Payment Methods")}
       <div className="space-y-4">
-        {[
-          { type: 'Visa', last4: '4242', expiry: '12/25', primary: true },
-          { type: 'Mastercard', last4: '8812', expiry: '09/24', primary: false }
-        ].map((card, i) => (
-          <div key={i} className="p-5 rounded-2xl border border-border bg-card flex items-center justify-between group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-8 bg-muted rounded flex items-center justify-center font-bold text-[10px] text-muted-foreground">
-                {card.type}
+        {paymentMethods.length > 0 ? (
+          paymentMethods.map((card) => (
+            <div key={card.id} className="p-5 rounded-2xl border border-border bg-card flex items-center justify-between group">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-8 bg-muted rounded flex items-center justify-center font-bold text-[10px] text-muted-foreground">
+                  {card.type}
+                </div>
+                <div>
+                  <span className="block font-bold text-sm">•••• {card.last4}</span>
+                  <span className="text-[10px] text-muted-foreground uppercase font-medium">Expires {card.expiry}</span>
+                </div>
               </div>
-              <div>
-                <span className="block font-bold text-sm">•••• {card.last4}</span>
-                <span className="text-[10px] text-muted-foreground uppercase font-medium">Expires {card.expiry}</span>
+              <div className="flex items-center gap-2">
+                {card.primary && <Badge variant="outline" className="text-[8px] border-secondary text-secondary">Primary</Badge>}
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => removePaymentMethod(card.id)}
+                  className="h-8 w-8 text-destructive hover:bg-destructive/10 rounded-full"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
               </div>
             </div>
-            {card.primary && <Badge variant="outline" className="text-[8px] border-secondary text-secondary">Primary</Badge>}
-            <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
-              <Trash2 className="w-4 h-4 text-destructive" />
-            </Button>
+          ))
+        ) : (
+          <div className="py-12 text-center text-muted-foreground">
+            <p className="text-sm italic">No payment methods saved.</p>
           </div>
-        ))}
-        <Button variant="outline" className="w-full py-7 rounded-2xl border-dashed border-border text-muted-foreground">
+        )}
+        <Button variant="outline" className="w-full py-7 rounded-2xl border-dashed border-border text-muted-foreground hover:bg-muted mb-12">
           <Plus className="w-4 h-4 mr-2" /> Add New Card
         </Button>
       </div>
@@ -120,7 +139,7 @@ const Profile = () => {
   const renderFavorites = () => (
     <div className="animate-in slide-in-from-right-4 duration-500">
       {renderHeader("Favorite Salons")}
-      <div className="space-y-6">
+      <div className="space-y-6 pb-12">
         {[
           { name: 'Luxe Aura Studio', location: 'Bandra West', rating: 4.9, img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=400' },
           { name: 'Velvet Touch Spa', location: 'Juhu', rating: 4.7, img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=400' }
@@ -150,7 +169,7 @@ const Profile = () => {
   const renderNotifications = () => (
     <div className="animate-in slide-in-from-right-4 duration-500">
       {renderHeader("Notifications")}
-      <div className="space-y-6 p-2">
+      <div className="space-y-6 p-2 pb-12">
         {[
           { title: 'Appointment Reminders', desc: 'Get notified before your session' },
           { title: 'Promotional Offers', desc: 'Exclusive deals and summer promos' },
@@ -158,7 +177,7 @@ const Profile = () => {
           { title: 'Order Updates', desc: 'Updates on your booking status' }
         ].map((item, i) => (
           <div key={i} className="flex items-center justify-between">
-            <div>
+            <div className="pr-4">
               <span className="block font-bold text-sm">{item.title}</span>
               <span className="text-[10px] text-muted-foreground">{item.desc}</span>
             </div>
@@ -177,14 +196,14 @@ const Profile = () => {
     { id: 'settings', icon: Settings, label: 'App Settings', description: 'Preferences and security' },
   ];
 
-  if (activeTab === 'personal') return <div className="p-6 pb-24 max-w-md mx-auto">{renderPersonalInfo()}</div>;
-  if (activeTab === 'payment') return <div className="p-6 pb-24 max-w-md mx-auto">{renderPayment()}</div>;
-  if (activeTab === 'favorites') return <div className="p-6 pb-24 max-w-md mx-auto">{renderFavorites()}</div>;
-  if (activeTab === 'notifications') return <div className="p-6 pb-24 max-w-md mx-auto">{renderNotifications()}</div>;
-  if (activeTab === 'settings') return <div className="p-6 pb-24 max-w-md mx-auto animate-in slide-in-from-right-4 duration-500">{renderHeader("App Settings")}<div className="p-10 text-center"><p className="text-muted-foreground italic">Security and preference settings coming in v2.0</p></div></div>;
+  if (activeTab === 'personal') return <div className="p-6 pb-40 max-w-md mx-auto">{renderPersonalInfo()}</div>;
+  if (activeTab === 'payment') return <div className="p-6 pb-40 max-w-md mx-auto">{renderPayment()}</div>;
+  if (activeTab === 'favorites') return <div className="p-6 pb-40 max-w-md mx-auto">{renderFavorites()}</div>;
+  if (activeTab === 'notifications') return <div className="p-6 pb-40 max-w-md mx-auto">{renderNotifications()}</div>;
+  if (activeTab === 'settings') return <div className="p-6 pb-40 max-w-md mx-auto animate-in slide-in-from-right-4 duration-500">{renderHeader("App Settings")}<div className="p-10 text-center"><p className="text-muted-foreground italic">Security and preference settings coming in v2.0</p></div></div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-12 animate-in fade-in duration-500">
+    <div className="flex flex-col min-h-screen bg-background pb-40 px-6 pt-12 animate-in fade-in duration-500 overflow-y-auto">
       <div className="max-w-md mx-auto w-full">
         <div className="flex flex-col items-center mb-12">
           <div className="relative group">
@@ -198,7 +217,7 @@ const Profile = () => {
           </div>
           <div className="text-center mt-6">
             <h2 className="text-3xl font-serif font-medium tracking-tight">Alex Johnson</h2>
-            <Badge className="mt-2 bg-secondary text-primary font-bold px-3 py-1 rounded-full flex items-center gap-1">
+            <Badge className="mt-2 bg-secondary text-primary font-bold px-3 py-1 rounded-full flex items-center gap-1 mx-auto">
               <Crown className="w-3 h-3" /> Platinum Member
             </Badge>
           </div>
@@ -234,13 +253,16 @@ const Profile = () => {
           ))}
         </div>
 
-        <Button 
-          variant="ghost" 
-          onClick={handleLogout}
-          className="w-full py-7 rounded-2xl text-destructive font-bold flex items-center justify-center gap-2 mt-10 hover:bg-destructive/10"
-        >
-          <LogOut className="w-4 h-4" /> Sign Out
-        </Button>
+        <div className="mt-12">
+          <Button 
+            variant="ghost" 
+            onClick={handleLogout}
+            className="w-full py-8 rounded-2xl text-destructive font-bold flex items-center justify-center gap-2 hover:bg-destructive/10 transition-all border border-destructive/20"
+          >
+            <LogOut className="w-4 h-4" /> Sign Out
+          </Button>
+          <p className="text-center text-[10px] text-muted-foreground mt-4 uppercase tracking-widest font-bold">LuxeSalon v1.0.4</p>
+        </div>
       </div>
     </div>
   );
