@@ -27,7 +27,7 @@ const SERVICES_DATA = {
         price: '₹850', 
         numericPrice: 850,
         duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1634449571010-02c29ba0226c?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=600&auto=format&fit=crop'
       },
       { 
         id: 'hair_2', 
