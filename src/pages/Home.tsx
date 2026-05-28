@@ -8,11 +8,31 @@ import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
 const CATEGORIES = [
-  { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' },
-  { id: 'nails', label: 'Nails', image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?auto=format&fit=crop&w=400&q=80' },
-  { id: 'spa', label: 'Spa', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80' },
-  { id: 'makeup', label: 'Makeup', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'facial', label: 'Facial', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=400&q=80' },
+  { 
+    id: 'hair', 
+    label: 'Hair', 
+    image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=400&q=80' 
+  },
+  { 
+    id: 'nails', 
+    label: 'Nails', 
+    image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&q=80' 
+  },
+  { 
+    id: 'spa', 
+    label: 'Spa', 
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80' 
+  },
+  { 
+    id: 'makeup', 
+    label: 'Makeup', 
+    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80' 
+  },
+  { 
+    id: 'facial', 
+    label: 'Facial', 
+    image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=400&q=80' 
+  },
 ];
 
 const NEARBY_SALONS = [
@@ -65,7 +85,8 @@ const Home = () => {
     showSuccess("No new notifications. You are all set for your next treatment!");
   };
 
-  const heroImage = 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1200&q=80';
+  // High quality luxury glow treatment image for banner
+  const heroImage = 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80';
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
