@@ -4,7 +4,6 @@ import { Search, MapPin, Bell, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { cn } from '@/lib/utils';
 
 const CATEGORIES = [
   { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' },
@@ -163,7 +162,7 @@ const Home = () => {
                     {salon.name}
                   </h3>
                   <div className="flex items-center gap-3 text-muted-foreground text-xs mt-2">
-                    <span className="flex items-center gap-1"><Map la-4 h-4" /> {salon.distance}</span>
+                    <span className="flex items-center gap-1"><MapPin className="w-4 h-4 text-secondary" /> {salon.distance}</span>
                     <span className="opacity-30">•</span>
                     <span className="font-bold text-primary">Starts from {salon.price}</span>
                   </div>
