@@ -167,10 +167,10 @@ const Profile = () => {
               />
             </div>
           </div>
-          <div className="text-center mt-6">
+          <div className="text-center mt-6 flex flex-col items-center justify-center">
             <h2 className="text-3xl font-serif font-medium tracking-tight">Alex Johnson</h2>
-            <Badge className="mt-2 bg-secondary text-primary font-bold px-3 py-1 rounded-full flex items-center gap-1 mx-auto">
-              <Crown className="w-3 h-3" /> Platinum Member
+            <Badge className="mt-2 bg-secondary text-primary font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 w-fit">
+              <Crown className="w-3.5 h-3.5" /> Platinum Member
             </Badge>
           </div>
           <div className="flex gap-4 mt-8 w-full">
