@@ -81,6 +81,12 @@ const SALON_DATA = {
   }
 };
 
+const AVAILABLE_PROMOS = [
+  { code: 'LUXE20', description: '20% Off', percent: 20 },
+  { code: 'SUMMER20', description: '20% Summer Spec', percent: 20 },
+  { code: 'WELCOME10', description: '10% New User', percent: 10 }
+];
+
 const SalonDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -116,36 +122,27 @@ const SalonDetails = () => {
     setSelectedServices(prev => prev.filter(id => id !== serviceId));
   };
 
-  const handleApplyPromo = () => {
-    const code = promoInput.trim().toUpperCase();
-    if (!code) return;
-    if (code === 'LUXE20' || code === 'SUMMER20') {
-      setActiveDiscount({ code, percent: 20 });
-      showSuccess(`Promo code "${code}" applied! 20% discount unlocked.`);
-      setPromoInput('');
-    } else if (code === 'WELCOME10') {
-      setActiveDiscount({ code, percent: 10 });
-      showSuccess(`Promo code "${code}" applied! 10% discount unlocked.`);
-      setPromoInput('');
+  const handleApplyPromoCode = (code: string) => {
+    const cleanCode = code.trim().toUpperCase();
+    const match = AVAILABLE_PROMOS.find(p => p.code === cleanCode);
+    if (match) {
+      setActiveDiscount({ code: match.code, percent: match.percent });
+      showSuccess(`Promo code "${match.code}" applied successfully!`);
     } else {
-      showSuccess("Invalid promo code. Try 'LUXE20'!");
+      showSuccess("Invalid promo code.");
     }
   };
 
+  const handleApplyPromo = () => {
+    if (!promoInput) return;
+    handleApplyPromoCode(promoInput);
+    setPromoInput('');
+  };
+
   const handleApplyBottomCoupon = () => {
-    const code = bottomCouponInput.trim().toUpperCase();
-    if (!code) return;
-    if (code === 'LUXE20' || code === 'SUMMER20') {
-      setActiveDiscount({ code, percent: 20 });
-      showSuccess(`Bottom coupon "${code}" applied! 20% discount unlocked.`);
-      setBottomCouponInput('');
-    } else if (code === 'WELCOME10') {
-      setActiveDiscount({ code, percent: 10 });
-      showSuccess(`Bottom coupon "${code}" applied! 10% discount unlocked.`);
-      setBottomCouponInput('');
-    } else {
-      showSuccess("Invalid bottom coupon code. Try 'LUXE20'!");
-    }
+    if (!bottomCouponInput) return;
+    handleApplyPromoCode(bottomCouponInput);
+    setBottomCouponInput('');
   };
 
   const nextImage = (e: React.MouseEvent) => {
@@ -333,17 +330,37 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Stand‑alone Promo Code Section */}
+      {/* Stand‑alone Promo Code Section with visible clickable codes */}
       <div className="px-4 py-3">
         <div className="p-3 rounded-2xl bg-card border border-border/50 shadow-sm">
           <div className="flex items-center gap-1.5 mb-1.5">
             <Ticket className="w-3.5 h-3.5 text-secondary" />
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Promo Code</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Available Promo Codes</h3>
           </div>
+          
+          {/* List of Clickable Codes outside input */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {AVAILABLE_PROMOS.map((promo) => (
+              <button
+                key={promo.code}
+                onClick={() => {
+                  setPromoInput(promo.code);
+                  handleApplyPromoCode(promo.code);
+                }}
+                className={cn(
+                  "px-2.5 py-1.5 rounded-xl border border-dashed border-secondary/40 bg-secondary/5 text-secondary text-xs font-semibold hover:bg-secondary/15 transition-all flex flex-col items-start gap-0.5"
+                )}
+              >
+                <span className="font-bold tracking-wider">{promo.code}</span>
+                <span className="text-[9px] opacity-70 font-normal">{promo.description}</span>
+              </button>
+            ))}
+          </div>
+
           <div className="flex gap-1.5">
             <input
               type="text"
-              placeholder="Enter code (e.g. LUXE20)"
+              placeholder="Or enter custom code"
               value={promoInput}
               onChange={(e) => setPromoInput(e.target.value)}
               className="flex-1 rounded-xl border border-border/40 bg-card/50 px-3 py-1.5 text-sm focus:ring-secondary outline-none"
@@ -356,6 +373,11 @@ const SalonDetails = () => {
               Apply
             </Button>
           </div>
+          {activeDiscount && (
+            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1">
+              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
+            </p>
+          )}
         </div>
       </div>
 
