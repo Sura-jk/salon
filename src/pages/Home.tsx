@@ -26,7 +26,7 @@ const MASTER_ARTISTS = [
     name: 'Marcus Thorne', 
     shortName: 'Marcus', 
     role: 'Color Expert', 
-    image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?q=80&w=200&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
     active: true 
   },
   { 
@@ -140,18 +140,17 @@ const Home = () => {
   };
 
   const handleCategoryClick = (categoryId: string) => {
-    // Correctly map category to Services page filter
     navigate(`/services?category=${categoryId}`);
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden">
-      {/* Top Header */}
-      <header className="px-6 pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
+      {/* Sticky Top Header */}
+      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl px-6 pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700 border-b border-border/10">
         <div className="flex justify-between items-start">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Good Morning, Alex</span>
-            <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">Your Beauty <br/>Curated.</h1>
+            <h1 className="text-2xl font-serif font-medium text-foreground tracking-tight whitespace-nowrap">Your Beauty Curated.</h1>
           </div>
           <Button 
             variant="ghost" 
@@ -170,7 +169,7 @@ const Home = () => {
       </header>
 
       {/* Search & Filter Bar */}
-      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+      <section className="px-6 py-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
         <div className="flex gap-3">
           <div className="relative flex-1 group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
@@ -181,7 +180,7 @@ const Home = () => {
           </div>
           <Button 
             variant="outline" 
-            className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all"
+            className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all shadow-sm"
             onClick={() => navigate('/services')}
           >
             <SlidersHorizontal className="w-5 h-5 text-secondary" />
@@ -273,7 +272,7 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Expertise Categories Selection Slider with Premium Custom Navigation Controls */}
+      {/* Expertise Categories Selection Slider */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
         <div className="flex justify-between items-end mb-6">
           <div>
@@ -319,7 +318,6 @@ const Home = () => {
               ))}
             </CarouselContent>
 
-            {/* Premium Absolute Navigation Arrows floating on Left and Right sides */}
             <button 
               onClick={() => carouselApi?.scrollPrev()}
               className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
