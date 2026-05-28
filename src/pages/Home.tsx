@@ -11,27 +11,27 @@ const CATEGORIES = [
   { 
     id: 'hair', 
     label: 'Hair', 
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
     label: 'Nails', 
-    image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'spa', 
     label: 'Spa', 
-    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'makeup', 
     label: 'Makeup', 
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'facial', 
     label: 'Facial', 
-    image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=400&auto=format&fit=crop' 
   },
 ];
 
