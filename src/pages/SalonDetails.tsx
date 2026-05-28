@@ -14,9 +14,9 @@ const SALON_DATA = {
     address: '123 Luxury Lane, Bandra West, Mumbai',
     timing: '09:00 AM - 08:00 PM',
     images: [
-      'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1562322140-253b78555e13?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499, category: 'Hair' },
@@ -38,9 +38,9 @@ const SALON_DATA = {
     address: '456 Serenity Blvd, Juhu, Mumbai',
     timing: '08:00 AM - 09:00 PM',
     images: [
-      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80', // Beautiful modern Spa setting
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80', // Zen massage therapist
-      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=1000&q=80', // Aromatherapy stones
+      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
@@ -60,9 +60,9 @@ const SALON_DATA = {
     address: '789 Glittering Row, Colaba, Mumbai',
     timing: '10:00 AM - 08:30 PM',
     images: [
-      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80', // Glow/Salon vanity
-      'https://images.unsplash.com/photo-1604654771876-22273993930a?auto=format&fit=crop&w=1000&q=80', // Premium nails
-      'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1000&q=80', // High-end beauty tools
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails' },
