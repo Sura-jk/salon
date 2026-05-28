@@ -294,104 +294,106 @@ const Services = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-32">
-      {/* Top Navigation Bar with Search */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-6 py-4">
-        <div className="max-w-md mx-auto flex items-center gap-3">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => navigate('/')}
-            className="h-10 w-10 rounded-full hover:bg-muted"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-secondary transition-colors" />
-            <Input 
-              placeholder="Search treatments..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-11 rounded-2xl border-border/40 bg-card/50 focus:ring-secondary text-sm font-medium" 
-            />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="h-11 w-11 rounded-2xl border-border/40 bg-card/50 p-0 flex items-center justify-center text-secondary shadow-sm"
-              >
-                <SlidersHorizontal className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 rounded-2xl p-2 border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl" align="end">
-              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground px-3 py-2">Sort By Price</DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-border/40" />
-              <DropdownMenuItem onClick={() => handleSort('asc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
-                <ArrowUpDown className="w-3.5 h-3.5" /> Low to High
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleSort('desc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
-                <ArrowUpDown className="w-3.5 h-3.5" /> High to Low
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-border/40" />
-              <DropdownMenuItem onClick={() => { setSortOrder(null); showSuccess("Filters cleared"); }} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer text-destructive focus:bg-destructive/10">
-                Reset Filters
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-
-      <div className="max-w-md mx-auto w-full px-6 pt-8">
-        <header className="mb-6">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Luxury Selection</span>
-          <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">The Treatment Gallery</h1>
-        </header>
-
-        {/* Custom Premium Horizontal Pill Navigation - Transformed into scrollable container with thin-scrollbar */}
-        <div className="flex gap-2.5 overflow-x-auto pb-4 pt-1 thin-scrollbar scroll-smooth -mx-6 px-6 mb-8">
-          {Object.entries(SERVICES_DATA).map(([key, value]) => {
-            const isActive = activeTab === key;
-            const Icon = value.icon;
-            return (
-              <button
-                key={key}
-                onClick={() => handleTabChange(key)}
-                className={cn(
-                  "flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 border whitespace-nowrap active:scale-95 flex-shrink-0",
-                  isActive 
-                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10" 
-                    : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
-                )}
-              >
-                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary" : "text-muted-foreground")} />
-                <span>{value.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Services List Grid */}
-        <div className="grid grid-cols-1 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {filteredItems.length > 0 ? (
-            filteredItems.map((service) => (
-              <ServiceCard 
-                key={service.id}
-                name={service.name}
-                description={service.description}
-                price={service.price}
-                duration={service.duration}
-                category={currentCategoryData.label}
-                image={service.image}
-                onClick={() => setSelectedDetailService(service)}
+    <div className="flex flex-col min-h-screen bg-background pb-32 items-center">
+      <div className="w-full max-w-lg md:max-w-2xl px-4 md:px-0">
+        {/* Top Navigation Bar with Search */}
+        <div className="sticky top-0 z-50 bg-background/85 backdrop-blur-xl py-4 border-b border-border/10">
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate('/')}
+              className="h-10 w-10 rounded-full hover:bg-muted"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <div className="relative flex-1 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+              <Input 
+                placeholder="Search treatments..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-11 rounded-2xl border-border/40 bg-card/50 focus:ring-secondary text-sm font-medium" 
               />
-            ))
-          ) : (
-            <div className="py-20 text-center">
-              <Sparkles className="w-10 h-10 text-muted-foreground/20 mx-auto mb-4" />
-              <p className="text-muted-foreground font-serif italic text-sm">No treatments match your search criteria.</p>
             </div>
-          )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className="h-11 w-11 rounded-2xl border-border/40 bg-card/50 p-0 flex items-center justify-center text-secondary shadow-sm"
+                >
+                  <SlidersHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48 rounded-2xl p-2 border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl" align="end">
+                <DropdownMenuLabel className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground px-3 py-2">Sort By Price</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-border/40" />
+                <DropdownMenuItem onClick={() => handleSort('asc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
+                  <ArrowUpDown className="w-3.5 h-3.5" /> Low to High
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSort('desc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
+                  <ArrowUpDown className="w-3.5 h-3.5" /> High to Low
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-border/40" />
+                <DropdownMenuItem onClick={() => { setSortOrder(null); showSuccess("Filters cleared"); }} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer text-destructive focus:bg-destructive/10">
+                  Reset Filters
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
+        <div className="pt-8">
+          <header className="mb-6">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Luxury Selection</span>
+            <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">The Treatment Gallery</h1>
+          </header>
+
+          {/* Custom Premium Horizontal Pill Navigation */}
+          <div className="flex gap-2.5 overflow-x-auto pb-4 pt-1 thin-scrollbar scroll-smooth mb-8">
+            {Object.entries(SERVICES_DATA).map(([key, value]) => {
+              const isActive = activeTab === key;
+              const Icon = value.icon;
+              return (
+                <button
+                  key={key}
+                  onClick={() => handleTabChange(key)}
+                  className={cn(
+                    "flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 border whitespace-nowrap active:scale-95 flex-shrink-0",
+                    isActive 
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10" 
+                      : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
+                  )}
+                >
+                  <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary" : "text-muted-foreground")} />
+                  <span>{value.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Services List Grid */}
+          <div className="grid grid-cols-1 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {filteredItems.length > 0 ? (
+              filteredItems.map((service) => (
+                <ServiceCard 
+                  key={service.id}
+                  name={service.name}
+                  description={service.description}
+                  price={service.price}
+                  duration={service.duration}
+                  category={currentCategoryData.label}
+                  image={service.image}
+                  onClick={() => setSelectedDetailService(service)}
+                />
+              ))
+            ) : (
+              <div className="py-20 text-center">
+                <Sparkles className="w-10 h-10 text-muted-foreground/20 mx-auto mb-4" />
+                <p className="text-muted-foreground font-serif italic text-sm">No treatments match your search criteria.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

@@ -258,288 +258,287 @@ const SalonDetails = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {/* Top Navigation */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-4 py-2.5">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBack}
-            className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0 text-foreground"
+    <div className="flex flex-col min-h-screen bg-background items-center">
+      <div className="w-full max-w-lg md:max-w-2xl px-4 md:px-0 pb-36">
+        {/* Top Navigation */}
+        <div className="sticky top-0 z-50 bg-background/85 backdrop-blur-xl border-b border-border/10 py-2.5">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBack}
+              className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0 text-foreground"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            <h2 className="text-base font-serif font-medium">{salon.name}</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleFavorite}
+              className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0"
+            >
+              <Heart className={cn("w-4 h-4 transition-all duration-300", isFavorited ? "fill-destructive text-destructive scale-110" : "")} />
+            </Button>
+          </div>
+        </div>
+
+        {/* Hero Image Carousel */}
+        <div className="relative h-72 w-full overflow-hidden rounded-[2rem] mt-3 shadow-md">
+          <ImageWithFallback
+            src={salon.images[activeImageIdx]}
+            alt={salon.name}
+            className="h-full w-full object-cover transition-transform duration-1000"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <button
+            onClick={prevImage}
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <h2 className="text-base font-serif font-medium">{salon.name}</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleFavorite}
-            className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0"
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
           >
-            <Heart className={cn("w-4 h-4 transition-all duration-300", isFavorited ? "fill-destructive text-destructive scale-110" : "")} />
-          </Button>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {salon.images.map((_, idx) => (
+              <div
+                key={idx}
+                className={cn(
+                  'w-1.5 h-1.5 rounded-full transition-all',
+                  idx === activeImageIdx ? 'bg-secondary w-4' : 'bg-white/40'
+                )}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Hero Image Carousel */}
-      <div className="relative h-72 w-full overflow-hidden">
-        <ImageWithFallback
-          src={salon.images[activeImageIdx]}
-          alt={salon.name}
-          className="h-full w-full object-cover transition-transform duration-1000"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <button
-          onClick={prevImage}
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          onClick={nextImage}
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </button>
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {salon.images.map((_, idx) => (
-            <div
-              key={idx}
-              className={cn(
-                'w-1.5 h-1.5 rounded-full transition-all',
-                idx === activeImageIdx ? 'bg-secondary w-4' : 'bg-white/40'
-              )}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Salon Info */}
-      <div className="px-4 py-4 space-y-2.5">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-serif font-medium text-foreground">{salon.name}</h1>
-            <div className="flex items-center gap-1.5 mt-1">
-              <div className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
-                <span className="font-bold text-foreground text-sm">{salon.rating}</span>
-                <span className="text-muted-foreground text-xs">({salon.reviews} reviews)</span>
+        {/* Salon Info */}
+        <div className="py-4 space-y-2.5">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-serif font-medium text-foreground">{salon.name}</h1>
+              <div className="flex items-center gap-1.5 mt-1">
+                <div className="flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
+                  <span className="font-bold text-foreground text-sm">{salon.rating}</span>
+                  <span className="text-muted-foreground text-xs">({salon.reviews} reviews)</span>
+                </div>
               </div>
             </div>
+            <Badge className="bg-secondary/20 text-secondary font-bold px-2.5 py-0.5 rounded-full text-[10px]">
+              <Sparkles className="w-2.5 h-2.5 mr-1" />
+              Premium
+            </Badge>
           </div>
-          <Badge className="bg-secondary/20 text-secondary font-bold px-2.5 py-0.5 rounded-full text-[10px]">
-            <Sparkles className="w-2.5 h-2.5 mr-1" />
-            Premium
-          </Badge>
-        </div>
 
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2 text-xs">
-            <MapPin className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
-            <span className="text-muted-foreground">{salon.address}</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Clock className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
-            <span className="text-muted-foreground">{salon.timing}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Services Section */}
-      <div className="px-4 py-3">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="text-base font-serif font-medium">Services</h3>
-          {/* Scrollable Categories List - Enhanced selected state with secondary highlights */}
-          <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
-            {categories.map(cat => {
-              const isSelected = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    'px-3.5 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap border',
-                    isSelected
-                      ? 'bg-secondary text-primary border-secondary shadow-md scale-105 font-black'
-                      : 'bg-card border-border text-muted-foreground hover:border-secondary/40'
-                  )}
-                >
-                  {cat}
-                </button>
-              );
-            })}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 text-xs">
+              <MapPin className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+              <span className="text-muted-foreground">{salon.address}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <Clock className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+              <span className="text-muted-foreground">{salon.timing}</span>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-2">
-          {filteredServices.map((service) => {
-            const isSelected = selectedServices.includes(service.id);
-            return (
-              <div
-                key={service.id}
-                className={cn(
-                  'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer relative group',
-                  isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
-                )}
-                onClick={() => toggleService(service.id, service.name)}
-              >
-                <div className="flex-1 min-w-0 pr-6">
-                  <div className="flex items-center gap-1.5">
-                    <h4 className="font-medium text-foreground text-sm leading-tight">{service.name}</h4>
-                    {/* View Details Info button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedDetailService(service);
-                      }}
-                      className="p-1 rounded-full text-muted-foreground hover:text-secondary hover:bg-muted/30 transition-colors"
-                      title="View Details"
-                    >
-                      <Info className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground">{service.duration}</p>
-                </div>
-                <div className="flex items-center gap-2.5 flex-shrink-0">
-                  <span className="font-bold text-primary text-sm">₹{service.price}</span>
-                  <div
+        {/* Services Section */}
+        <div className="py-3">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-base font-serif font-medium">Services</h3>
+            {/* Scrollable Categories List */}
+            <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+              {categories.map(cat => {
+                const isSelected = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
                     className={cn(
-                      'w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all',
-                      isSelected ? 'border-secondary bg-secondary' : 'border-border'
+                      'px-3.5 py-1.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap border',
+                      isSelected
+                        ? 'bg-secondary text-primary border-secondary shadow-md scale-105 font-black'
+                        : 'bg-card border-border text-muted-foreground hover:border-secondary/40'
                     )}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {filteredServices.map((service) => {
+              const isSelected = selectedServices.includes(service.id);
+              return (
+                <div
+                  key={service.id}
+                  className={cn(
+                    'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer relative group',
+                    isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
+                  )}
+                  onClick={() => toggleService(service.id, service.name)}
+                >
+                  <div className="flex-1 min-w-0 pr-6">
+                    <div className="flex items-center gap-1.5">
+                      <h4 className="font-medium text-foreground text-sm leading-tight">{service.name}</h4>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedDetailService(service);
+                        }}
+                        className="p-1 rounded-full text-muted-foreground hover:text-secondary hover:bg-muted/30 transition-colors"
+                        title="View Details"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">{service.duration}</p>
+                  </div>
+                  <div className="flex items-center gap-2.5 flex-shrink-0">
+                    <span className="font-bold text-primary text-sm">₹{service.price}</span>
+                    <div
+                      className={cn(
+                        'w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all',
+                        isSelected ? 'border-secondary bg-secondary' : 'border-border'
+                      )}
+                    >
+                      {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Table of selected services with horizontal arrow navigation */}
-        <ServiceTable services={selectedServiceDetails} onRemove={removeService} />
-      </div>
-
-      {/* Staff Section */}
-      <div className="px-4 py-3">
-        <h3 className="text-base font-serif font-medium mb-3">Our Specialists</h3>
-        <div className="space-y-2">
-          {salon.staff.map((staff) => (
-            <div key={staff.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-card border border-border">
-              <img src={staff.image} alt={staff.name} className="w-12 h-12 rounded-full object-cover" />
-              <div className="flex-1 min-w-0">
-                <span className="font-medium block text-foreground text-sm">{staff.name}</span>
-                <span className="text-[11px] text-muted-foreground">{staff.role}</span>
-                <span className="text-[11px] text-secondary font-bold">{staff.exp} experience</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Promo Code Section with highlight active code state */}
-      <div className="px-4 py-3">
-        <div className="p-3 rounded-2xl bg-card border border-border/50 shadow-sm">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <Ticket className="w-3.5 h-3.5 text-secondary" />
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Available Promo Codes</h3>
-          </div>
-          
-          {/* List of Clickable Codes outside input with custom highlights */}
-          <div className="flex flex-wrap gap-2 mb-3">
-            {AVAILABLE_PROMOS.map((promo) => {
-              const isApplied = activeDiscount?.code === promo.code;
-              return (
-                <button
-                  key={promo.code}
-                  onClick={() => {
-                    setPromoInput(promo.code);
-                    handleApplyPromoCode(promo.code);
-                  }}
-                  className={cn(
-                    "px-3 py-2 rounded-xl border text-xs font-bold transition-all flex flex-col items-start gap-0.5",
-                    isApplied
-                      ? "border-secondary bg-secondary text-primary-foreground shadow-sm scale-105"
-                      : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
-                  )}
-                >
-                  <span className="tracking-wider flex items-center gap-1">
-                    {promo.code} {isApplied && <Check className="w-3 h-3 text-primary-foreground" />}
-                  </span>
-                  <span className={cn(
-                    "text-[9px] font-normal",
-                    isApplied ? "text-primary-foreground/80" : "opacity-70"
-                  )}>
-                    {promo.description}
-                  </span>
-                </button>
               );
             })}
           </div>
 
-          <div className="flex gap-1.5">
-            <input
-              type="text"
-              placeholder="Or enter custom code"
-              value={promoInput}
-              onChange={(e) => setPromoInput(e.target.value)}
-              className="flex-1 rounded-xl border border-border/40 bg-card/50 px-3 py-1.5 text-sm focus:ring-secondary outline-none"
-            />
-            <Button
-              variant="outline"
-              onClick={handleApplyPromo}
-              className="rounded-xl bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90 h-auto"
-            >
-              Apply
-            </Button>
-          </div>
-          {activeDiscount && (
-            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1 animate-pulse">
-              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; active! ({activeDiscount.percent}% discount)
-            </p>
-          )}
+          <ServiceTable services={selectedServiceDetails} onRemove={removeService} />
         </div>
-      </div>
 
-      {/* Floating Checkout */}
-      <div className={cn(
-        'fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/90 to-transparent z-50 transition-all duration-500',
-        selectedServices.length > 0 ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'
-      )}>
-        <div className="max-w-md mx-auto flex items-center justify-between p-3 rounded-2xl bg-primary text-primary-foreground shadow-xl border border-secondary/20">
-          <div className="flex flex-col">
-            <span className="text-[9px] uppercase font-bold text-secondary tracking-widest mb-0.5">{selectedServices.length} Selected</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-bold">₹{finalTotalPrice}</span>
-              {activeDiscount && <span className="text-xs font-semibold line-through opacity-40">₹{baseTotalPrice}</span>}
-            </div>
+        {/* Staff Section */}
+        <div className="py-3">
+          <h3 className="text-base font-serif font-medium mb-3">Our Specialists</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {salon.staff.map((staff) => (
+              <div key={staff.id} className="flex items-center gap-3 p-2.5 rounded-xl bg-card border border-border">
+                <img src={staff.image} alt={staff.name} className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium block text-foreground text-sm">{staff.name}</span>
+                  <span className="text-[11px] text-muted-foreground">{staff.role}</span>
+                  <span className="text-[11px] text-secondary font-bold">{staff.exp} experience</span>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          {/* Bottom promo‑code input - compact */}
-          <div className="ml-2 flex flex-col gap-0.5">
-            <input
-              type="text"
-              placeholder="Code"
-              value={bottomCouponInput}
-              onChange={(e) => setBottomCouponInput(e.target.value)}
-              className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none text-foreground"
-            />
+        {/* Promo Code Section */}
+        <div className="py-3">
+          <div className="p-3 rounded-2xl bg-card border border-border/50 shadow-sm">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Ticket className="w-3.5 h-3.5 text-secondary" />
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Available Promo Codes</h3>
+            </div>
+            
+            <div className="flex flex-wrap gap-2 mb-3">
+              {AVAILABLE_PROMOS.map((promo) => {
+                const isApplied = activeDiscount?.code === promo.code;
+                return (
+                  <button
+                    key={promo.code}
+                    onClick={() => {
+                      setPromoInput(promo.code);
+                      handleApplyPromoCode(promo.code);
+                    }}
+                    className={cn(
+                      "px-3 py-2 rounded-xl border text-xs font-bold transition-all flex flex-col items-start gap-0.5",
+                      isApplied
+                        ? "border-secondary bg-secondary text-primary-foreground shadow-sm scale-105"
+                        : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
+                    )}
+                  >
+                    <span className="tracking-wider flex items-center gap-1">
+                      {promo.code} {isApplied && <Check className="w-3 h-3 text-primary-foreground" />}
+                    </span>
+                    <span className={cn(
+                      "text-[9px] font-normal",
+                      isApplied ? "text-primary-foreground/80" : "opacity-70"
+                    )}>
+                      {promo.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex gap-1.5">
+              <input
+                type="text"
+                placeholder="Or enter custom code"
+                value={promoInput}
+                onChange={(e) => setPromoInput(e.target.value)}
+                className="flex-1 rounded-xl border border-border/40 bg-card/50 px-3 py-1.5 text-sm focus:ring-secondary outline-none"
+              />
+              <Button
+                variant="outline"
+                onClick={handleApplyPromo}
+                className="rounded-xl bg-primary text-primary-foreground px-3 py-1.5 text-sm hover:bg-primary/90 h-auto"
+              >
+                Apply
+              </Button>
+            </div>
+            {activeDiscount && (
+              <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1 animate-pulse">
+                <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; active! ({activeDiscount.percent}% discount)
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Floating Checkout */}
+        <div className={cn(
+          'fixed bottom-6 left-6 right-6 z-50 transition-all duration-500 max-w-lg md:max-w-2xl mx-auto',
+          selectedServices.length > 0 ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'
+        )}>
+          <div className="flex items-center justify-between p-3 rounded-2xl bg-primary text-primary-foreground shadow-xl border border-secondary/20">
+            <div className="flex flex-col">
+              <span className="text-[9px] uppercase font-bold text-secondary tracking-widest mb-0.5">{selectedServices.length} Selected</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold">₹{finalTotalPrice}</span>
+                {activeDiscount && <span className="text-xs font-semibold line-through opacity-40">₹{baseTotalPrice}</span>}
+              </div>
+            </div>
+
+            {/* Bottom promo‑code input */}
+            <div className="ml-2 flex items-center gap-1.5">
+              <input
+                type="text"
+                placeholder="Code"
+                value={bottomCouponInput}
+                onChange={(e) => setBottomCouponInput(e.target.value)}
+                className="w-16 rounded-lg border border-border/40 bg-card/50 px-2 py-1 text-[10px] focus:ring-secondary outline-none text-foreground"
+              />
+              <Button
+                variant="outline"
+                onClick={handleApplyBottomCoupon}
+                className="rounded-lg bg-primary text-primary-foreground text-[10px] hover:bg-primary/90 h-auto px-1 py-0.5"
+              >
+                Apply
+              </Button>
+            </div>
+
             <Button
-              variant="outline"
-              onClick={handleApplyBottomCoupon}
-              className="w-16 rounded-lg bg-primary text-primary-foreground text-[10px] hover:bg-primary/90 h-auto px-1 py-0.5"
+              onClick={() => navigate('/book')}
+              className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2"
             >
-              Apply
+              Book
             </Button>
           </div>
-
-          <Button
-            onClick={() => navigate('/book')}
-            className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2"
-          >
-            Book
-          </Button>
         </div>
       </div>
 

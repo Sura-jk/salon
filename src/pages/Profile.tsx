@@ -201,14 +201,14 @@ const Profile = () => {
     { id: 'settings', icon: Settings, label: 'App Settings', description: 'Preferences and security' },
   ];
 
-  if (activeTab === 'personal') return <div className="p-6 pb-40 max-w-md mx-auto">{renderPersonalInfo()}</div>;
-  if (activeTab === 'favorites') return <div className="p-6 pb-40 max-w-md mx-auto">{renderFavorites()}</div>;
-  if (activeTab === 'notifications') return <div className="p-6 pb-40 max-w-md mx-auto">{renderNotifications()}</div>;
-  if (activeTab === 'settings') return <div className="p-6 pb-40 max-w-md mx-auto animate-in slide-in-from-right-4 duration-500">{renderHeader("App Settings")}<div className="p-10 text-center"><p className="text-muted-foreground italic">Security and preference settings coming in v2.0</p></div></div>;
+  if (activeTab === 'personal') return <div className="p-6 pb-40 max-w-lg md:max-w-2xl mx-auto">{renderPersonalInfo()}</div>;
+  if (activeTab === 'favorites') return <div className="p-6 pb-40 max-w-lg md:max-w-2xl mx-auto">{renderFavorites()}</div>;
+  if (activeTab === 'notifications') return <div className="p-6 pb-40 max-w-lg md:max-w-2xl mx-auto">{renderNotifications()}</div>;
+  if (activeTab === 'settings') return <div className="p-6 pb-40 max-w-lg md:max-w-2xl mx-auto animate-in slide-in-from-right-4 duration-500">{renderHeader("App Settings")}<div className="p-10 text-center"><p className="text-muted-foreground italic">Security and preference settings coming in v2.0</p></div></div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-40 px-6 pt-12 animate-in fade-in duration-500 overflow-y-auto">
-      <div className="max-w-md mx-auto w-full">
+    <div className="flex flex-col min-h-screen bg-background pb-40 px-6 pt-12 animate-in fade-in duration-500 overflow-y-auto items-center">
+      <div className="w-full max-w-lg md:max-w-2xl">
         <div className="flex flex-col items-center mb-12">
           <div className="relative group">
             <div className="w-28 h-28 rounded-full bg-secondary/20 p-1.5 border-2 border-secondary shadow-xl group-hover:scale-105 transition-transform duration-500">

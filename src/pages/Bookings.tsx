@@ -53,8 +53,8 @@ const Bookings = () => {
   const filteredBookings = bookings.filter((booking) => booking.status === activeTab);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-44 px-6 pt-8 animate-in fade-in duration-300">
-      <div className="max-w-md mx-auto w-full">
+    <div className="flex flex-col min-h-screen bg-background pb-44 px-6 pt-8 animate-in fade-in duration-300 items-center">
+      <div className="w-full max-w-lg md:max-w-2xl">
         <div className="mb-8">
           <h1 className="text-4xl font-serif font-medium text-foreground mb-2">My Bookings</h1>
           <p className="text-muted-foreground text-sm">Your history of luxury experiences</p>
