@@ -112,8 +112,10 @@ const Bookings = () => {
                       </div>
                     </div>
                     <Badge className={cn(
-                      "text-[10px] uppercase font-bold px-2.5 py-1 rounded-full",
-                      booking.status === 'upcoming' ? "bg-secondary text-primary" : "bg-muted text-muted-foreground"
+                      "text-[10px] uppercase font-bold px-2.5 py-1 rounded-full pointer-events-none select-none",
+                      booking.status === 'upcoming' 
+                        ? "bg-secondary text-primary hover:bg-secondary hover:text-primary" 
+                        : "bg-muted text-muted-foreground hover:bg-muted hover:text-muted-foreground"
                     )}>
                       {booking.status}
                     </Badge>
