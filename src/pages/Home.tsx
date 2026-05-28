@@ -81,8 +81,8 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-32">
-      {/* Top Header - Personalized */}
+    <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden">
+      {/* Top Header */}
       <header className="px-6 pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
         <div className="flex justify-between items-start">
           <div>
@@ -121,14 +121,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Hero Banner - Editorial Style */}
+      {/* Hero Banner */}
       <section className="px-6 py-6 animate-in fade-in zoom-in-95 duration-1000 delay-200">
         <Carousel className="w-full">
           <CarouselContent>
             <CarouselItem>
               <div 
                 onClick={handleClaimOffer}
-                className="relative h-72 rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-2xl luxury-shadow"
+                className="relative h-72 rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-2xl luxury-shadow border border-transparent"
               >
                 <ImageWithFallback 
                   src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80"
@@ -157,7 +157,7 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Categories - High Fashion Spread */}
+      {/* Categories */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
         <div className="flex justify-between items-end mb-8">
           <div>
@@ -195,8 +195,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Nearby Salons - Refined Cards */}
-      <section className="px-6 py-6 flex-1 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
+      {/* Nearby Salons */}
+      <section className="px-6 py-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
         <div className="flex justify-between items-end mb-10">
           <div>
             <h2 className="text-2xl font-serif font-medium text-foreground">Nearby Studios</h2>
