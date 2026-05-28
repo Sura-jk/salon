@@ -66,19 +66,19 @@ const CATEGORIES = [
   { 
     id: 'spa', 
     label: 'Spa & Wellness', 
-    description: 'Hot Stone Rituals',
+    description: 'Stone Rituals',
     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=200&auto=format&fit=crop' 
   },
   { 
     id: 'makeup', 
     label: 'Elite Makeup', 
-    description: 'Designer Cosmetics',
+    description: 'Designer Look',
     image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=format&fit=crop' 
   },
   { 
     id: 'facial', 
     label: 'Glow Facials', 
-    description: 'Organic skin therapy',
+    description: 'Skin Therapy',
     image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=200&auto=format&fit=crop' 
   },
 ];
@@ -258,7 +258,7 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Expertise Categories Selection (Circle image next to text) */}
+      {/* Expertise Categories Selection Slider */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
         <div className="flex justify-between items-end mb-6">
           <div>
@@ -274,32 +274,35 @@ const Home = () => {
           </Button>
         </div>
         
-        {/* Horizontal list of circular category-pill options */}
-        <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
-          {CATEGORIES.map((cat) => (
-            <div 
-              key={cat.id}
-              onClick={() => navigate('/services')}
-              className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-5 py-2 rounded-full cursor-pointer flex-shrink-0 transition-all active:scale-[0.96] shadow-sm hover:shadow-md group"
-            >
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
-                <img 
-                  src={cat.image} 
-                  alt={cat.label} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight whitespace-nowrap">
-                  {cat.label}
-                </span>
-                <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block">
-                  {cat.description}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Single Slider (Carousel) for circular category tags */}
+        <Carousel className="w-full">
+          <CarouselContent className="-ml-2">
+            {CATEGORIES.map((cat) => (
+              <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
+                <div 
+                  onClick={() => navigate('/services')}
+                  className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
+                >
+                  <div className="w-11 h-11 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
+                    <ImageWithFallback 
+                      src={cat.image} 
+                      alt={cat.label} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight truncate">
+                      {cat.label}
+                    </span>
+                    <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate">
+                      {cat.description}
+                    </span>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </section>
 
       {/* Nearby Salons */}
