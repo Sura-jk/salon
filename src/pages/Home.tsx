@@ -163,12 +163,16 @@ const Home = () => {
                     {salon.name}
                   </h3>
                   <div className="flex items-center gap-3 text-muted-foreground text-xs mt-2">
-                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {salon.distance}</span>
+                    <span className="flex items-center gap-1"><Map la-4 h-4" /> {salon.distance}</span>
                     <span className="opacity-30">•</span>
                     <span className="font-bold text-primary">Starts from {salon.price}</span>
                   </div>
                 </div>
                 <Button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/salon/${salon.id}`);
+                  }}
                   className="rounded-2xl bg-primary text-primary-foreground px-5 py-3 text-xs font-bold hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20"
                 >
                   Book Now
@@ -178,7 +182,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </div
+    </div>
   );
 };
 
