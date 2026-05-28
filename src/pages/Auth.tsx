@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Apple, Globe } from 'lucide-react';
+import { Phone, Apple, Globe, Sparkles, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -21,14 +21,21 @@ const Auth = () => {
   return (
     <div className="min-h-screen w-full bg-background flex flex-col justify-center items-center px-6 py-12">
       <div className="w-full max-w-md flex flex-col">
+        {/* Brand Icon */}
+        <div className="flex justify-center mb-8 animate-in zoom-in duration-500">
+          <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center shadow-xl shadow-secondary/20">
+            <Sparkles className="w-8 h-8 text-primary" />
+          </div>
+        </div>
+
         <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h1 className="text-3xl sm:text-4xl font-serif font-medium text-foreground mb-3">
-            {step === 'login' ? 'Welcome Back' : 'Verify Phone'}
+            {step === 'login' ? 'Welcome Back' : 'Verify Identity'}
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground max-w-[280px] mx-auto">
             {step === 'login' 
-              ? 'Enter your details to access the luxury experience' 
-              : 'Enter the 4-digit code sent to your phone'}
+              ? 'Enter your mobile number to access your luxury profile' 
+              : 'We have sent a secure 4-digit code to your mobile device'}
           </p>
         </div>
 
@@ -40,7 +47,7 @@ const Auth = () => {
                   <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input 
                     type="tel"
-                    placeholder="Phone Number" 
+                    placeholder="Mobile Number" 
                     className="pl-12 py-7 rounded-2xl border-border focus:ring-secondary shadow-sm text-sm" 
                     required 
                   />
@@ -58,7 +65,7 @@ const Auth = () => {
                   <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
-                  <span className="bg-background px-4">Or continue with</span>
+                  <span className="bg-background px-4">Or sign in with</span>
                 </div>
               </div>
 
@@ -67,14 +74,14 @@ const Auth = () => {
                   variant="outline" 
                   className="py-6 rounded-2xl border-border hover:bg-muted flex items-center justify-center gap-2 font-medium text-xs sm:text-sm"
                 >
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                  <Globe className="w-4 h-4 text-blue-500" />
                   Google
                 </Button>
                 <Button 
                   variant="outline" 
                   className="py-6 rounded-2xl border-border hover:bg-muted flex items-center justify-center gap-2 font-medium text-xs sm:text-sm"
                 >
-                  <Apple className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Apple className="w-4 h-4" />
                   Apple
                 </Button>
               </div>
@@ -99,9 +106,19 @@ const Auth = () => {
                   Verify & Enter
                 </Button>
               </form>
-              <p className="text-center text-xs sm:text-sm text-muted-foreground">
-                Didn't receive code? <span className="text-secondary font-bold cursor-pointer hover:underline">Resend</span>
-              </p>
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-center text-xs text-muted-foreground">
+                  Didn't receive code? <span className="text-secondary font-bold cursor-pointer hover:underline">Resend OTP</span>
+                </p>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setStep('login')}
+                  className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-primary"
+                >
+                  Change Number
+                </Button>
+              </div>
             </div>
           )}
         </div>
