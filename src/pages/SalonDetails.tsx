@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter } from 'lucide-react';
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter, Ticket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
@@ -85,6 +85,10 @@ const SalonDetails = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
+  // Coupon promo code states
+  const [couponInput, setCouponInput] = useState('');
+  const [activeDiscount, setActiveDiscount] = useState<{ code: string; percent: number } | null>(null);
+
   // Always scroll to the top of the viewport when opening any Salon Details page
   useEffect(() => {
     window.scrollTo({
@@ -107,6 +111,30 @@ const SalonDetails = () => {
     });
   };
 
+  const handleApplyCoupon = () => {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+
+    if (code === 'LUXE20' || code === 'SUMMER20') {
+      setActiveDiscount({ code, percent: 20 });
+      showSuccess(`Coupon "${code}" applied! 20% discount unlocked.`);
+      setCouponInput('');
+    } else if (code === 'WELCOME10') {
+      setActiveDiscount({ code, percent: 10 });
+      showSuccess(`Coupon "${code}" applied! 10% discount unlocked.`);
+      setCouponInput('');
+    } else {
+      showSuccess("Invalid coupon code. Try entering 'LUXE20' or 'WELCOME10'!");
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    if (activeDiscount) {
+      showSuccess(`Coupon "${activeDiscount.code}" removed.`);
+      setActiveDiscount(null);
+    }
+  };
+
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     setActiveImageIdx((prev) => (prev + 1) % salon.images.length);
@@ -121,10 +149,13 @@ const SalonDetails = () => {
     ? salon.services 
     : salon.services.filter(s => s.category === activeCategory);
 
-  const totalPrice = selectedServices.reduce((acc, id) => {
+  const baseTotalPrice = selectedServices.reduce((acc, id) => {
     const service = salon.services.find(s => s.id === id);
     return acc + (service?.price || 0);
   }, 0);
+
+  const discountAmount = activeDiscount ? Math.round((baseTotalPrice * activeDiscount.percent) / 100) : 0;
+  const finalTotalPrice = baseTotalPrice - discountAmount;
 
   const totalDuration = selectedServices.reduce((acc, id) => {
     const service = salon.services.find(s => s.id === id);
@@ -307,6 +338,53 @@ const SalonDetails = () => {
           </div>
         </div>
 
+        {/* Luxury Coupon Form Card */}
+        <div className="mb-10 p-5 rounded-3xl bg-card border border-border/60 shadow-sm">
+          <div className="flex items-center gap-2.5 mb-4">
+            <Ticket className="w-5 h-5 text-secondary" />
+            <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">Have a Promo Coupon?</h3>
+          </div>
+          
+          {activeDiscount ? (
+            <div className="flex items-center justify-between p-4 bg-secondary/15 rounded-2xl border border-secondary/35 animate-in zoom-in duration-300">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-secondary/25 flex items-center justify-center">
+                  <Check className="w-4 h-4 text-secondary stroke-[3px]" />
+                </div>
+                <div>
+                  <span className="text-xs font-black text-secondary block">{activeDiscount.code} Active</span>
+                  <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{activeDiscount.percent}% discount applied</span>
+                </div>
+              </div>
+              <button 
+                onClick={handleRemoveCoupon}
+                className="text-xs font-bold text-destructive hover:underline px-2.5 py-1"
+              >
+                Remove
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2.5">
+              <input 
+                type="text" 
+                placeholder="Enter Code (e.g. LUXE20, WELCOME10)" 
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value)}
+                className="flex-1 bg-muted/20 border border-border/80 rounded-2xl px-4 py-3.5 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-secondary focus:border-secondary transition-all"
+              />
+              <Button 
+                onClick={handleApplyCoupon}
+                className="rounded-2xl bg-primary text-primary-foreground px-6 text-xs font-bold hover:bg-primary/90"
+              >
+                Apply
+              </Button>
+            </div>
+          )}
+          <p className="text-[10px] text-muted-foreground/80 mt-3 italic">
+            *Hint: Try entering code <span className="font-bold text-secondary">LUXE20</span> for 20% off your booking session.
+          </p>
+        </div>
+
         {/* Staff Section */}
         <div className="mb-12">
           <h2 className="text-2xl font-serif font-medium mb-5">Expert Stylists</h2>
@@ -341,13 +419,20 @@ const SalonDetails = () => {
             <span className="text-[10px] uppercase font-bold text-secondary tracking-widest mb-1">
               {selectedServices.length} {selectedServices.length === 1 ? 'Service' : 'Services'} Selected
             </span>
-            <span className="text-2xl font-bold">
-              ₹{totalPrice} 
-              <span className="text-xs font-medium opacity-80 ml-2">({totalDuration} min)</span>
-            </span>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold">
+                ₹{finalTotalPrice}
+              </span>
+              {activeDiscount && (
+                <span className="text-sm font-semibold line-through opacity-50">
+                  ₹{baseTotalPrice}
+                </span>
+              )}
+              <span className="text-[10px] font-medium opacity-80 ml-1">({totalDuration} min)</span>
+            </div>
           </div>
           <Button 
-            onClick={() => navigate('/book')}
+            onClick={() => navigate(`/book?service=${selectedServices[0]}${activeDiscount ? `&discount=${activeDiscount.percent}` : ''}`)}
             className="rounded-2xl bg-secondary text-primary font-bold px-7 py-6 hover:bg-secondary/90 transition-all active:scale-95 shadow-lg shadow-secondary/20 text-sm tracking-wide"
           >
             Continue
