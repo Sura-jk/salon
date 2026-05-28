@@ -15,22 +15,21 @@ const STYLISTS = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
-// Unified Service Lookup synchronized with Services.tsx
 const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string }> = {
-  'hair_1': { name: 'Signature Hair Sculpt', price: '₹850', duration: '90 min' },
-  'hair_2': { name: 'Artisan Balayage', price: '₹2499', duration: '180 min' },
-  'hair_3': { name: 'Keratin Infusion', price: '₹1800', duration: '120 min' },
-  'hair_4': { name: 'Classic Grooming', price: '₹600', duration: '45 min' },
-  'skin_1': { name: 'Cellular Glow Facial', price: '₹1299', duration: '60 min' },
-  'skin_2': { name: 'Diamond Polishing', price: '₹1599', duration: '75 min' },
-  'skin_3': { name: 'Age-Defying Ritual', price: '₹2100', duration: '90 min' },
-  'nail_1': { name: 'Luxe Manicure', price: '₹499', duration: '45 min' },
-  'nail_2': { name: 'Spa Pedicure', price: '₹699', duration: '60 min' },
-  'nail_3': { name: 'Aesthetic Nail Art', price: '₹350', duration: '30 min' },
-  'makeup_1': { name: 'Elite Glamour Look', price: '₹2999', duration: '90 min' },
-  'makeup_2': { name: 'Bridal Artistry', price: '₹5500', duration: '150 min' },
-  'spa_1': { name: 'Deep Tissue Relief', price: '₹1899', duration: '90 min' },
-  'spa_2': { name: 'Aroma Zen Therapy', price: '₹1499', duration: '60 min' },
+  'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min' },
+  'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min' },
+  'hair_3': { name: 'Keratin Infusion', price: '1800', duration: '120 min' },
+  'hair_4': { name: 'Classic Grooming', price: '600', duration: '45 min' },
+  'skin_1': { name: 'Cellular Glow Facial', price: '1299', duration: '60 min' },
+  'skin_2': { name: 'Diamond Polishing', price: '1599', duration: '75 min' },
+  'skin_3': { name: 'Age-Defying Ritual', price: '2100', duration: '90 min' },
+  'nail_1': { name: 'Luxe Manicure', price: '499', duration: '45 min' },
+  'nail_2': { name: 'Spa Pedicure', price: '699', duration: '60 min' },
+  'nail_3': { name: 'Aesthetic Nail Art', price: '350', duration: '30 min' },
+  'makeup_1': { name: 'Elite Glamour Look', price: '2999', duration: '90 min' },
+  'makeup_2': { name: 'Bridal Artistry', price: '5500', duration: '150 min' },
+  'spa_1': { name: 'Deep Tissue Relief', price: '1899', duration: '90 min' },
+  'spa_2': { name: 'Aroma Zen Therapy', price: '1499', duration: '60 min' },
 };
 
 const BookingFlow = () => {
@@ -46,6 +45,23 @@ const BookingFlow = () => {
   const [paymentMethod, setPaymentMethod] = useState('pay_at_salon');
 
   const handleConfirm = () => {
+    // Create booking object
+    const newBooking = {
+      id: `b-${Date.now()}`,
+      salonName: 'Luxe Aura Studio',
+      serviceName: activeService.name,
+      stylistName: STYLISTS.find(s => s.id === selectedStylist)?.name || 'Any Stylist',
+      date: selectedDate?.toISOString() || new Date().toISOString(),
+      time: selectedTime,
+      status: 'upcoming',
+      price: `₹${activeService.price}`,
+      image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=120&q=80'
+    };
+
+    // Save to local storage
+    const existingBookings = JSON.parse(localStorage.getItem('user_bookings') || '[]');
+    localStorage.setItem('user_bookings', JSON.stringify([newBooking, ...existingBookings]));
+
     showSuccess("Booking confirmed! Generating receipt...");
     setStep(4);
   };
@@ -74,7 +90,7 @@ const BookingFlow = () => {
         <div className="w-full max-w-md bg-card border border-border rounded-3xl p-6 mb-8 text-left space-y-4 shadow-xl">
           <div className="flex justify-between items-center pb-3 border-b border-border/50">
             <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Appointment ID</span>
-            <span className="text-sm font-bold text-primary">#LX-99281</span>
+            <span className="text-sm font-bold text-primary">#LX-{Math.floor(Math.random() * 100000)}</span>
           </div>
           
           <div className="space-y-2">
@@ -98,7 +114,7 @@ const BookingFlow = () => {
             </div>
             <div className="flex justify-between items-center text-sm pt-2 border-t border-border/40">
               <span className="font-bold text-foreground">Total Price:</span>
-              <span className="font-bold text-secondary text-base">{activeService.price}</span>
+              <span className="font-bold text-secondary text-base">₹{activeService.price}</span>
             </div>
           </div>
 
@@ -134,7 +150,6 @@ const BookingFlow = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto items-center">
       <div className="max-w-lg md:max-w-2xl w-full flex flex-col">
-        {/* Sticky Back Arrow Header */}
         <div className="flex items-center gap-3 mb-6">
           <Button 
             variant="ghost" 
@@ -147,7 +162,6 @@ const BookingFlow = () => {
           <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Back to Salon</span>
         </div>
 
-        {/* Dynamic Service Receipt Summary Card */}
         <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary">
@@ -158,10 +172,9 @@ const BookingFlow = () => {
               <span className="text-xs font-bold text-foreground line-clamp-1">{activeService.name}</span>
             </div>
           </div>
-          <span className="text-sm font-black text-secondary">{activeService.price}</span>
+          <span className="text-sm font-black text-secondary">₹{activeService.price}</span>
         </div>
 
-        {/* Step Indicator */}
         <div className="flex justify-between mb-8 gap-2">
           {[1, 2, 3].map(i => (
             <div key={i} className={cn(

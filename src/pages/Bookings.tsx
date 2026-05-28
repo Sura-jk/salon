@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,41 +8,54 @@ import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 import ImageWithFallback from '@/components/ImageWithFallback';
 
+const INITIAL_BOOKINGS = [
+  {
+    id: 'b1',
+    salonName: 'Luxe Aura Studio',
+    serviceName: 'Signature Haircut',
+    stylistName: 'Elena Rose',
+    date: new Date(Date.now() + 86400000 * 2).toISOString(),
+    time: '10:00 AM',
+    status: 'upcoming',
+    price: '₹499',
+    image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=120&q=80'
+  },
+  {
+    id: 'b2',
+    salonName: 'Velvet Touch Spa',
+    serviceName: 'Luxury Facial',
+    stylistName: 'Sophia Chen',
+    date: new Date(Date.now() - 86400000 * 5).toISOString(),
+    time: '02:00 PM',
+    status: 'completed',
+    price: '₹1299',
+    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=120&q=80'
+  }
+];
+
 const Bookings = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed'>('upcoming');
-  
-  const bookings = [
-    {
-      id: 'b1',
-      salonName: 'Luxe Aura Studio',
-      serviceName: 'Signature Haircut',
-      stylistName: 'Elena Rose',
-      date: new Date(Date.now() + 86400000 * 2),
-      time: '10:00 AM',
-      status: 'upcoming',
-      price: '₹499',
-      image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=120&q=80'
-    },
-    {
-      id: 'b2',
-      salonName: 'Velvet Touch Spa',
-      serviceName: 'Luxury Facial',
-      stylistName: 'Sophia Chen',
-      date: new Date(Date.now() - 86400000 * 5),
-      time: '02:00 PM',
-      status: 'completed',
-      price: '₹1299',
-      image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=120&q=80'
-    }
-  ];
+  const [allBookings, setAllBookings] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Load bookings from local storage and combine with initial data
+    const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
+    setAllBookings([...stored, ...INITIAL_BOOKINGS]);
+  }, []);
 
   const handleReschedule = (serviceName: string) => {
     showSuccess(`Select a new date/time to reschedule "${serviceName}"`);
     navigate('/book');
   };
 
-  const handleCancelBooking = (serviceName: string) => {
+  const handleCancelBooking = (bookingId: string, serviceName: string) => {
+    const updated = allBookings.filter(b => b.id !== bookingId);
+    setAllBookings(updated);
+    // Also update local storage (only filter out the ones that are in local storage)
+    const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
+    localStorage.setItem('user_bookings', JSON.stringify(stored.filter((b: any) => b.id !== bookingId)));
+    
     showSuccess(`Booking for "${serviceName}" cancelled successfully.`);
   };
 
@@ -50,7 +63,7 @@ const Bookings = () => {
     showSuccess(`Thank you for rating your experience at ${salonName}! 5 Stars recorded!`);
   };
 
-  const filteredBookings = bookings.filter((booking) => booking.status === activeTab);
+  const filteredBookings = allBookings.filter((booking) => booking.status === activeTab);
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-44 px-6 pt-8 animate-in fade-in duration-300 items-center">
@@ -151,7 +164,7 @@ const Bookings = () => {
                         </Button>
                         <Button 
                           variant="ghost" 
-                          onClick={() => handleCancelBooking(booking.serviceName)}
+                          onClick={() => handleCancelBooking(booking.id, booking.serviceName)}
                           className="p-6 rounded-2xl text-destructive hover:bg-destructive/10 transition-all"
                         >
                           <Trash2 className="w-4 h-4" />
