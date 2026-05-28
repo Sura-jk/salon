@@ -9,7 +9,7 @@ import { showSuccess } from '@/utils/toast';
 
 const STYLISTS = [
   { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
-  { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?q=80&w=200&auto=format&fit=crop' },
+  { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop' },
   { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop' },
 ];
 
@@ -22,10 +22,10 @@ const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: s
   's3': { name: 'Luxury Facial', price: '₹1299', duration: '60 min' },
   's4': { name: 'Royal Manicure', price: '₹699', duration: '45 min' },
   's5': { name: 'Glow Skincare Ritual', price: '₹1599', duration: '75 min' },
-  'h1': { name: 'Luxury Hair Sculpt', price: '₹85', duration: '90 min' },
-  'h2': { name: 'Balayage Artistry', price: '₹180', duration: '180 min' },
-  'h3': { name: 'Deep Conditioning', price: '₹50', duration: '60 min' },
-  'h4': { name: 'Men\'s Executive Cut', price: '₹60', duration: '45 min' },
+  'h1': { name: 'Luxury Hair Sculpt', price: '₹850', duration: '90 min' },
+  'h2': { name: 'Balayage Artistry', price: '₹1800', duration: '180 min' },
+  'h3': { name: 'Deep Conditioning', price: '₹500', duration: '60 min' },
+  'h4': { name: 'Men\'s Executive Cut', price: '₹600', duration: '45 min' },
 };
 
 const BookingFlow = () => {
@@ -57,7 +57,7 @@ const BookingFlow = () => {
 
   if (step === 4) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background py-10">
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background py-12 overflow-y-auto">
         <div className="w-24 h-24 bg-secondary/20 rounded-full flex items-center justify-center mb-8 animate-in zoom-in duration-500">
           <CheckCircle2 className="w-12 h-12 text-secondary" />
         </div>
@@ -127,7 +127,7 @@ const BookingFlow = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-8">
+    <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto">
       <div className="max-w-md mx-auto w-full">
         {/* Dynamic Service Receipt Summary Card */}
         <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
@@ -197,17 +197,17 @@ const BookingFlow = () => {
         )}
 
         {step === 2 && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
             <div>
               <h2 className="text-3xl font-serif font-medium mb-2">Select Date & Time</h2>
               <p className="text-xs text-muted-foreground">Pick a slot convenient for you</p>
             </div>
-            <div className="flex justify-center bg-card rounded-3xl p-3 border border-border shadow-sm">
+            <div className="flex justify-center bg-card rounded-3xl p-3 border border-border shadow-sm overflow-hidden">
               <Calendar 
                 mode="single" 
                 selected={selectedDate} 
                 onSelect={setSelectedDate} 
-                className="rounded-3xl border-none shadow-none p-0"
+                className="rounded-3xl border-none shadow-none p-0 max-w-full"
               />
             </div>
             <div>
@@ -227,7 +227,7 @@ const BookingFlow = () => {
                 ))}
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <Button 
                 variant="outline"
                 onClick={() => setStep(1)}
@@ -247,7 +247,7 @@ const BookingFlow = () => {
         )}
 
         {step === 3 && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
             <div>
               <h2 className="text-3xl font-serif font-medium mb-2">Secure Checkout</h2>
               <p className="text-xs text-muted-foreground">Choose your payment mode</p>
@@ -311,7 +311,7 @@ const BookingFlow = () => {
                 {paymentMethod === 'card' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <Button 
                 variant="outline"
                 onClick={() => setStep(2)}
