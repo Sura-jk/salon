@@ -3,14 +3,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Scissors, Sparkles, Receipt } from 'lucide-react';
+import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Receipt } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 
 const STYLISTS = [
   { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
   { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?q=80&w=200&auto=format&fit=crop' },
-  { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?q=80&w=200&auto=format&fit=crop' },
+  { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop' },
 ];
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];

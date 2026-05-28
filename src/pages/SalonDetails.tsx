@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter, Ticket, ShieldCheck, Zap, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
@@ -30,7 +29,7 @@ const SALON_DATA = {
     staff: [
       { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
       { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?auto=format&fit=crop&w=200&h=200&q=80' },
-      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop' },
     ]
   },
   salon2: {
@@ -51,7 +50,7 @@ const SALON_DATA = {
       { id: 's2_3', name: 'Sea Salt Scrub & Polish', duration: '45 min', price: 1199, category: 'Skin' },
     ],
     staff: [
-      { id: 'st3', name: 'Sophia Chen', role: 'Therapeutic Masseuse', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Therapeutic Masseuse', exp: '10 years', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop' },
       { id: 'st1', name: 'Elena Rose', role: 'Aroma Expert', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
     ]
   },
@@ -74,7 +73,7 @@ const SALON_DATA = {
     ],
     staff: [
       { id: 'st2', name: 'Marcus Thorne', role: 'Creative Director / Makeup', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?auto=format&fit=crop&w=200&h=200&q=80' },
-      { id: 'st3', name: 'Sophia Chen', role: 'Nail Art Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Nail Art Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop' },
     ]
   }
 };

@@ -34,7 +34,7 @@ const MASTER_ARTISTS = [
     name: 'Sophia Chen', 
     shortName: 'Sophia', 
     role: 'Skin Specialist', 
-    image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?q=80&w=200&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop',
     active: false 
   },
   { 
