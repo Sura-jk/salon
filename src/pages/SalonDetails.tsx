@@ -277,7 +277,7 @@ const SalonDetails = () => {
                   className={cn(
                     'px-3 py-1.5 rounded-full text-[11px] font-bold transition-all whitespace-nowrap border',
                     isActive
-                      ? 'bg-secondary text-primary-foreground border-secondary shadow-md scale-105'
+                      ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-105'
                       : 'bg-card border-border/60 text-muted-foreground hover:border-secondary/40'
                   )}
                 >
@@ -297,7 +297,7 @@ const SalonDetails = () => {
                 onClick={() => toggleService(service.id, service.name)}
                 className={cn(
                   'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer',
-                  isSelected ? 'border-secondary bg-secondary/10 shadow-sm' : 'border-border bg-card hover:border-secondary/50'
+                  isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
                 )}
               >
                 <div className="flex-1 min-w-0">
@@ -312,7 +312,7 @@ const SalonDetails = () => {
                       isSelected ? 'border-secondary bg-secondary' : 'border-border'
                     )}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5 text-primary-foreground stroke-[3px]" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}
                   </div>
                 </div>
               </div>
@@ -391,8 +391,8 @@ const SalonDetails = () => {
             </Button>
           </div>
           {activeDiscount && (
-            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1 animate-pulse">
-              <Check className="w-3.5 h-3.5 stroke-[3px]" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
+            <p className="text-secondary font-bold text-xs mt-2 flex items-center gap-1">
+              <Check className="w-3.5 h-3.5" /> Code &quot;{activeDiscount.code}&quot; applied! ({activeDiscount.percent}% discount)
             </p>
           )}
         </div>
@@ -432,7 +432,7 @@ const SalonDetails = () => {
 
           <Button
             onClick={() => navigate('/book')}
-            className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2 animate-bounce-slow"
+            className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2"
           >
             Book
           </Button>
