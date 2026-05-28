@@ -252,11 +252,11 @@ const Services = () => {
                 className={cn(
                   "flex items-center gap-2 px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 border whitespace-nowrap active:scale-95",
                   isActive 
-                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/10" 
+                    ? "bg-secondary text-primary border-secondary shadow-lg shadow-secondary/25 ring-2 ring-secondary/50" 
                     : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
                 )}
               >
-                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary animate-pulse" : "text-muted-foreground")} />
+                <Icon className={cn("w-3.5 h-3.5 transition-colors", isActive ? "text-primary stroke-[3px]" : "text-muted-foreground")} />
                 <span>{value.label}</span>
               </button>
             );

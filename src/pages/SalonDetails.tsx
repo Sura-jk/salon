@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart } from 'lucide-react';
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart, Scissors, Smile, Palette, Wand2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import ImageWithFallback from '@/components/ImageWithFallback';
@@ -87,6 +87,14 @@ const AVAILABLE_PROMOS = [
   { code: 'WELCOME10', description: '10% New User', percent: 10 }
 ];
 
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  All: Sparkles,
+  Hair: Scissors,
+  Facial: Smile,
+  Nails: Palette,
+  Skin: Wand2,
+};
+
 const SalonDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -107,7 +115,6 @@ const SalonDetails = () => {
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
   const handleBack = () => {
-    // If we have history entries to go back to, go back. Otherwise go to Home "/" safely.
     if (window.history.length > 1) {
       navigate(-1);
     } else {
@@ -266,23 +273,28 @@ const SalonDetails = () => {
 
       {/* Services Section */}
       <div className="px-4 py-3">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="text-base font-serif font-medium">Services</h3>
-          <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  'px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap',
-                  activeCategory === cat
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-card border border-border text-muted-foreground'
-                )}
-              >
-                {cat}
-              </button>
-            ))}
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-base font-serif font-medium mr-2 flex-shrink-0">Services</h3>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {categories.map(cat => {
+              const Icon = CATEGORY_ICONS[cat] || Sparkles;
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={cn(
+                    'px-3.5 py-2.5 rounded-xl text-[11px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border active:scale-95',
+                    isActive
+                      ? 'bg-secondary text-primary border-secondary shadow-md shadow-secondary/15 ring-1 ring-secondary/50'
+                      : 'bg-card border-border text-muted-foreground hover:border-secondary/40'
+                  )}
+                >
+                  <Icon className={cn("w-3.5 h-3.5 transition-colors", isActive ? "text-primary stroke-[3px]" : "text-muted-foreground")} />
+                  <span>{cat}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
