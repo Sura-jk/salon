@@ -8,7 +8,7 @@ export default defineConfig(() => ({
     host: "::",
     port: 8080,
   },
-  plugins: [dyadComponentTagger(), react(), require('@capacitor/vite-plugin').capacitor({})],
+  plugins: [dyadComponentTagger(), react()], // Capacitor plugin removed
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
