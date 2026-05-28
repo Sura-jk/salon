@@ -313,17 +313,17 @@ const Home = () => {
             {/* Premium Absolute Navigation Arrows floating on Left and Right sides */}
             <button 
               onClick={() => carouselApi?.scrollPrev()}
-              className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
               aria-label="Previous category"
             >
-              <ChevronLeft className="w-4 h-4 stroke-[2]" />
+              <ChevronLeft className="w-3 h-3 stroke-[2]" />
             </button>
             <button 
               onClick={() => carouselApi?.scrollNext()}
-              className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
               aria-label="Next category"
             >
-              <ChevronRight className="w-4 h-4 stroke-[2]" />
+              <ChevronRight className="w-3 h-3 stroke-[2]" />
             </button>
           </Carousel>
         </div>
