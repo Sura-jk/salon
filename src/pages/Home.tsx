@@ -11,7 +11,7 @@ const CATEGORIES = [
   { 
     id: 'hair', 
     label: 'Hair', 
-    image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' 
   },
   { 
     id: 'nails', 
@@ -21,7 +21,7 @@ const CATEGORIES = [
   { 
     id: 'spa', 
     label: 'Spa', 
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80' 
+    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80' 
   },
   { 
     id: 'makeup', 
