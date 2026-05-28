@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
@@ -121,9 +121,16 @@ const NEARBY_SALONS = [
   },
 ];
 
+const FILTER_TAGS = ['All', 'Luxury', 'Top Rated', 'Relaxing', 'Premium', 'Budget', 'Quick'];
+
 const Home = () => {
   const navigate = useNavigate();
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  
+  // Search & Filter state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedTag, setSelectedTag] = useState('All');
 
   const handleClaimOffer = () => {
     const toastId = showLoading("Activating Summer promo discount...");
@@ -142,6 +149,20 @@ const Home = () => {
   const handleCategoryClick = (categoryId: string) => {
     navigate(`/services?category=${categoryId}`);
   };
+
+  const handleTagSelect = (tag: string) => {
+    setSelectedTag(tag);
+    if (tag !== 'All') {
+      showSuccess(`Filter applied: ${tag}`);
+    }
+  };
+
+  // Filter Nearby Salons dynamically by search input and tags
+  const filteredSalons = NEARBY_SALONS.filter((salon) => {
+    const matchesSearch = salon.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTag = selectedTag === 'All' || salon.tags.includes(selectedTag);
+    return matchesSearch && matchesTag;
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden">
@@ -169,23 +190,57 @@ const Home = () => {
       </header>
 
       {/* Search & Filter Bar */}
-      <section className="px-6 py-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
         <div className="flex gap-3">
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors z-10 pointer-events-none" />
             <Input 
+              type="text"
               placeholder="Find a treatment..." 
-              className="pl-12 py-7 rounded-2xl border-border/60 bg-card/40 backdrop-blur-md focus:ring-secondary shadow-sm transition-all text-sm font-medium" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 py-7 rounded-2xl border-border/60 bg-card/40 backdrop-blur-md focus:ring-secondary focus-visible:ring-secondary focus-visible:ring-2 focus-visible:ring-offset-0 shadow-sm transition-all text-sm font-medium relative z-0" 
             />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 z-10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
           <Button 
             variant="outline" 
-            className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all shadow-sm"
-            onClick={() => navigate('/services')}
+            className={`h-[58px] w-[58px] rounded-2xl border-border/60 p-0 flex items-center justify-center transition-all shadow-sm ${
+              showFilters || selectedTag !== 'All' 
+                ? 'bg-secondary text-primary border-secondary font-bold' 
+                : 'bg-card/40 backdrop-blur-md text-secondary hover:border-secondary'
+            }`}
+            onClick={() => setShowFilters(!showFilters)}
           >
-            <SlidersHorizontal className="w-5 h-5 text-secondary" />
+            <SlidersHorizontal className="w-5 h-5" />
           </Button>
         </div>
+
+        {/* Premium Filter Tags Drawer/Slider */}
+        {showFilters && (
+          <div className="flex gap-2 overflow-x-auto pt-4 pb-1 no-scrollbar animate-in slide-in-from-top-2 duration-300">
+            {FILTER_TAGS.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => handleTagSelect(tag)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border whitespace-nowrap ${
+                  selectedTag === tag 
+                    ? 'bg-primary text-primary-foreground border-primary shadow-md' 
+                    : 'bg-card border-border/60 text-muted-foreground hover:border-secondary'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Circle Previews (Master Artists Stories UI) */}
@@ -345,65 +400,82 @@ const Home = () => {
           </div>
           <Button 
             variant="ghost" 
-            onClick={() => navigate('/services')}
+            onClick={() => {
+              setSelectedTag('All');
+              setSearchQuery('');
+              showSuccess("Filters cleared! Showing all nearby studios.");
+            }}
             className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
           >
-            See Map
+            Clear Filter
           </Button>
         </div>
 
         <div className="space-y-12">
-          {NEARBY_SALONS.map((salon) => (
-            <div 
-              key={salon.id}
-              onClick={() => navigate(`/salon/${salon.id}`)}
-              className="group relative bg-card rounded-[2.5rem] overflow-hidden border border-border/40 luxury-shadow cursor-pointer transition-all hover:border-secondary/40 hover:-translate-y-2"
-            >
-              <div className="relative h-60 overflow-hidden rounded-t-[2.5rem]">
-                <ImageWithFallback 
-                  src={salon.image} 
-                  alt={salon.name}
-                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-t-[2.5rem]" 
-                />
-                <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-xl border border-white/20">
-                  <Star className="w-3 h-3 text-secondary fill-secondary" />
-                  <span className="text-[11px] font-black text-primary">{salon.rating}</span>
+          {filteredSalons.length > 0 ? (
+            filteredSalons.map((salon) => (
+              <div 
+                key={salon.id}
+                onClick={() => navigate(`/salon/${salon.id}`)}
+                className="group relative bg-card rounded-[2.5rem] overflow-hidden border border-border/40 luxury-shadow cursor-pointer transition-all hover:border-secondary/40 hover:-translate-y-2"
+              >
+                <div className="relative h-60 overflow-hidden rounded-t-[2.5rem]">
+                  <ImageWithFallback 
+                    src={salon.image} 
+                    alt={salon.name}
+                    className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-t-[2.5rem]" 
+                  />
+                  <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-xl border border-white/20">
+                    <Star className="w-3 h-3 text-secondary fill-secondary" />
+                    <span className="text-[11px] font-black text-primary">{salon.rating}</span>
+                  </div>
+                  
+                  <div className="absolute top-6 left-6 flex gap-2">
+                    {salon.tags.map(tag => (
+                      <span key={tag} className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="absolute top-6 left-6 flex gap-2">
-                  {salon.tags.map(tag => (
-                    <span key={tag} className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
 
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="font-serif font-medium text-2xl text-foreground group-hover:text-secondary transition-colors leading-tight">
-                      {salon.name}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-2">
-                      <MapPin className="w-3 h-3 text-secondary" />
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{salon.distance} from you</span>
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="font-serif font-medium text-2xl text-foreground group-hover:text-secondary transition-colors leading-tight">
+                        {salon.name}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-2">
+                        <MapPin className="w-3 h-3 text-secondary" />
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{salon.distance} from you</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Starting at</span>
+                      <span className="text-lg font-black text-primary">{salon.price}</span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Starting at</span>
-                    <span className="text-lg font-black text-primary">{salon.price}</span>
-                  </div>
+                  
+                  <Button 
+                    className="w-full rounded-2xl bg-primary text-primary-foreground py-7 text-xs font-black uppercase tracking-[0.15em] hover:bg-secondary hover:text-primary transition-all active:scale-95 shadow-xl"
+                  >
+                    Reserve Session
+                  </Button>
                 </div>
-                
-                <Button 
-                  className="w-full rounded-2xl bg-primary text-primary-foreground py-7 text-xs font-black uppercase tracking-[0.15em] hover:bg-secondary hover:text-primary transition-all active:scale-95 shadow-xl"
-                >
-                  Reserve Session
-                </Button>
               </div>
+            ))
+          ) : (
+            <div className="py-16 text-center bg-card border border-dashed border-border rounded-3xl p-8">
+              <Sparkles className="w-8 h-8 text-secondary/40 mx-auto mb-3 animate-pulse" />
+              <p className="text-muted-foreground text-sm font-medium">No nearby studios found matching current filters.</p>
+              <button 
+                onClick={() => { setSelectedTag('All'); setSearchQuery(''); }}
+                className="mt-3 text-xs font-bold text-secondary uppercase tracking-widest hover:underline"
+              >
+                Reset Filters
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </section>
     </div>

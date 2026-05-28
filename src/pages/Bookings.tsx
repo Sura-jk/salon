@@ -53,7 +53,7 @@ const Bookings = () => {
   const filteredBookings = bookings.filter((booking) => booking.status === activeTab);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-8 animate-in fade-in duration-300">
+    <div className="flex flex-col min-h-screen bg-background pb-44 px-6 pt-8 animate-in fade-in duration-300">
       <div className="max-w-md mx-auto w-full">
         <div className="mb-8">
           <h1 className="text-4xl font-serif font-medium text-foreground mb-2">My Bookings</h1>
