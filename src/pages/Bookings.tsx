@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CalendarDays, Clock, User, Trash2, RotateCcw, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { showSuccess } from '@/utils/toast';
 
 const Bookings = () => {
   const navigate = useNavigate();
@@ -31,6 +32,19 @@ const Bookings = () => {
       price: '₹1299'
     }
   ];
+
+  const handleReschedule = (serviceName: string) => {
+    showSuccess(`Select a new date/time to reschedule "${serviceName}"`);
+    navigate('/book');
+  };
+
+  const handleCancelBooking = (serviceName: string) => {
+    showSuccess(`Booking for "${serviceName}" cancelled successfully.`);
+  };
+
+  const handleRateExperience = (salonName: string) => {
+    showSuccess(`Thank you for rating your experience at ${salonName}! 5 Stars recorded!`);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-8">
@@ -90,12 +104,14 @@ const Bookings = () => {
                     <>
                       <Button 
                         variant="outline" 
+                        onClick={() => handleReschedule(booking.serviceName)}
                         className="flex-1 py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
                       >
                         <RotateCcw className="w-3 h-3" /> Reschedule
                       </Button>
                       <Button 
                         variant="ghost" 
+                        onClick={() => handleCancelBooking(booking.serviceName)}
                         className="p-6 rounded-2xl text-destructive hover:bg-destructive/10 transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -104,6 +120,7 @@ const Bookings = () => {
                   ) : (
                     <Button 
                       variant="outline" 
+                      onClick={() => handleRateExperience(booking.salonName)}
                       className="w-full py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
                     >
                       <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Rate Experience

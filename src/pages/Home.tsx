@@ -4,6 +4,7 @@ import { Search, MapPin, Bell, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
 const CATEGORIES = [
   { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' },
@@ -46,6 +47,23 @@ const NEARBY_SALONS = [
 const Home = () => {
   const navigate = useNavigate();
 
+  const handleClaimOffer = () => {
+    const toastId = showLoading("Activating Summer promo discount...");
+    setTimeout(() => {
+      dismissToast(toastId);
+      showSuccess("20% Summer promo activated successfully!");
+      navigate('/salon/salon1');
+    }, 1200);
+  };
+
+  const handleLocationClick = () => {
+    showSuccess("Using GPS to search for premium salons near Bandra, Mumbai");
+  };
+
+  const handleNotificationsClick = () => {
+    showSuccess("No new notifications. You are all set for your next treatment!");
+  };
+
   const heroImage = 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1200&q=80';
   const placeholder = '/placeholder.svg';
 
@@ -54,11 +72,19 @@ const Home = () => {
       {/* Top Header */}
       <header className="px-6 pt-12 pb-6 flex flex-col gap-6">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 text-muted-foreground group cursor-pointer">
+          <div 
+            onClick={handleLocationClick} 
+            className="flex items-center gap-2 text-muted-foreground group cursor-pointer hover:text-primary transition-colors"
+          >
             <MapPin className="w-4 h-4 text-secondary group-hover:animate-bounce" />
-            <span className="text-xs font-medium tracking-wide">Mumbai, Maharashtra</span>
+            <span className="text-xs font-semibold tracking-wide">Mumbai, Maharashtra</span>
           </div>
-          <Button variant="ghost" size="icon" className="rounded-full p-2 bg-card border border-border shadow-sm hover:border-secondary transition-all">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleNotificationsClick}
+            className="rounded-full p-2 bg-card border border-border shadow-sm hover:border-secondary transition-all"
+          >
             <Bell className="w-5 h-5" />
           </Button>
         </div>
@@ -77,22 +103,32 @@ const Home = () => {
         <Carousel className="w-full">
           <CarouselContent>
             <CarouselItem>
-              <div className="relative h-64 rounded-[2rem] overflow-hidden group cursor-pointer shadow-2xl">
+              <div 
+                onClick={handleClaimOffer}
+                className="relative h-64 rounded-[2rem] overflow-hidden group cursor-pointer shadow-2xl"
+              >
                 <img 
                   src={heroImage}
                   alt="Featured Offer"
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
-                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end px-6 pb-8">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end px-6 pb-8">
                   <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest mb-3 shadow-lg">
-                    <Sparkles className="w-3 h-3" />
+                    <Sparkles className="w-3 h-3 animate-pulse" />
                     <span>Exclusive Offer</span>
                   </div>
-                  <h3 className="text-white text-4xl font-serif font-medium mb-4 leading-tight">
+                  <h3 className="text-white text-3xl font-serif font-medium mb-4 leading-tight">
                     Summer Glow <br />Package <span className="text-secondary italic">20% Off</span>
                   </h3>
-                  <Button size="sm" className="w-fit rounded-xl bg-secondary text-primary font-bold px-6 py-3 hover:bg-secondary/90 transition-all shadow-lg">
+                  <Button 
+                    size="sm" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClaimOffer();
+                    }}
+                    className="w-fit rounded-xl bg-secondary text-primary font-bold px-6 py-3 hover:bg-secondary/90 transition-all shadow-lg"
+                  >
                     Claim Now
                   </Button>
                 </div>
@@ -106,7 +142,13 @@ const Home = () => {
       <section className="px-6 py-10">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-serif font-medium">Categories</h2>
-          <Button variant="ghost" className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider">View All</Button>
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/services')}
+            className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider"
+          >
+            View All
+          </Button>
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
           {CATEGORIES.map((cat) => (
@@ -135,7 +177,13 @@ const Home = () => {
       <section className="px-6 py-4 flex-1">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-serif font-medium">Nearby Salons</h2>
-          <Button variant="ghost" className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider">See All</Button>
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/services')}
+            className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider"
+          >
+            See All
+          </Button>
         </div>
         <div className="space-y-8">
           {NEARBY_SALONS.map((salon) => (

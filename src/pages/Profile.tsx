@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, Settings, CreditCard, Heart, LogOut, Bell, ChevronRight, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { showSuccess } from '@/utils/toast';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -28,6 +29,15 @@ const Profile = () => {
     };
   }, []);
 
+  const handleMenuClick = (label: string) => {
+    showSuccess(`Entering ${label} management panel...`);
+  };
+
+  const handleLogout = () => {
+    showSuccess("Logged out successfully. See you soon!");
+    navigate('/auth');
+  };
+
   const menuItems = [
     { icon: User, label: 'Personal Information', description: 'Manage your profile and details' },
     { icon: CreditCard, label: 'Payment Methods', description: 'Manage your saved cards and wallets' },
@@ -43,7 +53,7 @@ const Profile = () => {
           <div className="relative group">
             <div className="w-28 h-28 rounded-full bg-secondary/20 p-1.5 border-2 border-secondary shadow-xl group-hover:scale-105 transition-transform duration-500">
               <img 
-                src="https://i.pravatar.cc/150?u=user" 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80" 
                 className="w-full h-full rounded-full object-cover" 
                 alt="User" 
               />
@@ -84,6 +94,7 @@ const Profile = () => {
           {menuItems.map((item, idx) => (
             <div 
               key={idx} 
+              onClick={() => handleMenuClick(item.label)}
               className="p-5 rounded-2xl bg-card border border-border flex items-center gap-4 cursor-pointer hover:border-secondary hover:bg-secondary/5 transition-all group shadow-sm"
             >
               <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
@@ -100,6 +111,7 @@ const Profile = () => {
 
         <Button 
           variant="ghost" 
+          onClick={handleLogout}
           className="w-full py-7 rounded-2xl text-destructive font-bold flex items-center justify-center gap-2 mt-10 hover:bg-destructive/10 transition-all"
         >
           <LogOut className="w-4 h-4" />
