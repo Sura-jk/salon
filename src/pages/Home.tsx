@@ -3,9 +3,52 @@ import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
+
+const MASTER_ARTISTS = [
+  { 
+    id: 'st1', 
+    name: 'Elena Rose', 
+    shortName: 'Elena', 
+    role: 'Hair Master', 
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
+    active: true 
+  },
+  { 
+    id: 'st2', 
+    name: 'Marcus Thorne', 
+    shortName: 'Marcus', 
+    role: 'Color Expert', 
+    image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?q=80&w=200&auto=format&fit=crop',
+    active: true 
+  },
+  { 
+    id: 'st3', 
+    name: 'Sophia Chen', 
+    shortName: 'Sophia', 
+    role: 'Skin Specialist', 
+    image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?q=80&w=200&auto=format&fit=crop',
+    active: false 
+  },
+  { 
+    id: 'st4', 
+    name: 'Chloe Dubois', 
+    shortName: 'Chloe', 
+    role: 'Nail Artist', 
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    active: true 
+  },
+  { 
+    id: 'st5', 
+    name: 'Devon Miller', 
+    shortName: 'Devon', 
+    role: 'Elite Barber', 
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    active: false 
+  },
+];
 
 const CATEGORIES = [
   { 
@@ -85,6 +128,11 @@ const Home = () => {
     }, 1200);
   };
 
+  const handleArtistClick = (artistName: string, role: string) => {
+    showSuccess(`Viewing ${artistName} (${role})'s luxury portfolio at Luxe Aura Studio`);
+    navigate('/salon/salon1');
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden">
       {/* Top Header */}
@@ -126,8 +174,56 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Circle Previews (Master Artists Stories UI) */}
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4 text-secondary" />
+          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Master Artists Spotlight</h2>
+        </div>
+        
+        <div className="flex gap-5 overflow-x-auto pb-2 no-scrollbar scroll-smooth">
+          {MASTER_ARTISTS.map((artist) => (
+            <div 
+              key={artist.id}
+              onClick={() => handleArtistClick(artist.name, artist.role)}
+              className="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer group"
+            >
+              <div className="relative">
+                {/* Gold glowing ring for active state */}
+                <div className={`w-20 h-20 rounded-full flex items-center justify-center p-[3px] transition-all duration-500 group-hover:scale-105 ${
+                  artist.active 
+                    ? 'bg-gradient-to-tr from-secondary via-secondary/70 to-secondary/30 animate-pulse-slow' 
+                    : 'bg-border/60'
+                }`}>
+                  <div className="w-full h-full rounded-full overflow-hidden border-2 border-background bg-muted">
+                    <img 
+                      src={artist.image} 
+                      alt={artist.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                </div>
+                {artist.active && (
+                  <span className="absolute bottom-0 right-1 w-4.5 h-4.5 rounded-full bg-secondary text-[8px] text-primary-foreground font-black flex items-center justify-center border-2 border-background shadow">
+                    ★
+                  </span>
+                )}
+              </div>
+              <div className="text-center">
+                <span className="text-[11px] font-bold text-foreground block group-hover:text-secondary transition-colors leading-tight">
+                  {artist.shortName}
+                </span>
+                <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block">
+                  {artist.role.split(' ')[0]}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Hero Banner */}
-      <section className="px-6 py-6 animate-in fade-in zoom-in-95 duration-1000 delay-200">
+      <section className="px-6 py-4 animate-in fade-in zoom-in-95 duration-1000 delay-200">
         <Carousel className="w-full">
           <CarouselContent>
             <CarouselItem>
