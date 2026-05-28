@@ -92,6 +92,9 @@ const SalonDetails = () => {
   const [promoInput, setPromoInput] = useState('');
   const [activeDiscount, setActiveDiscount] = useState<CouponDiscount | null>(null);
 
+  // ---------- Bottom‑section promo‑code state ----------
+  const [bottomCouponInput, setBottomCouponInput] = useState('');
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [id]);
@@ -130,6 +133,23 @@ const SalonDetails = () => {
     if (activeDiscount) {
       showSuccess(`Promo code "${activeDiscount.code}" removed.`);
       setActiveDiscount(null);
+    }
+  };
+
+  // Bottom‑section handler
+  const handleApplyBottomCoupon = () => {
+    const code = bottomCouponInput.trim().toUpperCase();
+    if (!code) return;
+    if (code === 'LUXE20' || code === 'SUMMER20') {
+      setActiveDiscount({ code, percent: 20 });
+      showSuccess(`Bottom coupon "${code}" applied! 20% discount unlocked.`);
+      setBottomCouponInput('');
+    } else if (code === 'WELCOME10') {
+      setActiveDiscount({ code, percent: 10 });
+      showSuccess(`Bottom coupon "${code}" applied! 10% discount unlocked.`);
+      setBottomCouponInput('');
+    } else {
+      showSuccess("Invalid bottom coupon code. Try 'LUXE20'!");
     }
   };
 
@@ -184,8 +204,7 @@ const SalonDetails = () => {
             onClick={handleApplyPromo}
             className="rounded-2xl bg-primary text-primary-foreground px-5 py-2 text-sm hover:bg-primary/90"
           >
-            Apply
-          </Button>
+            Apply          </Button>
         </div>
       </div>
 
@@ -203,10 +222,9 @@ const SalonDetails = () => {
             </div>
           </div>
 
-          {/* NEW: Bottom promo‑code input & button (kept for floating checkout) */}
+          {/* NEW: Bottom promo‑code input & button */}
           <div className="mt-2 flex flex-col gap-1">
-            <input
-              type="text"
+            <input              type="text"
               placeholder="Enter promo code (e.g. LUXE20)"
               value={bottomCouponInput}
               onChange={(e) => setBottomCouponInput(e.target.value)}
