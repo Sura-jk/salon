@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart } from 'lucide-react';
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart, Info, CornerDownRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
@@ -23,11 +29,11 @@ const SALON_DATA = {
       'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
-      { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499, category: 'Hair' },
-      { id: 's2', name: 'Balayage Color', duration: '120 min', price: 2499, category: 'Hair' },
-      { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
-      { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails' },
-      { id: 's5', name: 'Glow Skincare Ritual', duration: '75 min', price: 1599, category: 'Skin' },
+      { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499, category: 'Hair', description: 'Precision cutting and structural styling tailored to your unique facial profile.' },
+      { id: 's2', name: 'Balayage Color', duration: '120 min', price: 2499, category: 'Hair', description: 'Hand-painted premium highlights for a natural, sun-kissed luxury glow.' },
+      { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial', description: 'Oxygenating treatment that revives dull skin and boosts immediate radiance.' },
+      { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails', description: 'Exfoliation, aromatic cuticle care, and non-toxic high-shine gel finish.' },
+      { id: 's5', name: 'Glow Skincare Ritual', duration: '75 min', price: 1599, category: 'Skin', description: 'Detoxifying clay therapy followed by relaxing botanical essential oil massage.' },
     ],
     staff: [
       { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop' },
@@ -47,10 +53,10 @@ const SALON_DATA = {
       'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
-      { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
-      { id: 's2_1', name: 'Aroma Therapy Body Massage', duration: '90 min', price: 1899, category: 'Skin' },
-      { id: 's2_2', name: 'Hot Stone Therapy', duration: '75 min', price: 2199, category: 'Skin' },
-      { id: 's2_3', name: 'Sea Salt Scrub & Polish', duration: '45 min', price: 1199, category: 'Skin' },
+      { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial', description: 'Oxygenating treatment that revives dull skin and boosts immediate radiance.' },
+      { id: 's2_1', name: 'Aroma Therapy Body Massage', duration: '90 min', price: 1899, category: 'Skin', description: 'Relaxing full-body Swedish strokes using premium organic lavender extract oils.' },
+      { id: 's2_2', name: 'Hot Stone Therapy', duration: '75 min', price: 2199, category: 'Skin', description: 'Warm volcanic stones applied on high-tension muscle points for ultimate relief.' },
+      { id: 's2_3', name: 'Sea Salt Scrub & Polish', duration: '45 min', price: 1199, category: 'Skin', description: 'Exfoliating botanical treatment designed to eradicate rough skin and hydrate.' },
     ],
     staff: [
       { id: 'st3', name: 'Sophia Chen', role: 'Therapeutic Masseuse', exp: '10 years', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop' },
@@ -69,15 +75,53 @@ const SALON_DATA = {
       'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1000&auto=format&fit=crop',
     ],
     services: [
-      { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails' },
-      { id: 's3_1', name: 'Imperial Gel Pedicure', duration: '60 min', price: 899, category: 'Nails' },
-      { id: 's3_2', name: 'Diamond Glow Whitening Facial', duration: '60 min', price: 1599, category: 'Facial' },
-      { id: 's3_3', name: 'Luxury Makeup Makeover', duration: '75 min', price: 2999, category: 'Skin' },
+      { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails', description: 'Exfoliation, aromatic cuticle care, and non-toxic high-shine gel finish.' },
+      { id: 's3_1', name: 'Imperial Gel Pedicure', duration: '60 min', price: 899, category: 'Nails', description: 'Himalayan salt bath, sugar exfoliation scrub, and durable luxury shellac.' },
+      { id: 's3_2', name: 'Diamond Glow Whitening Facial', duration: '60 min', price: 1599, category: 'Facial', description: 'Premium micro-diamond dermabrasion coupled with highly concentrated Vit-C serums.' },
+      { id: 's3_3', name: 'Luxury Makeup Makeover', duration: '75 min', price: 2999, category: 'Skin', description: 'Bespoke high-definition event styling and custom lash extensions placement.' },
     ],
     staff: [
       { id: 'st2', name: 'Marcus Thorne', role: 'Creative Director / Makeup', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop' },
       { id: 'st3', name: 'Sophia Chen', role: 'Nail Art Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop' },
     ]
+  }
+};
+
+const SERVICE_RICH_DETAILS: Record<string, {
+  benefits: string[];
+  skinHairType: string;
+  experienceLevel: string;
+  aftercare: string;
+}> = {
+  's1': {
+    benefits: ['Precision structural hair tailoring', 'Relaxes scalp with premium massage oils', 'Finish with luxury styling sprays'],
+    skinHairType: 'Suitable for all hair lengths and densities',
+    experienceLevel: 'Delivered exclusively by Elite Master Stylists',
+    aftercare: 'Refrain from washing for 24 hours to secure style structure'
+  },
+  's2': {
+    benefits: ['Hand-painted highlights for custom face framing', 'Bond-building restorative conditioning ritual included', 'Zero rigid lines'],
+    skinHairType: 'Ideal for natural blonde, brunette, or balayage bases',
+    experienceLevel: 'Curated by Artistry Color Directors',
+    aftercare: 'Utilize professional color-safe sulfate free shampoos'
+  },
+  's3': {
+    benefits: ['Hyperbaric oxygen serum micro-infusion', 'Deep epidermal hydration treatment', 'Instant plumpness and high-definition glow'],
+    skinHairType: 'Suitable for dehydrated, dry, or fatigued skin profiles',
+    experienceLevel: 'Conducted by Senior Medical Estheticians',
+    aftercare: 'Ensure high SPF 50 sun cream protection is applied daily'
+  },
+  's4': {
+    benefits: ['Organic raw milk hand soak', 'Detailed cuticle trimming and nail filing', 'Long-lasting vegan premium gel lacquer'],
+    skinHairType: 'Perfect for all hands, skin tones, and nail shapes',
+    experienceLevel: 'Sculpted by Senior Nail Sculpting Artists',
+    aftercare: 'Re-apply hydrating organic cuticle oil twice daily'
+  },
+  's5': {
+    benefits: ['Aromatic hot stone botanical infusion', 'Intensive tension-melting facial massage', 'Premium protective moisture shield application'],
+    skinHairType: 'Ideal for stressed, tired, or combination skin types',
+    experienceLevel: 'Delivered by Holistic Skin Care Therapists',
+    aftercare: 'Avoid heavy foundation makeups for the first 12 hours'
   }
 };
 
@@ -103,6 +147,9 @@ const SalonDetails = () => {
 
   // Favorite states
   const [isFavorited, setIsFavorited] = useState(false);
+
+  // Detail Service modal state
+  const [selectedDetailService, setSelectedDetailService] = useState<any | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -200,6 +247,15 @@ const SalonDetails = () => {
   const baseTotalPrice = selectedServiceDetails.reduce((acc, svc) => acc + (svc.price || 0), 0);
   const discountAmount = activeDiscount ? Math.round((baseTotalPrice * activeDiscount.percent) / 100) : 0;
   const finalTotalPrice = baseTotalPrice - discountAmount;
+
+  const getRichDetails = (id: string) => {
+    return SERVICE_RICH_DETAILS[id] || {
+      benefits: ['Premium quality organic elements', 'Stress releasing aromatics sensory therapy', 'Tailored customized settings'],
+      skinHairType: 'Suitable for all clients looking for premium care',
+      experienceLevel: 'Delivered by certified LuxeSalon Experts',
+      aftercare: 'Follow personalized treatment guidelines'
+    };
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -322,14 +378,27 @@ const SalonDetails = () => {
             return (
               <div
                 key={service.id}
-                onClick={() => toggleService(service.id, service.name)}
                 className={cn(
-                  'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer',
+                  'flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer relative group',
                   isSelected ? 'border-secondary bg-secondary/10' : 'border-border bg-card hover:border-secondary/50'
                 )}
+                onClick={() => toggleService(service.id, service.name)}
               >
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-foreground text-sm leading-tight">{service.name}</h4>
+                <div className="flex-1 min-w-0 pr-6">
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="font-medium text-foreground text-sm leading-tight">{service.name}</h4>
+                    {/* View Details Info button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedDetailService(service);
+                      }}
+                      className="p-1 rounded-full text-muted-foreground hover:text-secondary hover:bg-muted/30 transition-colors"
+                      title="View Details"
+                    >
+                      <Info className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <p className="text-[11px] text-muted-foreground">{service.duration}</p>
                 </div>
                 <div className="flex items-center gap-2.5 flex-shrink-0">
@@ -473,6 +542,104 @@ const SalonDetails = () => {
           </Button>
         </div>
       </div>
+
+      {/* Deluxe Service Detail Modal */}
+      <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
+        <DialogContent className="max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl">
+          {selectedDetailService && (
+            <div className="flex flex-col">
+              <div className="px-6 pt-6 pb-4 border-b border-border/40">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif font-medium text-foreground tracking-tight leading-tight flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-secondary" /> {selectedDetailService.name}
+                  </DialogTitle>
+                </DialogHeader>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                  {selectedDetailService.description || "A custom high-quality treatment tailored to your aesthetic wellness."}
+                </p>
+
+                <div className="flex items-center gap-6 mt-4">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+                    <Clock className="w-3.5 h-3.5 text-secondary" />
+                    <span>{selectedDetailService.duration}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-base font-black text-secondary">
+                    <span>₹{selectedDetailService.price}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rich Narrative / Benefits */}
+              <div className="px-6 py-5 space-y-4 max-h-[220px] overflow-y-auto thin-scrollbar">
+                <div>
+                  <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground/80 mb-2 flex items-center gap-1.5">
+                    Highlights & Benefits
+                  </h4>
+                  <ul className="space-y-2">
+                    {getRichDetails(selectedDetailService.id).benefits.map((benefit, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-medium">
+                        <Check className="w-3.5 h-3.5 text-secondary mt-0.5 flex-shrink-0" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 pt-2 border-t border-border/10">
+                  <div className="flex gap-2 text-xs">
+                    <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Best For</span>
+                      <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).skinHairType}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 text-xs">
+                    <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Expert Care</span>
+                      <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).experienceLevel}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 text-xs">
+                    <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Recommended Aftercare</span>
+                      <span className="text-foreground/90 italic">{getRichDetails(selectedDetailService.id).aftercare}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="p-4 bg-muted/30 border-t border-border/40 flex gap-3">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setSelectedDetailService(null)}
+                  className="flex-1 py-6 rounded-2xl border-border font-bold text-xs uppercase tracking-wider text-muted-foreground"
+                >
+                  Close
+                </Button>
+                <Button 
+                  onClick={() => {
+                    const isAlreadySelected = selectedServices.includes(selectedDetailService.id);
+                    if (!isAlreadySelected) {
+                      toggleService(selectedDetailService.id, selectedDetailService.name);
+                    } else {
+                      showSuccess(`"${selectedDetailService.name}" is already in your session.`);
+                    }
+                    setSelectedDetailService(null);
+                  }}
+                  className="flex-[2] py-6 rounded-2xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/25"
+                >
+                  {selectedServices.includes(selectedDetailService.id) ? "Already Selected" : "Add to Session"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
