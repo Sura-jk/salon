@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import Splash from './pages/Splash';
 import Onboarding from './pages/Onboarding';
 import Auth from './pages/Auth';
@@ -20,6 +21,9 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
+      {/* Toast notifications container */}
+      <Toaster position="top-center" expand={false} richColors closeButton />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/splash" element={<Splash />} />
