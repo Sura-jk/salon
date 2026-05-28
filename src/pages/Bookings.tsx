@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -5,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   CalendarDays, Clock, User, Trash2, 
-  RotateCcw, Star, CalendarX, MapPin, 
+  Star, CalendarX, MapPin, 
   ChevronRight, Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,7 +23,7 @@ const INITIAL_BOOKINGS = [
     date: new Date(Date.now() + 86400000 * 2).toISOString(),
     time: '10:00 AM',
     status: 'upcoming',
-    price: '₹850',
+    price: '850',
     image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=600&auto=format&fit=crop'
   },
   {
@@ -32,7 +34,7 @@ const INITIAL_BOOKINGS = [
     date: new Date(Date.now() - 86400000 * 5).toISOString(),
     time: '02:00 PM',
     status: 'completed',
-    price: '₹1299',
+    price: '1299',
     image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop'
   }
 ];
@@ -52,7 +54,7 @@ const Bookings = () => {
     setAllBookings(updated);
     const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
     localStorage.setItem('user_bookings', JSON.stringify(stored.filter((b: any) => b.id !== bookingId)));
-    showSuccess(`Cancelled appointment for "${serviceName}"`);
+    showSuccess(`Cancelled "${serviceName}"`);
   };
 
   const filteredBookings = allBookings.filter((booking) => booking.status === activeTab);
@@ -66,17 +68,18 @@ const Bookings = () => {
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary">Aesthetic Journal</span>
           </div>
           <h1 className="text-4xl font-serif font-medium text-foreground tracking-tight">Your Bookings</h1>
-          <p className="text-muted-foreground text-sm mt-1">Manage your upcoming luxury sessions</p>
+          <p className="text-muted-foreground text-sm mt-1">Manage your luxury beauty experiences</p>
         </header>
 
+        {/* Improved Tab Controls with clearer hover states */}
         <div className="flex p-1.5 bg-card border border-border/50 rounded-2xl mb-8">
           <button 
             onClick={() => setActiveTab('upcoming')}
             className={cn(
-              "flex-1 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all duration-300",
+              "flex-1 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all duration-300",
               activeTab === 'upcoming' 
-                ? "bg-primary text-primary-foreground shadow-md" 
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-lg" 
+                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
             )}
           >
             Upcoming
@@ -84,10 +87,10 @@ const Bookings = () => {
           <button 
             onClick={() => setActiveTab('completed')}
             className={cn(
-              "flex-1 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all duration-300",
+              "flex-1 py-4 rounded-xl font-bold text-xs uppercase tracking-widest transition-all duration-300",
               activeTab === 'completed' 
-                ? "bg-primary text-primary-foreground shadow-md" 
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-lg" 
+                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
             )}
           >
             Completed
@@ -101,8 +104,7 @@ const Bookings = () => {
                 key={booking.id} 
                 className="group p-0 overflow-hidden border-border/40 rounded-[2.5rem] luxury-shadow bg-card animate-in slide-in-from-bottom-6 duration-700 hover:border-secondary/30 transition-all"
               >
-                {/* Visual Header */}
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-60 overflow-hidden">
                   <ImageWithFallback 
                     src={booking.image} 
                     alt={booking.serviceName} 
@@ -110,12 +112,12 @@ const Bookings = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                   
-                  <div className="absolute top-5 right-5">
+                  <div className="absolute top-6 right-6">
                     <Badge className={cn(
-                      "text-[9px] uppercase font-black px-4 py-1.5 rounded-full border-none backdrop-blur-md shadow-lg",
+                      "text-[10px] uppercase font-black px-4 py-2 rounded-full border-none shadow-lg backdrop-blur-md",
                       booking.status === 'upcoming' 
                         ? "bg-secondary text-primary" 
-                        : "bg-white/20 text-white"
+                        : "bg-black/60 text-white"
                     )}>
                       {booking.status}
                     </Badge>
@@ -124,30 +126,29 @@ const Bookings = () => {
                   <div className="absolute bottom-6 left-8 right-8">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                      <span className="text-[10px] font-bold text-secondary uppercase tracking-[0.2em]">Confirmed Session</span>
+                      <span className="text-[10px] font-bold text-secondary uppercase tracking-[0.2em]">Confirmed</span>
                     </div>
                     <h3 className="font-serif font-medium text-3xl text-white leading-tight mb-2">{booking.serviceName}</h3>
-                    <div className="flex items-center gap-2 text-white/70 text-xs font-medium">
+                    <div className="flex items-center gap-2 text-white/80 text-xs font-medium">
                       <MapPin className="w-3.5 h-3.5 text-secondary" /> 
                       <span>{booking.salonName}</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Detail Content */}
                 <div className="p-8">
                   <div className="grid grid-cols-2 gap-8 mb-8">
                     <div className="space-y-1.5">
-                      <span className="text-[10px] uppercase font-extrabold text-muted-foreground tracking-[0.15em] block">Date & Arrival</span>
+                      <span className="text-[10px] uppercase font-extrabold text-muted-foreground tracking-[0.15em] block">Date & Time</span>
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
-                          <CalendarDays className="w-4 h-4" />
+                        <div className="w-9 h-9 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+                          <CalendarDays className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <p className="text-sm font-bold text-foreground">
                             {new Date(booking.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                           </p>
-                          <p className="text-[10px] font-medium text-muted-foreground uppercase">{booking.time}</p>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase">{booking.time}</p>
                         </div>
                       </div>
                     </div>
@@ -155,22 +156,21 @@ const Bookings = () => {
                     <div className="space-y-1.5">
                       <span className="text-[10px] uppercase font-extrabold text-muted-foreground tracking-[0.15em] block">Specialist</span>
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
-                          <User className="w-4 h-4" />
+                        <div className="w-9 h-9 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+                          <User className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <p className="text-sm font-bold text-foreground">{booking.stylistName}</p>
-                          <p className="text-[10px] font-medium text-muted-foreground uppercase">Master Artist</p>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase">Expert Artist</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Actions Area */}
                   <div className="flex items-center justify-between pt-6 border-t border-border/40">
                     <div className="flex flex-col">
-                      <span className="text-[9px] uppercase font-extrabold text-muted-foreground tracking-[0.2em] mb-1">Total Premium</span>
-                      <span className="text-2xl font-black text-primary">{booking.price}</span>
+                      <span className="text-[9px] uppercase font-extrabold text-muted-foreground tracking-[0.2em] mb-1">Total Fee</span>
+                      <span className="text-2xl font-black text-primary">₹{booking.price}</span>
                     </div>
                     
                     <div className="flex gap-2.5">
@@ -195,11 +195,11 @@ const Bookings = () => {
                         <Button 
                           variant="outline" 
                           onClick={() => {
-                            showSuccess("Opening review portal...");
+                            showSuccess("Opening secure feedback portal...");
                           }} 
-                          className="rounded-2xl text-[10px] font-black uppercase tracking-widest px-8 py-6 h-auto border-border flex items-center gap-2.5 hover:bg-secondary/5 transition-all"
+                          className="rounded-2xl text-[10px] font-black uppercase tracking-widest px-8 py-6 h-auto border-border flex items-center gap-2.5 hover:bg-secondary/10 transition-all"
                         >
-                          <Star className="w-4 h-4 text-secondary fill-secondary" /> Review Session
+                          <Star className="w-4 h-4 text-secondary fill-secondary" /> Rate Session
                         </Button>
                       )}
                     </div>
@@ -212,13 +212,13 @@ const Bookings = () => {
               <div className="w-20 h-20 bg-muted/40 rounded-full flex items-center justify-center mb-6 text-muted-foreground/30">
                 <CalendarX className="w-10 h-10" />
               </div>
-              <h3 className="text-xl font-serif font-medium text-foreground mb-2">No {activeTab} experiences</h3>
-              <p className="text-muted-foreground text-sm mb-8 max-w-[240px] mx-auto">Your aesthetic journey is waiting to be written.</p>
+              <h3 className="text-xl font-serif font-medium text-foreground mb-2">No {activeTab} history</h3>
+              <p className="text-muted-foreground text-sm mb-8 max-w-[240px] mx-auto">Your aesthetic journey is ready for its next chapter.</p>
               <Button 
                 onClick={() => navigate('/')} 
                 className="rounded-2xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-[0.2em] px-10 py-7 hover:bg-primary/90 transition-all shadow-2xl shadow-primary/20 flex items-center gap-2"
               >
-                Book Now <ChevronRight className="w-4 h-4" />
+                Book Appointment <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
           )}
