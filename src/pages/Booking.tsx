@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone } from 'lucide-react';
+import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Scissors, Sparkles, Receipt } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { showSuccess } from '@/utils/toast';
 
 const STYLISTS = [
   { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
@@ -14,8 +15,25 @@ const STYLISTS = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
+// Mock services for quick lookups from query param
+const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string }> = {
+  's1': { name: 'Signature Glow Facial', price: '₹1299', duration: '60 min' },
+  's2': { name: 'Balayage Color', price: '₹2499', duration: '120 min' },
+  's3': { name: 'Luxury Facial', price: '₹1299', duration: '60 min' },
+  's4': { name: 'Royal Manicure', price: '₹699', duration: '45 min' },
+  's5': { name: 'Glow Skincare Ritual', price: '₹1599', duration: '75 min' },
+  'h1': { name: 'Luxury Hair Sculpt', price: '₹85', duration: '90 min' },
+  'h2': { name: 'Balayage Artistry', price: '₹180', duration: '180 min' },
+  'h3': { name: 'Deep Conditioning', price: '₹50', duration: '60 min' },
+  'h4': { name: 'Men\'s Executive Cut', price: '₹60', duration: '45 min' },
+};
+
 const BookingFlow = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const serviceId = searchParams.get('service') || 's1';
+  const activeService = SERVICES_LOOKUP[serviceId] || SERVICES_LOOKUP['s1'];
+
   const [step, setStep] = useState(1);
   const [selectedStylist, setSelectedStylist] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -23,34 +41,67 @@ const BookingFlow = () => {
   const [paymentMethod, setPaymentMethod] = useState('pay_at_salon');
 
   const handleConfirm = () => {
+    showSuccess("Booking confirmed! Generating receipt...");
     setStep(4);
+  };
+
+  const handleStylistSelect = (id: string, name: string) => {
+    setSelectedStylist(id);
+    showSuccess(`Selected ${name} as your specialist`);
+  };
+
+  const handleTimeSelect = (time: string) => {
+    setSelectedTime(time);
+    showSuccess(`Selected time slot: ${time}`);
   };
 
   if (step === 4) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background">
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background py-10">
         <div className="w-24 h-24 bg-secondary/20 rounded-full flex items-center justify-center mb-8 animate-in zoom-in duration-500">
           <CheckCircle2 className="w-12 h-12 text-secondary" />
         </div>
         <h1 className="text-4xl font-serif font-medium text-foreground mb-4">Booking Confirmed!</h1>
-        <p className="text-muted-foreground mb-12 max-w-xs mx-auto leading-relaxed">
+        <p className="text-muted-foreground mb-8 max-w-xs mx-auto leading-relaxed text-sm">
           Your luxury experience is scheduled. We've sent the details to your phone.
         </p>
         
-        <div className="w-full max-w-md bg-card border border-border rounded-3xl p-8 mb-12 text-left space-y-6 shadow-xl">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Appointment ID</span>
+        <div className="w-full max-w-md bg-card border border-border rounded-3xl p-6 mb-8 text-left space-y-4 shadow-xl">
+          <div className="flex justify-between items-center pb-3 border-b border-border/50">
+            <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Appointment ID</span>
             <span className="text-sm font-bold text-primary">#LX-99281</span>
           </div>
-          <div className="flex justify-center py-6">
-            <div className="w-32 h-32 bg-muted rounded-2xl flex items-center justify-center border-2 border-dashed border-border relative overflow-hidden">
-              <div className="absolute inset-0 bg-secondary/10 animate-pulse" />
-              <span className="text-[10px] text-muted-foreground uppercase font-bold z-10">QR Code</span>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Treatment:</span>
+              <span className="font-semibold text-foreground">{activeService.name}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Specialist:</span>
+              <span className="font-semibold text-foreground">
+                {STYLISTS.find(s => s.id === selectedStylist)?.name || 'Any Available Stylist'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Date:</span>
+              <span className="font-semibold text-foreground">{selectedDate?.toDateString()}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Time Slot:</span>
+              <span className="font-semibold text-foreground">{selectedTime}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm pt-2 border-t border-border/40">
+              <span className="font-bold text-foreground">Total Price:</span>
+              <span className="font-bold text-secondary text-base">{activeService.price}</span>
             </div>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Date & Time</span>
-            <span className="text-sm font-medium">{selectedDate?.toDateString()} at {selectedTime}</span>
+
+          <div className="flex justify-center pt-4">
+            <div className="w-full py-4 bg-muted/40 rounded-2xl flex flex-col items-center justify-center border border-dashed border-border">
+              <span className="text-[10px] text-muted-foreground uppercase font-extrabold tracking-widest z-10 mb-1">Pass QR Code</span>
+              <span className="text-xs font-bold text-secondary">Present on arrival</span>
+            </div>
           </div>
         </div>
         
@@ -63,6 +114,9 @@ const BookingFlow = () => {
           </Button>
           <Button 
             variant="outline" 
+            onClick={() => {
+              showSuccess("Appointment added to your device Calendar!");
+            }}
             className="flex-1 py-7 rounded-2xl border-border font-medium"
           >
             Add to Calendar
@@ -75,24 +129,41 @@ const BookingFlow = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-8">
       <div className="max-w-md mx-auto w-full">
+        {/* Dynamic Service Receipt Summary Card */}
+        <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary">
+              <Receipt className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] text-muted-foreground block uppercase font-bold tracking-wider">Booking Treatment</span>
+              <span className="text-xs font-bold text-foreground line-clamp-1">{activeService.name}</span>
+            </div>
+          </div>
+          <span className="text-sm font-black text-secondary">{activeService.price}</span>
+        </div>
+
         {/* Step Indicator */}
-        <div className="flex justify-between mb-10">
+        <div className="flex justify-between mb-8 gap-2">
           {[1, 2, 3].map(i => (
             <div key={i} className={cn(
-              "h-1.5 rounded-full transition-all duration-500",
-              step >= i ? "w-1/4 bg-secondary" : "w-1/4 bg-muted"
+              "h-1.5 rounded-full flex-1 transition-all duration-500",
+              step >= i ? "bg-secondary" : "bg-muted"
             )} />
           ))}
         </div>
 
         {step === 1 && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-3xl font-serif font-medium mb-6">Select Staff</h2>
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div>
+              <h2 className="text-3xl font-serif font-medium mb-2">Select Staff</h2>
+              <p className="text-xs text-muted-foreground">Our highly trained specialists are at your disposal</p>
+            </div>
             <div className="grid grid-cols-1 gap-4">
               {STYLISTS.map(s => (
                 <div 
                   key={s.id}
-                  onClick={() => setSelectedStylist(s.id)}
+                  onClick={() => handleStylistSelect(s.id, s.name)}
                   className={cn(
                     "flex items-center gap-4 p-5 rounded-2xl cursor-pointer transition-all border-2",
                     selectedStylist === s.id ? "border-secondary bg-secondary/10 shadow-md" : "border-transparent bg-card border-border hover:border-secondary/50"
@@ -126,46 +197,67 @@ const BookingFlow = () => {
         )}
 
         {step === 2 && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-3xl font-serif font-medium mb-6">Select Time</h2>
-            <div className="flex justify-center mb-8">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div>
+              <h2 className="text-3xl font-serif font-medium mb-2">Select Date & Time</h2>
+              <p className="text-xs text-muted-foreground">Pick a slot convenient for you</p>
+            </div>
+            <div className="flex justify-center bg-card rounded-3xl p-3 border border-border shadow-sm">
               <Calendar 
                 mode="single" 
                 selected={selectedDate} 
                 onSelect={setSelectedDate} 
-                className="rounded-3xl border-border shadow-sm"
+                className="rounded-3xl border-none shadow-none p-0"
               />
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              {TIME_SLOTS.map(t => (
-                <button 
-                  key={t}
-                  onClick={() => setSelectedTime(t)}
-                  className={cn(
-                    "py-4 px-2 rounded-xl text-xs font-bold transition-all border",
-                    selectedTime === t ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-foreground border-border hover:border-secondary"
-                  )}
-                >
-                  {t}
-                </button>
-              ))}
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-3">Available Time Slots</span>
+              <div className="grid grid-cols-3 gap-3">
+                {TIME_SLOTS.map(t => (
+                  <button 
+                    key={t}
+                    onClick={() => handleTimeSelect(t)}
+                    className={cn(
+                      "py-4 px-2 rounded-xl text-xs font-bold transition-all border",
+                      selectedTime === t ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-foreground border-border hover:border-secondary"
+                    )}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
             </div>
-            <Button 
-              disabled={!selectedTime}
-              onClick={() => setStep(3)}
-              className="w-full py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
-            >
-              Continue
-            </Button>
+            <div className="flex gap-4">
+              <Button 
+                variant="outline"
+                onClick={() => setStep(1)}
+                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium"
+              >
+                Back
+              </Button>
+              <Button 
+                disabled={!selectedTime}
+                onClick={() => setStep(3)}
+                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
+              >
+                Continue
+              </Button>
+            </div>
           </div>
         )}
 
         {step === 3 && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-3xl font-serif font-medium mb-6">Payment</h2>
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div>
+              <h2 className="text-3xl font-serif font-medium mb-2">Secure Checkout</h2>
+              <p className="text-xs text-muted-foreground">Choose your payment mode</p>
+            </div>
             <div className="space-y-4">
               <div 
-                onClick={() => setPaymentMethod('pay_at_salon')}
+                onClick={() => {
+                  setPaymentMethod('pay_at_salon');
+                  showSuccess("Pay at salon option selected.");
+                }}
                 className={cn(
                   "p-5 rounded-2xl border-2 cursor-pointer flex items-center gap-4 transition-all",
                   paymentMethod === 'pay_at_salon' ? "border-secondary bg-secondary/10 shadow-md" : "border-transparent bg-card border-border hover:border-secondary/50"
@@ -181,7 +273,10 @@ const BookingFlow = () => {
                 {paymentMethod === 'pay_at_salon' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
               </div>
               <div 
-                onClick={() => setPaymentMethod('upi')}
+                onClick={() => {
+                  setPaymentMethod('upi');
+                  showSuccess("UPI Instant Payment option selected.");
+                }}
                 className={cn(
                   "p-5 rounded-2xl border-2 cursor-pointer flex items-center gap-4 transition-all",
                   paymentMethod === 'upi' ? "border-secondary bg-secondary/10 shadow-md" : "border-transparent bg-card border-border hover:border-secondary/50"
@@ -197,7 +292,10 @@ const BookingFlow = () => {
                 {paymentMethod === 'upi' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
               </div>
               <div 
-                onClick={() => setPaymentMethod('card')}
+                onClick={() => {
+                  setPaymentMethod('card');
+                  showSuccess("Credit Card Checkout selected.");
+                }}
                 className={cn(
                   "p-5 rounded-2xl border-2 cursor-pointer flex items-center gap-4 transition-all",
                   paymentMethod === 'card' ? "border-secondary bg-secondary/10 shadow-md" : "border-transparent bg-card border-border hover:border-secondary/50"
@@ -213,12 +311,21 @@ const BookingFlow = () => {
                 {paymentMethod === 'card' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
               </div>
             </div>
-            <Button 
-              onClick={handleConfirm}
-              className="w-full py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
-            >
-              Confirm Booking
-            </Button>
+            <div className="flex gap-4">
+              <Button 
+                variant="outline"
+                onClick={() => setStep(2)}
+                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium"
+              >
+                Back
+              </Button>
+              <Button 
+                onClick={handleConfirm}
+                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
+              >
+                Confirm Booking
+              </Button>
+            </div>
           </div>
         )}
       </div>
