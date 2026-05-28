@@ -47,6 +47,9 @@ const NEARBY_SALONS = [
 const Home = () => {
   const navigate = useNavigate();
 
+  const heroImage = 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop';
+  const placeholder = '/placeholder.svg';
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
       {/* Top Header */}
@@ -60,7 +63,7 @@ const Home = () => {
             <Bell className="w-5 h-5" />
           </Button>
         </div>
-        
+
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
           <Input 
@@ -77,9 +80,10 @@ const Home = () => {
             <CarouselItem>
               <div className="relative h-64 rounded-[2rem] overflow-hidden group cursor-pointer shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop" 
+                  src={heroImage}
+                  alt="Featured Offer"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
                   className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                  alt="Offer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end px-6 pb-8">
                   <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest mb-3 shadow-lg">
@@ -102,7 +106,7 @@ const Home = () => {
       {/* Categories */}
       <section className="px-6 py-10">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-serif font-medium tracking-tight">Categories</h2>
+          <h2 className="text-2xl font-serif font-medium">Categories</h2>
           <Button variant="ghost" className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider">View All</Button>
         </div>
         <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
@@ -113,7 +117,7 @@ const Home = () => {
               onClick={() => navigate('/services')}
             >
               <div className="w-20 h-20 rounded-3xl overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-md group-hover:shadow-secondary/20">
-                <img src={cat.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={cat.label} />
+                <img src={cat.image} alt={cat.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <span className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-widest">
                 {cat.label}
@@ -126,18 +130,23 @@ const Home = () => {
       {/* Nearby Salons */}
       <section className="px-6 py-4 flex-1">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-serif font-medium tracking-tight">Nearby Salons</h2>
+          <h2 className="text-2xl font-serif font-medium">Nearby Salons</h2>
           <Button variant="ghost" className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider">See All</Button>
         </div>
         <div className="space-y-8">
           {NEARBY_SALONS.map((salon) => (
             <div 
-              key={salon.id} 
+              key={salon.id}
               onClick={() => navigate(`/salon/${salon.id}`)}
               className="group bg-card rounded-[2rem] overflow-hidden border border-border luxury-shadow cursor-pointer transition-all hover:border-secondary hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="relative h-52">
-                <img src={salon.image} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" alt={salon.name} />
+                <img 
+                  src={salon.image} 
+                  alt={salon.name}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                />
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-sm border border-border">
                   <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                   <span className="text-[11px] font-bold">{salon.rating}</span>
