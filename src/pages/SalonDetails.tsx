@@ -183,28 +183,195 @@ const SalonDetails = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* ... existing hero header, content, etc. ... */}
-
-      {/* ---------- Stand‑alone Promo‑Code Section ---------- */}
-      <div className="mb-6 p-4 rounded-3xl bg-card border border-border/50 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <Ticket className="w-4 h-4 text-secondary" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Promo Code</h3>
-        </div>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter code (e.g. LUXE20)"
-            value={promoInput}
-            onChange={(e) => setPromoInput(e.target.value)}
-            className="flex-1 rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
-          />
-          <Button
-            variant="outline"
-            onClick={handleApplyPromo}
-            className="rounded-2xl bg-primary text-primary-foreground px-5 py-2 text-sm hover:bg-primary/90"
+      {/* Top Navigation */}
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-6 py-4">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate(-1)}
+            className="rounded-full bg-card/50 border border-border/50"
           >
-            Apply          </Button>
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
+          <h2 className="text-lg font-serif font-medium">{salon.name}</h2>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            className="rounded-full bg-card/50 border border-border/50"
+          >
+            <Heart className="w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Hero Image Carousel */}
+      <div className="relative h-80 w-full overflow-hidden">
+        <ImageWithFallback 
+          src={salon.images[activeImageIdx]} 
+          alt={salon.name}
+          className="h-full w-full object-cover transition-transform duration-1000" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        
+        {/* Image Navigation */}
+        <button 
+          onClick={prevImage}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button 
+          onClick={nextImage}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+
+        {/* Image Indicators */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {salon.images.map((_, idx) => (
+            <div 
+              key={idx}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all",
+                idx === activeImageIdx ? "bg-white w-6" : "bg-white/40"
+              )}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Salon Info */}
+      <div className="px-6 py-6 space-y-4">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-serif font-medium text-foreground">{salon.name}</h1>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-secondary fill-secondary" />
+                <span className="font-bold text-foreground">{salon.rating}</span>
+                <span className="text-muted-foreground text-sm">({salon.reviews} reviews)</span>
+              </div>
+            </div>
+          </div>
+          <Badge className="bg-secondary/20 text-secondary font-bold px-3 py-1 rounded-full">
+            <Sparkles className="w-3 h-3 mr-1" />
+            Premium
+          </Badge>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 text-sm">
+            <MapPin className="w-4 h-4 text-secondary flex-shrink-0" />
+            <span className="text-muted-foreground">{salon.address}</span>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <Clock className="w-4 h-4 text-secondary flex-shrink-0" />
+            <span className="text-muted-foreground">{salon.timing}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Services Section */}
+      <div className="px-6 py-4">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-serif font-medium">Services</h3>
+          <div className="flex gap-2">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={cn(
+                  "px-3 py-1.5 rounded-xl text-xs font-bold transition-all",
+                  activeCategory === cat 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-card border border-border text-muted-foreground"
+                )}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {filteredServices.map((service) => {
+            const isSelected = selectedServices.includes(service.id);
+            return (
+              <div 
+                key={service.id}
+                onClick={() => toggleService(service.id, service.name)}
+                className={cn(
+                  "flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer",
+                  isSelected 
+                    ? "border-secondary bg-secondary/10" 
+                    : "border-border bg-card hover:border-secondary/50"
+                )}
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium text-foreground">{service.name}</h4>
+                  <p className="text-xs text-muted-foreground">{service.duration}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-primary">₹{service.price}</span>
+                  <div className={cn(
+                    "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                    isSelected ? "border-secondary bg-secondary" : "border-border"
+                  )}>
+                    {isSelected && <Check className="w-4 h-4 text-primary" />}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Staff Section */}
+      <div className="px-6 py-4">
+        <h3 className="text-lg font-serif font-medium mb-4">Our Specialists</h3>
+        <div className="space-y-3">
+          {salon.staff.map((staff) => (
+            <div key={staff.id} className="flex items-center gap-4 p-3 rounded-2xl bg-card border border-border">
+              <img 
+                src={staff.image} 
+                alt={staff.name}
+                className="w-14 h-14 rounded-full object-cover"
+              />
+              <div className="flex-1">
+                <span className="font-medium block text-foreground">{staff.name}</span>
+                <span className="text-xs text-muted-foreground">{staff.role}</span>
+                <span className="text-xs text-secondary font-bold">{staff.exp} experience</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Stand-alone Promo Code Section */}
+      <div className="px-6 py-4">
+        <div className="p-4 rounded-3xl bg-card border border-border/50 shadow-sm">
+          <div className="flex items-center gap-2 mb-2">
+            <Ticket className="w-4 h-4 text-secondary" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Promo Code</h3>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter code (e.g. LUXE20)"
+              value={promoInput}
+              onChange={(e) => setPromoInput(e.target.value)}
+              className="flex-1 rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
+            />
+            <Button
+              variant="outline"
+              onClick={handleApplyPromo}
+              className="rounded-2xl bg-primary text-primary-foreground px-5 py-2 text-sm hover:bg-primary/90"
+            >
+              Apply
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -222,22 +389,12 @@ const SalonDetails = () => {
             </div>
           </div>
 
-          {/* NEW: Bottom promo‑code input & button */}
-          <div className="mt-2 flex flex-col gap-1">
-            <input              type="text"
-              placeholder="Enter promo code (e.g. LUXE20)"
-              value={bottomCouponInput}
-              onChange={(e) => setBottomCouponInput(e.target.value)}
-              className="w-full rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
-            />
-            <Button
-              variant="outline"
-              onClick={handleApplyBottomCoupon}
-              className="w-full rounded-2xl bg-primary text-primary-foreground text-sm hover:bg-primary/90"
-            >
-              Apply
-            </Button>
-          </div>
+          <Button 
+            onClick={() => navigate('/book')}
+            className="rounded-2xl bg-secondary text-primary font-bold px-6 py-3 hover:bg-secondary/90"
+          >
+            Book Now
+          </Button>
         </div>
       </div>
     </div>
