@@ -15,18 +15,25 @@ const STYLISTS = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
+// Expanded lookup to handle both direct service IDs and salon-specific IDs
 const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string, image: string }> = {
-  'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min', image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=600&auto=format&fit=crop' },
-  'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=600&auto=format&fit=crop' },
-  'hair_3': { name: 'Keratin Infusion', price: '1800', duration: '120 min', image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=600&auto=format&fit=crop' },
-  'skin_1': { name: 'Cellular Glow Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop' },
-  'skin_2': { name: 'Diamond Polishing', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=600&auto=format&fit=crop' },
-  'nail_1': { name: 'Luxe Manicure', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=600&auto=format&fit=crop' },
-  'nail_2': { name: 'Spa Pedicure', price: '699', duration: '60 min', image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=600&auto=format&fit=crop' },
-  'makeup_1': { name: 'Elite Glamour Look', price: '2999', duration: '90 min', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=600&auto=format&fit=crop' },
-  'makeup_2': { name: 'Bridal Artistry', price: '5500', duration: '150 min', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop' },
-  'spa_1': { name: 'Deep Tissue Relief', price: '1899', duration: '90 min', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=600&auto=format&fit=crop' },
-  'spa_2': { name: 'Aroma Zen Therapy', price: '1499', duration: '60 min', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop' },
+  'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop' },
+  'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop' },
+  'hair_3': { name: 'Keratin Infusion', price: '1800', duration: '120 min', image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=800&auto=format&fit=crop' },
+  'skin_1': { name: 'Cellular Glow Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' },
+  'skin_2': { name: 'Diamond Polishing', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop' },
+  'nail_1': { name: 'Luxe Manicure', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop' },
+  'nail_2': { name: 'Spa Pedicure', price: '699', duration: '60 min', image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=800&auto=format&fit=crop' },
+  'makeup_1': { name: 'Elite Glamour Look', price: '2999', duration: '90 min', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=800&auto=format&fit=crop' },
+  'makeup_2': { name: 'Bridal Artistry', price: '5500', duration: '150 min', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop' },
+  'spa_1': { name: 'Deep Tissue Relief', price: '1899', duration: '90 min', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop' },
+  'spa_2': { name: 'Aroma Zen Therapy', price: '1499', duration: '60 min', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop' },
+  // Mapping for IDs from SalonDetails
+  's1': { name: 'Signature Haircut', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop' },
+  's2': { name: 'Balayage Color', price: '2499', duration: '120 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop' },
+  's3': { name: 'Luxury Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' },
+  's4': { name: 'Royal Manicure', price: '699', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop' },
+  's5': { name: 'Glow Skincare Ritual', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop' },
 };
 
 const BookingFlow = () => {

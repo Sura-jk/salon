@@ -24,7 +24,7 @@ const INITIAL_BOOKINGS = [
     time: '10:00 AM',
     status: 'upcoming',
     price: '850',
-    image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=600&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: 'b2',
@@ -35,7 +35,7 @@ const INITIAL_BOOKINGS = [
     time: '02:00 PM',
     status: 'completed',
     price: '1299',
-    image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop'
   }
 ];
 
@@ -54,7 +54,7 @@ const Bookings = () => {
     setAllBookings(updated);
     const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
     localStorage.setItem('user_bookings', JSON.stringify(stored.filter((b: any) => b.id !== bookingId)));
-    showSuccess(`Cancelled "${serviceName}"`);
+    showSuccess(`Cancelled appointment for "${serviceName}"`);
   };
 
   const filteredBookings = allBookings.filter((booking) => booking.status === activeTab);
@@ -71,7 +71,6 @@ const Bookings = () => {
           <p className="text-muted-foreground text-sm mt-1">Manage your luxury beauty experiences</p>
         </header>
 
-        {/* Improved Tab Controls with clearer hover states */}
         <div className="flex p-1.5 bg-card border border-border/50 rounded-2xl mb-8">
           <button 
             onClick={() => setActiveTab('upcoming')}
@@ -104,20 +103,20 @@ const Bookings = () => {
                 key={booking.id} 
                 className="group p-0 overflow-hidden border-border/40 rounded-[2.5rem] luxury-shadow bg-card animate-in slide-in-from-bottom-6 duration-700 hover:border-secondary/30 transition-all"
               >
-                <div className="relative h-60 overflow-hidden">
+                <div className="relative h-64 overflow-hidden">
                   <ImageWithFallback 
                     src={booking.image} 
                     alt={booking.serviceName} 
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   
                   <div className="absolute top-6 right-6">
                     <Badge className={cn(
                       "text-[10px] uppercase font-black px-4 py-2 rounded-full border-none shadow-lg backdrop-blur-md",
                       booking.status === 'upcoming' 
                         ? "bg-secondary text-primary" 
-                        : "bg-black/60 text-white"
+                        : "bg-white/20 text-white"
                     )}>
                       {booking.status}
                     </Badge>
@@ -170,7 +169,7 @@ const Bookings = () => {
                   <div className="flex items-center justify-between pt-6 border-t border-border/40">
                     <div className="flex flex-col">
                       <span className="text-[9px] uppercase font-extrabold text-muted-foreground tracking-[0.2em] mb-1">Total Fee</span>
-                      <span className="text-2xl font-black text-primary">₹{booking.price}</span>
+                      <span className="text-2xl font-black text-primary">{booking.price}</span>
                     </div>
                     
                     <div className="flex gap-2.5">
