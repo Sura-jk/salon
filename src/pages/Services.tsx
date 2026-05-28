@@ -108,7 +108,7 @@ const Services = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div_
+    </div>
   );
 };
 
