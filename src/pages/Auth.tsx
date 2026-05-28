@@ -11,14 +11,14 @@ const Auth = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you'd validate credentials here
+    // Simulate authentication
     navigate('/');
   };
 
   return (
     <div className="min-h-screen w-full bg-background flex flex-col justify-center items-center px-6 py-12">
       <div className="w-full max-w-md flex flex-col">
-        {/* Brand Icon */}
+        {/* Brand Identity Icon */}
         <div className="flex justify-center mb-8 animate-in zoom-in duration-500">
           <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center shadow-xl shadow-secondary/20">
             <Sparkles className="w-8 h-8 text-primary" />
@@ -37,6 +37,7 @@ const Auth = () => {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-4">
+              {/* Email Input */}
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input 
@@ -48,6 +49,8 @@ const Auth = () => {
                   required 
                 />
               </div>
+
+              {/* Password Input */}
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input 
@@ -85,6 +88,7 @@ const Auth = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Social Logins - strictly Google and Apple */}
             <Button 
               variant="outline" 
               className="py-6 rounded-2xl border-border hover:bg-muted flex items-center justify-center gap-2 font-medium text-xs sm:text-sm"
