@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
@@ -258,24 +264,31 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Expertise Categories Selection Slider */}
+      {/* Expertise Categories Selection Slider with Navigation Arrows */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
-        <div className="flex justify-between items-end mb-6">
-          <div>
-            <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
-            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Select your service style</p>
+        <Carousel className="w-full relative">
+          <div className="flex justify-between items-end mb-6">
+            <div>
+              <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
+              <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Select your service style</p>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/services')}
+                className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
+              >
+                All Services
+              </Button>
+              {/* Elegant Navigation Arrows */}
+              <div className="flex gap-1.5">
+                <CarouselPrevious className="static translate-y-0 h-8 w-8 rounded-full border border-border/60 bg-card/40 backdrop-blur-md hover:bg-secondary/20 hover:text-primary transition-all text-secondary" />
+                <CarouselNext className="static translate-y-0 h-8 w-8 rounded-full border border-border/60 bg-card/40 backdrop-blur-md hover:bg-secondary/20 hover:text-primary transition-all text-secondary" />
+              </div>
+            </div>
           </div>
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/services')}
-            className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
-          >
-            All Services
-          </Button>
-        </div>
-        
-        {/* Single Slider (Carousel) for circular category tags */}
-        <Carousel className="w-full">
+          
           <CarouselContent className="-ml-2">
             {CATEGORIES.map((cat) => (
               <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
