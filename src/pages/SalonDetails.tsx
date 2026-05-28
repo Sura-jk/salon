@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, MapPin, Clock, ChevronLeft, Plus, Check, Sparkles, Filter } from 'lucide-react';
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
@@ -39,6 +39,7 @@ const SalonDetails = () => {
   const salon = SALON_DATA[id as keyof typeof SALON_DATA] || SALON_DATA.salon1;
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [activeImageIdx, setActiveImageIdx] = useState(0);
 
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
@@ -52,6 +53,16 @@ const SalonDetails = () => {
         return [...prev, serviceId];
       }
     });
+  };
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveImageIdx((prev) => (prev + 1) % salon.images.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveImageIdx((prev) => (prev - 1 + salon.images.length) % salon.images.length);
   };
 
   const filteredServices = activeCategory === 'All' 
@@ -71,23 +82,61 @@ const SalonDetails = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32">
-      {/* Hero Header Gallery */}
-      <div className="relative h-80 w-full overflow-hidden">
-        <ImageWithFallback 
-          src={salon.images[0]} 
-          alt={salon.name} 
-          className="h-full w-full object-cover transition-transform duration-1000 scale-100 hover:scale-105" 
-        />
+      {/* Hero Header Gallery Slider */}
+      <div className="relative h-80 w-full overflow-hidden bg-muted group">
+        <div className="w-full h-full relative">
+          <ImageWithFallback 
+            src={salon.images[activeImageIdx]} 
+            alt={`${salon.name} view ${activeImageIdx + 1}`} 
+            className="h-full w-full object-cover transition-all duration-700 ease-in-out scale-100 group-hover:scale-105" 
+          />
+        </div>
+
+        {/* Back Button Overlay */}
         <div className="absolute top-6 left-6 z-20">
           <Button 
             variant="outline" 
             onClick={() => navigate(-1)}
-            className="rounded-full bg-white/90 backdrop-blur p-2 h-10 w-10 border-none shadow-lg hover:scale-105 transition-transform"
+            className="rounded-full bg-white/95 backdrop-blur p-2 h-10 w-10 border-none shadow-lg hover:scale-105 transition-transform"
           >
             <ChevronLeft className="w-5 h-5 text-primary" />
           </Button>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-transparent" />
+
+        {/* Left & Right Interactive Navigation Chevrons */}
+        <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between items-center pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button 
+            onClick={prevImage}
+            className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto hover:bg-black/60 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button 
+            onClick={nextImage}
+            className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white pointer-events-auto hover:bg-black/60 transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Dynamic Gallery Progress Dots */}
+        <div className="absolute bottom-16 left-0 right-0 z-20 flex justify-center gap-2">
+          {salon.images.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveImageIdx(idx);
+              }}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                idx === activeImageIdx ? "w-6 bg-secondary" : "w-1.5 bg-white/60 hover:bg-white"
+              )}
+            />
+          ))}
+        </div>
+
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-transparent pointer-events-none" />
       </div>
 
       {/* Main Info Section */}
@@ -218,7 +267,7 @@ const SalonDetails = () => {
                     alt={member.name}
                     className="w-20 h-20 rounded-full object-cover border-2 border-secondary/40 p-1 group-hover:border-secondary transition-all duration-500" 
                   />
-                  <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full shadow" />
+                  <div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full shadow animate-pulse" />
                 </div>
                 <div className="text-center">
                   <span className="text-xs font-bold block text-foreground leading-tight">{member.name}</span>
@@ -230,7 +279,7 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Floating Bottom Booking Checkout Sheet (Fixed UX flow) */}
+      {/* Floating Bottom Booking Checkout Sheet */}
       <div className={cn(
         "fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/95 to-transparent z-50 transition-all duration-500 ease-in-out transform",
         selectedServices.length > 0 ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none"
