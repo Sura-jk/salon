@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Chrome, Apple } from 'lucide-react';
+import { Phone, Apple, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -67,7 +67,7 @@ const Auth = () => {
                   variant="outline" 
                   className="py-6 rounded-2xl border-border hover:bg-muted flex items-center justify-center gap-2 font-medium text-xs sm:text-sm"
                 >
-                  <Chrome className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
                   Google
                 </Button>
                 <Button 
