@@ -106,6 +106,15 @@ const SalonDetails = () => {
 
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
+  const handleBack = () => {
+    // If we have history entries to go back to, go back. Otherwise go to Home "/" safely.
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/', { replace: true });
+    }
+  };
+
   const toggleService = (serviceId: string, serviceName: string) => {
     setSelectedServices(prev => {
       const isSelected = prev.includes(serviceId);
@@ -175,7 +184,7 @@ const SalonDetails = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0"
           >
             <ChevronLeft className="w-4 h-4" />
