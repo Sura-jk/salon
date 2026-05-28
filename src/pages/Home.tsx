@@ -218,11 +218,11 @@ const Home = () => {
               onClick={() => navigate(`/salon/${salon.id}`)}
               className="group relative bg-card rounded-[2.5rem] overflow-hidden border border-border/40 luxury-shadow cursor-pointer transition-all hover:border-secondary/40 hover:-translate-y-2"
             >
-              <div className="relative h-60">
+              <div className="relative h-60 overflow-hidden rounded-t-[2.5rem]">
                 <ImageWithFallback 
                   src={salon.image} 
                   alt={salon.name}
-                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-t-[2.5rem]" 
                 />
                 <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-xl border border-white/20">
                   <Star className="w-3 h-3 text-secondary fill-secondary" />
