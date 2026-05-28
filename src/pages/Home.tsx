@@ -60,13 +60,13 @@ const CATEGORIES = [
     id: 'hair', 
     label: 'Hair Artistry', 
     description: 'Sculpt & Style',
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=200&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=300&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
     label: 'Royal Nails', 
     description: 'Manicures & Art',
-    image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=200&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=300&auto=format&fit=crop' 
   },
   { 
     id: 'skincare', 
@@ -430,7 +430,7 @@ const Home = () => {
                     className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-t-[2.5rem]" 
                   />
                   <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-xl border border-white/20">
-                    <Star className="w-3 h-3 text-secondary fill-secondary" />
+                    <Star className="w-3.5 h-3.5 text-secondary fill-secondary" />
                     <span className="text-[11px] font-black text-primary">{salon.rating}</span>
                   </div>
                   
