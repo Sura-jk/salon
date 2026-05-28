@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ServiceCard from '@/components/ServiceCard';
-import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown, Wand2, Flower2 } from 'lucide-react';
+import { Scissors, Sparkles, Palette, Search, SlidersHorizontal, ArrowUpDown, Wand2, Flower2, ChevronLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,11 +14,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { showSuccess } from '@/utils/toast';
+import ImageWithFallback from '@/components/ImageWithFallback';
 
 const SERVICES_DATA = {
   hair: {
     label: 'Hair',
     icon: Scissors,
+    heroImage: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'hair_1', 
@@ -47,20 +49,12 @@ const SERVICES_DATA = {
         duration: '120 min',
         image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=600&auto=format&fit=crop'
       },
-      { 
-        id: 'hair_4', 
-        name: "Classic Grooming", 
-        description: 'Refined cut with an invigorating scalp massage and hot towel finish.', 
-        price: '₹600', 
-        numericPrice: 600,
-        duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop'
-      },
     ]
   },
   skincare: {
     label: 'Skincare',
     icon: Sparkles,
+    heroImage: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'skin_1', 
@@ -80,20 +74,12 @@ const SERVICES_DATA = {
         duration: '75 min',
         image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=600&auto=format&fit=crop'
       },
-      { 
-        id: 'skin_3', 
-        name: 'Age-Defying Ritual', 
-        description: 'Collagen-boosting therapy to target fine lines and improve elasticity.', 
-        price: '₹2100', 
-        numericPrice: 2100,
-        duration: '90 min',
-        image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop'
-      },
     ]
   },
   nails: {
     label: 'Nails',
     icon: Palette,
+    heroImage: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'nail_1', 
@@ -113,20 +99,12 @@ const SERVICES_DATA = {
         duration: '60 min',
         image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=600&auto=format&fit=crop'
       },
-      { 
-        id: 'nail_3', 
-        name: 'Aesthetic Nail Art', 
-        description: 'Custom hand-drawn illustrations and minimalist patterns.', 
-        price: '₹350', 
-        numericPrice: 350,
-        duration: '30 min',
-        image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=600&auto=format&fit=crop'
-      },
     ]
   },
   makeup: {
     label: 'Makeup',
     icon: Wand2,
+    heroImage: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'makeup_1', 
@@ -151,6 +129,7 @@ const SERVICES_DATA = {
   spa: {
     label: 'Spa',
     icon: Flower2,
+    heroImage: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'spa_1', 
@@ -183,7 +162,6 @@ const Services = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
 
-  // Sync tab with URL if it changes externally
   useEffect(() => {
     if (categoryParam && SERVICES_DATA[categoryParam as keyof typeof SERVICES_DATA]) {
       setActiveTab(categoryParam);
@@ -214,60 +192,69 @@ const Services = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-32 pt-12">
-      <div className="max-w-md mx-auto w-full px-6">
-        <header className="mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">The Collection</span>
-          <h1 className="text-4xl font-serif font-medium text-foreground tracking-tight">Luxury <br/>Treatments</h1>
-          <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-2">Curated by our masters</p>
-        </header>
-
-        <div className="flex gap-3 mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+    <div className="flex flex-col min-h-screen bg-background pb-32">
+      {/* Top Navigation Bar with Search */}
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/10 px-6 py-4">
+        <div className="max-w-md mx-auto flex items-center gap-3">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate('/')}
+            className="h-10 w-10 rounded-full hover:bg-muted"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-secondary transition-colors" />
             <Input 
-              placeholder="Find your treatment..." 
+              placeholder="Search treatments..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 py-7 rounded-2xl border-border/60 bg-card/40 backdrop-blur-md focus:ring-secondary shadow-sm transition-all text-sm font-medium" 
+              className="pl-10 h-11 rounded-2xl border-border/40 bg-card/50 focus:ring-secondary text-sm font-medium" 
             />
           </div>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="outline" 
-                className="h-[58px] w-[58px] rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center text-secondary hover:bg-secondary hover:text-primary-foreground hover:border-secondary transition-all duration-300 shadow-sm"
+                className="h-11 w-11 rounded-2xl border-border/40 bg-card/50 p-0 flex items-center justify-center text-secondary shadow-sm"
               >
-                <SlidersHorizontal className="w-5 h-5" />
+                <SlidersHorizontal className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48 rounded-2xl p-2 border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl" align="end">
-              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground px-3 py-2">Sort Options</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground px-3 py-2">Sort By Price</DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-border/40" />
               <DropdownMenuItem onClick={() => handleSort('asc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
-                <ArrowUpDown className="w-3.5 h-3.5" /> Price: Low to High
+                <ArrowUpDown className="w-3.5 h-3.5" /> Low to High
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleSort('desc')} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer focus:bg-secondary/10 focus:text-secondary flex items-center gap-2">
-                <ArrowUpDown className="w-3.5 h-3.5" /> Price: High to Low
+                <ArrowUpDown className="w-3.5 h-3.5" /> High to Low
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border/40" />
               <DropdownMenuItem onClick={() => { setSortOrder(null); showSuccess("Filters cleared"); }} className="rounded-xl px-3 py-3 text-sm font-medium cursor-pointer text-destructive focus:bg-destructive/10">
-                Clear Filters
+                Reset Filters
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+      </div>
+
+      <div className="max-w-md mx-auto w-full px-6 pt-8">
+        <header className="mb-8">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Luxury Selection</span>
+          <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">The Treatment Gallery</h1>
+        </header>
 
         <Tabs defaultValue="hair" value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="flex w-full bg-muted/40 p-1.5 rounded-2xl mb-12 backdrop-blur-md border border-border/50 overflow-x-auto no-scrollbar">
+          <TabsList className="flex w-full bg-muted/40 p-1.5 rounded-2xl mb-8 backdrop-blur-md border border-border/50 overflow-x-auto no-scrollbar justify-start sm:justify-between">
             {Object.entries(SERVICES_DATA).map(([key, value]) => {
               const Icon = value.icon;
               return (
                 <TabsTrigger 
                   key={key} 
                   value={key} 
-                  className="flex-1 rounded-xl transition-all duration-500 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg font-bold text-[10px] uppercase tracking-widest py-3 px-4 whitespace-nowrap"
+                  className="flex-shrink-0 sm:flex-1 rounded-xl transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl font-bold text-[10px] uppercase tracking-widest py-3 px-6"
                 >
                   <div className="flex items-center gap-2">
                     <Icon className="w-3.5 h-3.5" />
@@ -278,24 +265,36 @@ const Services = () => {
             })}
           </TabsList>
 
-          <TabsContent value={activeTab} className="space-y-6 mt-0 focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <TabsContent value={activeTab} className="space-y-8 mt-0 focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Category Banner Image */}
+            <div className="relative h-44 w-full rounded-3xl overflow-hidden shadow-xl">
+              <ImageWithFallback 
+                src={currentCategoryData.heroImage} 
+                alt={currentCategoryData.label} 
+                className="h-full w-full object-cover transition-transform duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+                <h2 className="text-white text-xl font-serif font-medium">{currentCategoryData.label} Collection</h2>
+                <p className="text-white/80 text-[10px] uppercase font-bold tracking-widest mt-1">Professional Care & Artistry</p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 gap-6">
               {filteredItems.length > 0 ? (
                 filteredItems.map((service) => (
-                  <div key={service.id} className="group transition-all duration-500 hover:-translate-y-1">
-                    <ServiceCard 
-                      name={service.name}
-                      description={service.description}
-                      price={service.price}
-                      duration={service.duration}
-                      category={currentCategoryData.label}
-                      image={service.image}
-                      onClick={() => navigate(`/book?service=${service.id}`)}
-                    />
-                  </div>
+                  <ServiceCard 
+                    key={service.id}
+                    name={service.name}
+                    description={service.description}
+                    price={service.price}
+                    duration={service.duration}
+                    category={currentCategoryData.label}
+                    image={service.image}
+                    onClick={() => navigate(`/book?service=${service.id}`)}
+                  />
                 ))
               ) : (
-                <div className="py-24 text-center">
+                <div className="py-20 text-center">
                   <Sparkles className="w-10 h-10 text-muted-foreground/20 mx-auto mb-4" />
                   <p className="text-muted-foreground font-serif italic text-sm">No treatments match your search criteria.</p>
                 </div>
