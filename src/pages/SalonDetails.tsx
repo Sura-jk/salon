@@ -303,20 +303,24 @@ const SalonDetails = () => {
           <h2 className="text-2xl font-serif font-medium mb-5">Master Stylists</h2>
           <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
             {salon.staff.map((member) => (
-              <div key={member.id} className="relative flex flex-col items-center flex-shrink-0">
-                {/* Oval portrait with overlay name */}
-                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-secondary/30 p-0.5 shadow-lg bg-card">
-                  <Avatar className="w-full h-full rounded-full">
-                    <AvatarImage src={member.image} alt={member.name} className="object-cover h-full w-full" />
-                    <AvatarFallback className="bg-secondary/10 text-secondary font-bold text-xs uppercase flex items-center justify-center h-full">
-                      {member.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  {/* Elegant bottom gradient shade to read the name */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
-                  {/* Name overlay inside the circle at the bottom */}
-                  <span className="absolute bottom-1.5 inset-x-0 text-[9px] font-black text-center text-white uppercase tracking-wider px-1">
+              <div key={member.id} className="flex flex-col items-center flex-shrink-0 gap-2 w-20">
+                {/* Clean round image portrait */}
+                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-secondary/30 p-[3px] shadow-lg bg-card">
+                  <div className="w-full h-full rounded-full overflow-hidden">
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                {/* Stylist Name & Role beautifully placed below the portrait */}
+                <div className="text-center">
+                  <span className="text-[11px] font-bold text-foreground block truncate max-w-[80px]">
                     {member.name.split(' ')[0]}
+                  </span>
+                  <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate max-w-[80px]">
+                    {member.role.split(' ')[0]}
                   </span>
                 </div>
               </div>
