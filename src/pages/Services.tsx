@@ -84,7 +84,7 @@ const SERVICES_DATA = {
         price: '₹499', 
         numericPrice: 499,
         duration: '45 min',
-        image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=600&auto=format&fit=crop'
       },
       { 
         id: 'nail_2', 
@@ -93,7 +93,7 @@ const SERVICES_DATA = {
         price: '₹699', 
         numericPrice: 699,
         duration: '60 min',
-        image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=600&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=600&auto=format&fit=crop'
       },
     ]
   },
