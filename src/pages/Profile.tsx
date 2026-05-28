@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  User, Settings, CreditCard, Heart, LogOut, Bell, 
-  ChevronRight, Crown, ChevronLeft, Save, Plus, Trash2, 
-  ToggleLeft as Toggle, MapPin, Star
+  User, Settings, Heart, LogOut, Bell, 
+  ChevronRight, Crown, ChevronLeft, Save, Plus, 
+  MapPin, Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,19 +12,19 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { showSuccess } from '@/utils/toast';
 import { cn } from '@/lib/utils';
-import ImageWithFallback from '@/components/ImageWithFallback';
 
-type TabId = 'personal' | 'payment' | 'favorites' | 'notifications' | 'settings' | null;
+type TabId = 'personal' | 'favorites' | 'notifications' | 'settings' | null;
 
 const Profile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>(null);
   const [points, setPoints] = useState(0);
   const [visits, setVisits] = useState(0);
-  const [paymentMethods, setPaymentMethods] = useState([
-    { id: 1, type: 'Visa', last4: '4242', expiry: '12/25', primary: true },
-    { id: 2, type: 'Mastercard', last4: '8812', expiry: '09/24', primary: false }
-  ]);
+
+  // Auto-scroll to top when active tab changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab]);
 
   useEffect(() => {
     const targetPoints = 1250;
@@ -37,11 +37,6 @@ const Profile = () => {
   const handleLogout = () => {
     showSuccess("Logged out successfully.");
     navigate('/auth');
-  };
-
-  const removePaymentMethod = (id: number) => {
-    setPaymentMethods(prev => prev.filter(m => m.id !== id));
-    showSuccess("Payment method removed.");
   };
 
   const renderHeader = (title: string) => (
@@ -90,47 +85,6 @@ const Profile = () => {
         </div>
         <Button className="w-full py-7 rounded-2xl bg-primary mt-8 mb-12 shadow-lg shadow-primary/20" onClick={() => { showSuccess("Profile updated!"); setActiveTab(null); }}>
           <Save className="w-4 h-4 mr-2" /> Save Changes
-        </Button>
-      </div>
-    </div>
-  );
-
-  const renderPayment = () => (
-    <div className="animate-in slide-in-from-right-4 duration-500">
-      {renderHeader("Payment Methods")}
-      <div className="space-y-4">
-        {paymentMethods.length > 0 ? (
-          paymentMethods.map((card) => (
-            <div key={card.id} className="p-5 rounded-2xl border border-border bg-card flex items-center justify-between group">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-8 bg-muted rounded flex items-center justify-center font-bold text-[10px] text-muted-foreground">
-                  {card.type}
-                </div>
-                <div>
-                  <span className="block font-bold text-sm">•••• {card.last4}</span>
-                  <span className="text-[10px] text-muted-foreground uppercase font-medium">Expires {card.expiry}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {card.primary && <Badge variant="outline" className="text-[8px] border-secondary text-secondary">Primary</Badge>}
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => removePaymentMethod(card.id)}
-                  className="h-8 w-8 text-destructive hover:bg-destructive/10 rounded-full"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="py-12 text-center text-muted-foreground">
-            <p className="text-sm italic">No payment methods saved.</p>
-          </div>
-        )}
-        <Button variant="outline" className="w-full py-7 rounded-2xl border-dashed border-border text-muted-foreground hover:bg-muted mb-12">
-          <Plus className="w-4 h-4 mr-2" /> Add New Card
         </Button>
       </div>
     </div>
@@ -190,14 +144,12 @@ const Profile = () => {
 
   const menuItems = [
     { id: 'personal', icon: User, label: 'Personal Information', description: 'Manage your profile and details' },
-    { id: 'payment', icon: CreditCard, label: 'Payment Methods', description: 'Manage your saved cards' },
     { id: 'favorites', icon: Heart, label: 'Favorite Salons', description: 'Your curated list of studios' },
     { id: 'notifications', icon: Bell, label: 'Notifications', description: 'Manage your alerts' },
     { id: 'settings', icon: Settings, label: 'App Settings', description: 'Preferences and security' },
   ];
 
   if (activeTab === 'personal') return <div className="p-6 pb-40 max-w-md mx-auto">{renderPersonalInfo()}</div>;
-  if (activeTab === 'payment') return <div className="p-6 pb-40 max-w-md mx-auto">{renderPayment()}</div>;
   if (activeTab === 'favorites') return <div className="p-6 pb-40 max-w-md mx-auto">{renderFavorites()}</div>;
   if (activeTab === 'notifications') return <div className="p-6 pb-40 max-w-md mx-auto">{renderNotifications()}</div>;
   if (activeTab === 'settings') return <div className="p-6 pb-40 max-w-md mx-auto animate-in slide-in-from-right-4 duration-500">{renderHeader("App Settings")}<div className="p-10 text-center"><p className="text-muted-foreground italic">Security and preference settings coming in v2.0</p></div></div>;
