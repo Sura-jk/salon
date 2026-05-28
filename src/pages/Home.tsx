@@ -69,8 +69,8 @@ const CATEGORIES = [
     image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=200&auto=format&fit=crop' 
   },
   { 
-    id: 'spa', 
-    label: 'Spa & Wellness', 
+    id: 'skincare', 
+    label: 'Skincare', 
     description: 'Stone Rituals',
     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=200&auto=format&fit=crop' 
   },
@@ -139,6 +139,11 @@ const Home = () => {
     navigate('/salon/salon1');
   };
 
+  const handleCategoryClick = (categoryId: string) => {
+    // Correctly map category to Services page filter
+    navigate(`/services?category=${categoryId}`);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden">
       {/* Top Header */}
@@ -174,14 +179,18 @@ const Home = () => {
               className="pl-12 py-7 rounded-2xl border-border/60 bg-card/40 backdrop-blur-md focus:ring-secondary shadow-sm transition-all text-sm font-medium" 
             />
           </div>
-          <Button variant="outline" className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all">
+          <Button 
+            variant="outline" 
+            className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all"
+            onClick={() => navigate('/services')}
+          >
             <SlidersHorizontal className="w-5 h-5 text-secondary" />
           </Button>
         </div>
       </section>
 
       {/* Circle Previews (Master Artists Stories UI) */}
-      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-4 h-4 text-secondary" />
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Master Artists Spotlight</h2>
@@ -287,7 +296,7 @@ const Home = () => {
               {CATEGORIES.map((cat) => (
                 <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
                   <div 
-                    onClick={() => navigate('/services')}
+                    onClick={() => handleCategoryClick(cat.id)}
                     className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
                   >
                     <div className="w-11 h-11 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
@@ -301,7 +310,7 @@ const Home = () => {
                       <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight truncate">
                         {cat.label}
                       </span>
-                      <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate">
+                      <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate text-balance">
                         {cat.description}
                       </span>
                     </div>
