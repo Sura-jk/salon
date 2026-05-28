@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -132,6 +132,17 @@ const Home = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTag, setSelectedTag] = useState('All');
 
+  // Master Artists spotlight slide state
+  const artistsScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollArtists = (dir: 'left' | 'right') => {
+    if (artistsScrollRef.current) {
+      const scrollAmount = 240; // Approx width of 3 artist stories
+      const delta = dir === 'left' ? -scrollAmount : scrollAmount;
+      artistsScrollRef.current.scrollBy({ left: delta, behavior: 'smooth' });
+    }
+  };
+
   const handleClaimOffer = () => {
     const toastId = showLoading("Activating Summer promo discount...");
     setTimeout(() => {
@@ -232,7 +243,7 @@ const Home = () => {
                 onClick={() => handleTagSelect(tag)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border whitespace-nowrap ${
                   selectedTag === tag 
-                    ? 'bg-primary text-primary-foreground border-primary shadow-md' 
+                    ? 'bg-primary text-primary-foreground' 
                     : 'bg-card border-border/60 text-muted-foreground hover:border-secondary'
                 }`}
               >
@@ -243,51 +254,75 @@ const Home = () => {
         )}
       </section>
 
-      {/* Circle Previews (Master Artists Stories UI) */}
-      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155">
+      {/* Circle Previews (Master Artists Stories UI with Navigation Arrows) */}
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155 relative group/artists">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-4 h-4 text-secondary" />
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Master Artists Spotlight</h2>
         </div>
         
-        <div className="flex gap-5 overflow-x-auto pb-2 no-scrollbar scroll-smooth">
-          {MASTER_ARTISTS.map((artist) => (
-            <div 
-              key={artist.id}
-              onClick={() => handleArtistClick(artist.name, artist.role)}
-              className="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer group"
-            >
-              <div className="relative">
-                {/* Gold glowing ring for active state */}
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center p-[3px] transition-all duration-500 group-hover:scale-105 ${
-                  artist.active 
-                    ? 'bg-gradient-to-tr from-secondary via-secondary/70 to-secondary/30 animate-pulse-slow' 
-                    : 'bg-border/60'
-                }`}>
-                  <div className="w-full h-full rounded-full overflow-hidden border-2 border-background bg-muted">
-                    <img 
-                      src={artist.image} 
-                      alt={artist.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
+        {/* Relative container holding horizontal scroll + hover arrows */}
+        <div className="relative">
+          {/* Slide Left Button */}
+          <button 
+            onClick={() => scrollArtists('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md opacity-0 group-hover/artists:opacity-100"
+            aria-label="Slide artists left"
+          >
+            <ChevronLeft className="w-3.5 h-3.5 stroke-[2]" />
+          </button>
+
+          {/* Slide Right Button */}
+          <button 
+            onClick={() => scrollArtists('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md opacity-0 group-hover/artists:opacity-100"
+            aria-label="Slide artists right"
+          >
+            <ChevronRight className="w-3.5 h-3.5 stroke-[2]" />
+          </button>
+
+          <div 
+            ref={artistsScrollRef}
+            className="flex gap-5 overflow-x-auto pb-2 no-scrollbar scroll-smooth"
+          >
+            {MASTER_ARTISTS.map((artist) => (
+              <div 
+                key={artist.id}
+                onClick={() => handleArtistClick(artist.name, artist.role)}
+                className="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer group"
+              >
+                <div className="relative">
+                  {/* Gold glowing ring for active state */}
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center p-[3px] transition-all duration-500 group-hover:scale-105 ${
+                    artist.active 
+                      ? 'bg-gradient-to-tr from-secondary via-secondary/70 to-secondary/30 animate-pulse-slow' 
+                      : 'bg-border/60'
+                  }`}>
+                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-background bg-muted">
+                      <img 
+                        src={artist.image} 
+                        alt={artist.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
                   </div>
+                  {artist.active && (
+                    <span className="absolute bottom-0 right-1 w-4.5 h-4.5 rounded-full bg-secondary text-[8px] text-primary-foreground font-black flex items-center justify-center border-2 border-background shadow">
+                      ★
+                    </span>
+                  )}
                 </div>
-                {artist.active && (
-                  <span className="absolute bottom-0 right-1 w-4.5 h-4.5 rounded-full bg-secondary text-[8px] text-primary-foreground font-black flex items-center justify-center border-2 border-background shadow">
-                    ★
+                <div className="text-center">
+                  <span className="text-[11px] font-bold text-foreground block group-hover:text-secondary transition-colors leading-tight">
+                    {artist.shortName}
                   </span>
-                )}
+                  <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block">
+                    {artist.role.split(' ')[0]}
+                  </span>
+                </div>
               </div>
-              <div className="text-center">
-                <span className="text-[11px] font-bold text-foreground block group-hover:text-secondary transition-colors leading-tight">
-                  {artist.shortName}
-                </span>
-                <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block">
-                  {artist.role.split(' ')[0]}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
