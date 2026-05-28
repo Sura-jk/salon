@@ -40,8 +40,8 @@ const SALON_DATA = {
     timing: '08:00 AM - 09:00 PM',
     images: [
       'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
@@ -168,11 +168,17 @@ const SalonDetails = () => {
           alt={salon.name} 
           className="h-full w-full object-cover transition-all duration-700 ease-in-out scale-100 group-hover:scale-105" 
         />
-        <div className="absolute top-6 left-6 z-20">
+        <div className="absolute top-6 left-6 z-50">
           <Button 
             variant="outline" 
-            onClick={() => navigate(-1)}
-            className="rounded-full bg-white/95 backdrop-blur p-2 h-10 w-10 border-none shadow-lg"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+              } else {
+                navigate('/');
+              }
+            }}
+            className="rounded-full bg-white/95 backdrop-blur p-2 h-10 w-10 border-none shadow-lg flex items-center justify-center cursor-pointer pointer-events-auto hover:bg-white"
           >
             <ChevronLeft className="w-5 h-5 text-primary" />
           </Button>
