@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import ServiceCard from '@/components/ServiceCard';
 import { 
   Scissors, Sparkles, Palette, Search, SlidersHorizontal, 
-  ArrowUpDown, Wand2, Flower2, ChevronLeft, Clock, Info, Check, CornerDownRight 
+  ArrowUpDown, Wand2, Flower2, ChevronLeft, Clock, Info, Check, CornerDownRight, Ticket, Tag
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,11 @@ import {
 import { showSuccess } from '@/utils/toast';
 import { cn } from '@/lib/utils';
 import ImageWithFallback from '@/components/ImageWithFallback';
+
+const AVAILABLE_PROMOS = [
+  { code: 'LUXE20', description: '20% Off', percent: 20 },
+  { code: 'WELCOME10', description: '10% New User', percent: 10 }
+];
 
 // Rich extra details for each premium service
 const SERVICE_RICH_DETAILS: Record<string, {
@@ -254,6 +259,8 @@ const Services = () => {
 
   // Selected treatment for premium detail popup modal
   const [selectedDetailService, setSelectedDetailService] = useState<ServiceItem | null>(null);
+  const [promoInput, setPromoInput] = useState('');
+  const [activeDiscount, setActiveDiscount] = useState<{code: string, percent: number} | null>(null);
 
   useEffect(() => {
     if (categoryParam && SERVICES_DATA[categoryParam as keyof typeof SERVICES_DATA]) {
@@ -284,7 +291,17 @@ const Services = () => {
     });
   }
 
-  // Generate luxury mock fallbacks if specific rich details aren't mapped
+  const handleApplyPromo = () => {
+    const code = promoInput.trim().toUpperCase();
+    const match = AVAILABLE_PROMOS.find(p => p.code === code);
+    if (match) {
+      setActiveDiscount(match);
+      showSuccess(`Coupon "${match.code}" applied! ${match.percent}% off.`);
+    } else {
+      showSuccess("Invalid promo code.");
+    }
+  };
+
   const getRichDetails = (id: string) => {
     return SERVICE_RICH_DETAILS[id] || {
       benefits: ['Premium quality organic components', 'Aromatic essential oils sensory treatment', 'Tailored to personal comfort levels'],
@@ -385,7 +402,11 @@ const Services = () => {
                   duration={service.duration}
                   category={currentCategoryData.label}
                   image={service.image}
-                  onClick={() => setSelectedDetailService(service)}
+                  onClick={() => {
+                    setSelectedDetailService(service);
+                    setActiveDiscount(null);
+                    setPromoInput('');
+                  }}
                 />
               ))
             ) : (
@@ -398,7 +419,7 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Deluxe Treatment Details Modal */}
+      {/* Deluxe Treatment Details Modal with Coupon Option */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
         <DialogContent className="max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl">
           {selectedDetailService && (
@@ -432,14 +453,51 @@ const Services = () => {
                     <Clock className="w-3.5 h-3.5 text-secondary" />
                     <span>{selectedDetailService.duration}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-base font-black text-secondary">
-                    <span>{selectedDetailService.price}</span>
+                  <div className="flex flex-col">
+                    {activeDiscount ? (
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-base font-black text-secondary">₹{Math.round(selectedDetailService.numericPrice * (1 - activeDiscount.percent / 100))}</span>
+                        <span className="text-[10px] line-through text-muted-foreground font-bold">₹{selectedDetailService.numericPrice}</span>
+                      </div>
+                    ) : (
+                      <span className="text-base font-black text-secondary">₹{selectedDetailService.numericPrice}</span>
+                    )}
                   </div>
                 </div>
               </div>
 
+              {/* Promo Section */}
+              <div className="px-6 py-4 bg-muted/20 border-b border-border/40">
+                <div className="flex items-center gap-2 mb-2">
+                  <Ticket className="w-3.5 h-3.5 text-secondary" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Apply Coupon</span>
+                </div>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground" />
+                    <Input 
+                      placeholder="e.g. LUXE20" 
+                      value={promoInput}
+                      onChange={(e) => setPromoInput(e.target.value)}
+                      className="pl-8 h-9 rounded-xl border-border/40 bg-background text-[11px] focus:ring-secondary"
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleApplyPromo}
+                    className="h-9 px-4 rounded-xl bg-secondary text-primary font-bold text-[10px] uppercase tracking-wider"
+                  >
+                    Apply
+                  </Button>
+                </div>
+                {activeDiscount && (
+                  <p className="text-[10px] text-secondary font-bold mt-2 flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Code &quot;{activeDiscount.code}&quot; active!
+                  </p>
+                )}
+              </div>
+
               {/* Rich Narrative / Benefits */}
-              <div className="px-6 py-5 space-y-4 max-h-[220px] overflow-y-auto thin-scrollbar">
+              <div className="px-6 py-5 space-y-4 max-h-[180px] overflow-y-auto thin-scrollbar">
                 <div>
                   <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground/80 mb-2 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-secondary" /> Highlights & Benefits
@@ -470,14 +528,6 @@ const Services = () => {
                       <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).experienceLevel}</span>
                     </div>
                   </div>
-
-                  <div className="flex gap-2 text-xs">
-                    <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Recommended Aftercare</span>
-                      <span className="text-foreground/90 italic">{getRichDetails(selectedDetailService.id).aftercare}</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -493,8 +543,9 @@ const Services = () => {
                 <Button 
                   onClick={() => {
                     const id = selectedDetailService.id;
+                    const promoCode = activeDiscount ? activeDiscount.code : '';
                     setSelectedDetailService(null);
-                    navigate(`/book?service=${id}`);
+                    navigate(`/book?service=${id}${promoCode ? `&promo=${promoCode}` : ''}`);
                   }}
                   className="flex-[2] py-6 rounded-2xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/25 hover:bg-primary/95"
                 >
