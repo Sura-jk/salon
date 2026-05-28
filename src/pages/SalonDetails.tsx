@@ -12,9 +12,9 @@ const SALON_DATA = {
     address: '123 Luxury Lane, Bandra West, Mumbai',
     timing: '09:00 AM - 08:00 PM',
     images: [
-      'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1521566626196-f77d7737307a?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80',
     ],
     services: [
       { id: 's1', name: 'Signature Haircut', duration: '45 min', price: 499 },
@@ -23,9 +23,9 @@ const SALON_DATA = {
       { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699 },
     ],
     staff: [
-      { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
-      { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648761738-77097f5a052a?q=80&w=200&auto=format&fit=crop' },
-      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1438761675141-bd307077e227?q=80&w=200&auto=format&fit=crop' },
+      { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', exp: '8 years', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st2', name: 'Marcus Thorne', role: 'Color Expert', exp: '5 years', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80' },
+      { id: 'st3', name: 'Sophia Chen', role: 'Skin Specialist', exp: '10 years', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80' },
     ]
   }
 };
@@ -53,11 +53,18 @@ const SalonDetails = () => {
     return acc + mins;
   }, 0);
 
+  const placeholder = '/placeholder.svg';
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
       {/* Image Gallery */}
       <div className="relative h-80 w-full overflow-hidden">
-        <img src={salon.images[0]} className="h-full w-full object-cover" alt={salon.name} />
+        <img 
+          src={salon.images[0]} 
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+          className="h-full w-full object-cover" 
+          alt={salon.name} 
+        />
         <div className="absolute top-6 left-6">
           <Button 
             variant="outline" 
@@ -77,7 +84,7 @@ const SalonDetails = () => {
             <h1 className="text-3xl font-serif font-medium text-foreground mb-2">{salon.name}</h1>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-1 text-secondary font-bold">
-                <Star className="w-3.5 h-3.5 fill-secondary" />
+                <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
                 <span>{salon.rating}</span>
               </div>
               <span className="opacity-50">•</span>
@@ -144,7 +151,12 @@ const SalonDetails = () => {
             {salon.staff.map((member) => (
               <div key={member.id} className="flex flex-col items-center gap-3 min-w-fit group">
                 <div className="relative">
-                  <img src={member.image} className="w-20 h-20 rounded-full object-cover border-2 border-secondary p-1 group-hover:scale-105 transition-transform" alt={member.name} />
+                  <img 
+                    src={member.image} 
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+                    className="w-20 h-20 rounded-full object-cover border-2 border-secondary p-1 group-hover:scale-105 transition-transform" 
+                    alt={member.name} 
+                  />
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-background rounded-full" />
                 </div>
                 <div className="text-center">

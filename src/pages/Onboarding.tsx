@@ -9,25 +9,26 @@ const ONBOARDING_STEPS = [
     title: "Discover Premium Salons",
     description: "Explore the most exclusive beauty studios in your city, curated for luxury.",
     icon: <Sparkles className="w-12 h-12" />,
-    image: "https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1000&q=80"
   },
   {
     title: "Book Instantly",
     description: "Skip the wait. Secure your appointment with top stylists in just a few taps.",
     icon: <Calendar className="w-12 h-12" />,
-    image: "https://images.unsplash.com/photo-1521566626196-f77d7737307a?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80"
   },
   {
     title: "Track Rewards",
     description: "Earn loyalty points and enjoy exclusive membership benefits on every visit.",
     icon: <Award className="w-12 h-12" />,
-    image: "https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1000&q=80"
   }
 ];
 
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const placeholder = '/placeholder.svg';
 
   const nextStep = () => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
@@ -46,6 +47,7 @@ const Onboarding = () => {
         >
           <img 
             src={ONBOARDING_STEPS[currentStep].image} 
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
             className="h-full w-full object-cover opacity-70" 
             alt="Onboarding"
           />
