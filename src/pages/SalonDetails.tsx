@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter, Ticket, ShieldCheck, Zap, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
