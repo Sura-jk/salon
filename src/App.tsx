@@ -12,8 +12,11 @@ import BottomNav from './components/BottomNav';
 
 const AppContent = () => {
   const location = useLocation();
+  
+  // Hide navigation bar on intro/booking screens and specific salon details
   const hideNavPaths = ['/splash', '/onboarding', '/auth', '/book'];
-  const showNav = !hideNavPaths.includes(location.pathname);
+  const isSalonDetail = location.pathname.startsWith('/salon/');
+  const showNav = !hideNavPaths.includes(location.pathname) && !isSalonDetail;
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
