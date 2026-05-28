@@ -291,11 +291,12 @@ const Services = () => {
     });
   }
 
-  const handleApplyPromo = () => {
-    const code = promoInput.trim().toUpperCase();
-    const match = AVAILABLE_PROMOS.find(p => p.code === code);
+  const handleApplyPromoCode = (code: string) => {
+    const cleanCode = code.trim().toUpperCase();
+    const match = AVAILABLE_PROMOS.find(p => p.code === cleanCode);
     if (match) {
       setActiveDiscount(match);
+      setPromoInput(match.code);
       showSuccess(`Coupon "${match.code}" applied! ${match.percent}% off.`);
     } else {
       showSuccess("Invalid promo code.");
@@ -468,36 +469,54 @@ const Services = () => {
 
               {/* Promo Section */}
               <div className="px-6 py-4 bg-muted/20 border-b border-border/40">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-3">
                   <Ticket className="w-3.5 h-3.5 text-secondary" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Apply Coupon</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Available Offers</span>
                 </div>
+                
+                {/* Clickable Promo Code Pills */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {AVAILABLE_PROMOS.map((promo) => (
+                    <button
+                      key={promo.code}
+                      onClick={() => handleApplyPromoCode(promo.code)}
+                      className={cn(
+                        "px-3 py-2 rounded-xl border text-[10px] font-bold transition-all flex flex-col items-start gap-0.5",
+                        activeDiscount?.code === promo.code
+                          ? "border-secondary bg-secondary text-primary-foreground shadow-sm scale-105"
+                          : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
+                      )}
+                    >
+                      <span className="tracking-wider">{promo.code}</span>
+                      <span className={cn(
+                        "text-[8px] font-normal",
+                        activeDiscount?.code === promo.code ? "text-primary-foreground/80" : "opacity-70"
+                      )}>{promo.description}</span>
+                    </button>
+                  ))}
+                </div>
+
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground" />
                     <Input 
-                      placeholder="e.g. LUXE20" 
+                      placeholder="Or enter custom code" 
                       value={promoInput}
                       onChange={(e) => setPromoInput(e.target.value)}
                       className="pl-8 h-9 rounded-xl border-border/40 bg-background text-[11px] focus:ring-secondary"
                     />
                   </div>
                   <Button 
-                    onClick={handleApplyPromo}
+                    onClick={() => handleApplyPromoCode(promoInput)}
                     className="h-9 px-4 rounded-xl bg-secondary text-primary font-bold text-[10px] uppercase tracking-wider"
                   >
                     Apply
                   </Button>
                 </div>
-                {activeDiscount && (
-                  <p className="text-[10px] text-secondary font-bold mt-2 flex items-center gap-1">
-                    <Check className="w-3 h-3" /> Code &quot;{activeDiscount.code}&quot; active!
-                  </p>
-                )}
               </div>
 
               {/* Rich Narrative / Benefits */}
-              <div className="px-6 py-5 space-y-4 max-h-[180px] overflow-y-auto thin-scrollbar">
+              <div className="px-6 py-5 space-y-4 max-h-[160px] overflow-y-auto thin-scrollbar">
                 <div>
                   <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground/80 mb-2 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-secondary" /> Highlights & Benefits
@@ -518,14 +537,6 @@ const Services = () => {
                     <div>
                       <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Best For</span>
                       <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).skinHairType}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 text-xs">
-                    <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Expert Care</span>
-                      <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).experienceLevel}</span>
                     </div>
                   </div>
                 </div>
