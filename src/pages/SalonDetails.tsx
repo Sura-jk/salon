@@ -107,6 +107,7 @@ const SalonDetails = () => {
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
   const handleBack = () => {
+    // If we have history entries to go back to, go back. Otherwise go to Home "/" safely.
     if (window.history.length > 1) {
       navigate(-1);
     } else {
@@ -268,23 +269,20 @@ const SalonDetails = () => {
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-base font-serif font-medium">Services</h3>
           <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
-            {categories.map(cat => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    'px-3 py-1.5 rounded-full text-[11px] font-bold transition-all whitespace-nowrap border',
-                    isActive
-                      ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-105'
-                      : 'bg-card border-border/60 text-muted-foreground hover:border-secondary/40'
-                  )}
-                >
-                  {cat}
-                </button>
-              );
-            })}
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={cn(
+                  'px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap',
+                  activeCategory === cat
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card border border-border text-muted-foreground'
+                )}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -351,27 +349,21 @@ const SalonDetails = () => {
           
           {/* List of Clickable Codes outside input */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {AVAILABLE_PROMOS.map((promo) => {
-              const isApplied = activeDiscount?.code === promo.code;
-              return (
-                <button
-                  key={promo.code}
-                  onClick={() => {
-                    setPromoInput(promo.code);
-                    handleApplyPromoCode(promo.code);
-                  }}
-                  className={cn(
-                    "px-2.5 py-1.5 rounded-xl border border-dashed transition-all flex flex-col items-start gap-0.5",
-                    isApplied 
-                      ? "border-secondary bg-secondary/20 text-secondary ring-2 ring-secondary/40 scale-105" 
-                      : "border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
-                  )}
-                >
-                  <span className="font-bold tracking-wider">{promo.code}</span>
-                  <span className="text-[9px] opacity-70 font-normal">{promo.description}</span>
-                </button>
-              );
-            })}
+            {AVAILABLE_PROMOS.map((promo) => (
+              <button
+                key={promo.code}
+                onClick={() => {
+                  setPromoInput(promo.code);
+                  handleApplyPromoCode(promo.code);
+                }}
+                className={cn(
+                  "px-2.5 py-1.5 rounded-xl border border-dashed border-secondary/40 bg-secondary/5 text-secondary text-xs font-semibold hover:bg-secondary/15 transition-all flex flex-col items-start gap-0.5"
+                )}
+              >
+                <span className="font-bold tracking-wider">{promo.code}</span>
+                <span className="text-[9px] opacity-70 font-normal">{promo.description}</span>
+              </button>
+            ))}
           </div>
 
           <div className="flex gap-1.5">
