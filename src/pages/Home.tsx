@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Bell, Star, Sparkles } from 'lucide-react';
+import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
@@ -44,6 +44,7 @@ const NEARBY_SALONS = [
     distance: '1.2 km',
     price: '₹499',
     image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
+    tags: ['Luxury', 'Top Rated']
   },
   {
     id: 'salon2',
@@ -53,6 +54,7 @@ const NEARBY_SALONS = [
     distance: '2.5 km',
     price: '₹899',
     image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80',
+    tags: ['Relaxing', 'Premium']
   },
   {
     id: 'salon3',
@@ -62,6 +64,7 @@ const NEARBY_SALONS = [
     distance: '0.8 km',
     price: '₹399',
     image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
+    tags: ['Budget', 'Quick']
   },
 ];
 
@@ -77,79 +80,75 @@ const Home = () => {
     }, 1200);
   };
 
-  const handleLocationClick = () => {
-    showSuccess("Using GPS to search for premium salons near Bandra, Mumbai");
-  };
-
-  const handleNotificationsClick = () => {
-    showSuccess("No new notifications. You are all set for your next treatment!");
-  };
-
-  // High quality luxury glow treatment image for banner
-  const heroImage = 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80';
-
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-24">
-      {/* Top Header */}
-      <header className="px-6 pt-12 pb-6 flex flex-col gap-6">
-        <div className="flex justify-between items-center">
-          <div 
-            onClick={handleLocationClick} 
-            className="flex items-center gap-2 text-muted-foreground group cursor-pointer hover:text-primary transition-colors"
-          >
-            <MapPin className="w-4 h-4 text-secondary group-hover:animate-bounce" />
-            <span className="text-xs font-semibold tracking-wide">Mumbai, Maharashtra</span>
+    <div className="flex flex-col min-h-screen bg-background pb-32">
+      {/* Top Header - Personalized */}
+      <header className="px-6 pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
+        <div className="flex justify-between items-start">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Good Morning, Alex</span>
+            <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">Your Beauty <br/>Curated.</h1>
           </div>
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={handleNotificationsClick}
-            className="rounded-full p-2 bg-card border border-border shadow-sm hover:border-secondary transition-all"
+            className="rounded-full h-12 w-12 bg-card border border-border/50 shadow-sm hover:border-secondary transition-all"
+            onClick={() => showSuccess("No new notifications today.")}
           >
-            <Bell className="w-5 h-5" />
+            <Bell className="w-5 h-5 text-foreground" />
           </Button>
         </div>
 
-        <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
-          <Input 
-            placeholder="Search for luxury salons..." 
-            className="pl-12 py-7 rounded-2xl border-border bg-card/50 backdrop-blur-sm focus:ring-secondary shadow-inner transition-all" 
-          />
+        <div className="flex items-center gap-2 text-muted-foreground/60">
+          <MapPin className="w-3.5 h-3.5 text-secondary" />
+          <span className="text-[11px] font-bold tracking-wider uppercase">Bandra West, Mumbai</span>
         </div>
       </header>
 
-      {/* Hero Banner */}
-      <section className="px-6 py-4">
+      {/* Search & Filter Bar */}
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+        <div className="flex gap-3">
+          <div className="relative flex-1 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+            <Input 
+              placeholder="Find a treatment..." 
+              className="pl-12 py-7 rounded-2xl border-border/60 bg-card/40 backdrop-blur-md focus:ring-secondary shadow-sm transition-all text-sm font-medium" 
+            />
+          </div>
+          <Button variant="outline" className="h-[58px] w-[58px] rounded-2xl border-border/60 bg-card/40 backdrop-blur-md p-0 flex items-center justify-center hover:border-secondary transition-all">
+            <SlidersHorizontal className="w-5 h-5 text-secondary" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Hero Banner - Editorial Style */}
+      <section className="px-6 py-6 animate-in fade-in zoom-in-95 duration-1000 delay-200">
         <Carousel className="w-full">
           <CarouselContent>
             <CarouselItem>
               <div 
                 onClick={handleClaimOffer}
-                className="relative h-64 rounded-[2rem] overflow-hidden group cursor-pointer shadow-2xl"
+                className="relative h-72 rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-2xl luxury-shadow"
               >
                 <ImageWithFallback 
-                  src={heroImage}
+                  src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80"
                   alt="Summer Glow"
                   className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end px-6 pb-8">
-                  <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-secondary text-primary text-[10px] font-bold uppercase tracking-widest mb-3 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end px-8 pb-10">
+                  <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-secondary text-primary text-[9px] font-bold uppercase tracking-widest mb-4">
                     <Sparkles className="w-3 h-3 animate-pulse" />
-                    <span>Exclusive Offer</span>
+                    <span>Exclusive Privilege</span>
                   </div>
-                  <h3 className="text-white text-3xl font-serif font-medium mb-4 leading-tight">
-                    Summer Glow <br />Package <span className="text-secondary italic">20% Off</span>
+                  <h3 className="text-white text-4xl font-serif font-medium mb-2 leading-none">
+                    Summer <span className="italic text-secondary">Aura</span>
                   </h3>
+                  <p className="text-white/70 text-xs mb-6 max-w-[200px] leading-relaxed">Redeem your 20% membership discount on all signature facials.</p>
                   <Button 
                     size="sm" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleClaimOffer();
-                    }}
-                    className="w-fit rounded-xl bg-secondary text-primary font-bold px-6 py-3 hover:bg-secondary/90 transition-all shadow-lg"
+                    className="w-fit rounded-xl bg-white text-primary font-bold px-8 py-4 hover:bg-secondary hover:text-primary transition-all shadow-xl"
                   >
-                    Claim Now
+                    View Offer
                   </Button>
                 </div>
               </div>
@@ -158,33 +157,37 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Categories */}
-      <section className="px-6 py-10">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-serif font-medium">Categories</h2>
+      {/* Categories - High Fashion Spread */}
+      <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
+        <div className="flex justify-between items-end mb-8">
+          <div>
+            <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
+            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Refined Categories</p>
+          </div>
           <Button 
             variant="ghost" 
             onClick={() => navigate('/services')}
-            className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider"
+            className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
           >
-            View All
+            All Services
           </Button>
         </div>
+        
         <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
           {CATEGORIES.map((cat) => (
             <div 
               key={cat.id} 
-              className="flex flex-col items-center gap-3 min-w-fit cursor-pointer group"
+              className="flex flex-col items-center gap-4 min-w-[85px] cursor-pointer group"
               onClick={() => navigate('/services')}
             >
-              <div className="w-20 h-20 rounded-3xl overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-md group-hover:shadow-secondary/20">
+              <div className="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-lg group-hover:shadow-secondary/20 p-1">
                 <ImageWithFallback 
                   src={cat.image} 
                   alt={cat.label} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                  className="w-full h-full object-cover rounded-[1.75rem] group-hover:scale-110 transition-transform duration-700" 
                 />
               </div>
-              <span className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-[0.15em]">
                 {cat.label}
               </span>
             </div>
@@ -192,55 +195,70 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Nearby Salons */}
-      <section className="px-6 py-4 flex-1">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-serif font-medium">Nearby Salons</h2>
+      {/* Nearby Salons - Refined Cards */}
+      <section className="px-6 py-6 flex-1 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <h2 className="text-2xl font-serif font-medium text-foreground">Nearby Studios</h2>
+            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Curated for your location</p>
+          </div>
           <Button 
             variant="ghost" 
             onClick={() => navigate('/services')}
-            className="text-secondary text-xs font-bold p-0 h-auto hover:bg-transparent uppercase tracking-wider"
+            className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
           >
-            See All
+            See Map
           </Button>
         </div>
-        <div className="space-y-8">
+
+        <div className="space-y-12">
           {NEARBY_SALONS.map((salon) => (
             <div 
               key={salon.id}
               onClick={() => navigate(`/salon/${salon.id}`)}
-              className="group bg-card rounded-[2rem] overflow-hidden border border-border luxury-shadow cursor-pointer transition-all hover:border-secondary hover:shadow-2xl hover:-translate-y-1"
+              className="group relative bg-card rounded-[2.5rem] overflow-hidden border border-border/40 luxury-shadow cursor-pointer transition-all hover:border-secondary/40 hover:-translate-y-2"
             >
-              <div className="relative h-52">
+              <div className="relative h-60">
                 <ImageWithFallback 
                   src={salon.image} 
                   alt={salon.name}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-sm border border-border">
-                  <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                  <span className="text-[11px] font-bold">{salon.rating}</span>
+                <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 shadow-xl border border-white/20">
+                  <Star className="w-3 h-3 text-secondary fill-secondary" />
+                  <span className="text-[11px] font-black text-primary">{salon.rating}</span>
+                </div>
+                
+                <div className="absolute top-6 left-6 flex gap-2">
+                  {salon.tags.map(tag => (
+                    <span key={tag} className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
-              <div className="p-6 flex justify-between items-center">
-                <div className="flex-1">
-                  <h3 className="font-serif font-medium text-xl text-foreground group-hover:text-secondary transition-colors">
-                    {salon.name}
-                  </h3>
-                  <div className="flex items-center gap-3 text-muted-foreground text-xs mt-2">
-                    <span className="flex items-center gap-1"><MapPin className="w-4 h-4 text-secondary" /> {salon.distance}</span>
-                    <span className="opacity-30">•</span>
-                    <span className="font-bold text-primary">Starts from {salon.price}</span>
+
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-serif font-medium text-2xl text-foreground group-hover:text-secondary transition-colors leading-tight">
+                      {salon.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-2">
+                      <MapPin className="w-3 h-3 text-secondary" />
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{salon.distance} from you</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Starting at</span>
+                    <span className="text-lg font-black text-primary">{salon.price}</span>
                   </div>
                 </div>
+                
                 <Button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/salon/${salon.id}`);
-                  }}
-                  className="rounded-2xl bg-primary text-primary-foreground px-5 py-3 text-xs font-bold hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20"
+                  className="w-full rounded-2xl bg-primary text-primary-foreground py-7 text-xs font-black uppercase tracking-[0.15em] hover:bg-secondary hover:text-primary transition-all active:scale-95 shadow-xl"
                 >
-                  Book Now
+                  Reserve Session
                 </Button>
               </div>
             </div>
