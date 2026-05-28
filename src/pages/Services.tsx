@@ -256,7 +256,7 @@ const Services = () => {
                     : "bg-card text-muted-foreground border-border/60 hover:border-secondary/40"
                 )}
               >
-                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary animate-pulse" : "text-muted-foreground")} />
+                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-secondary" : "text-muted-foreground")} />
                 <span>{value.label}</span>
               </button>
             );
