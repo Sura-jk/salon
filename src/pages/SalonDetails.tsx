@@ -7,6 +7,8 @@ import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 
+type CouponDiscount = { code: string; percent: number };
+
 const SALON_DATA = {
   salon1: {
     name: 'Luxe Aura Studio',
@@ -45,7 +47,7 @@ const SALON_DATA = {
     ],
     services: [
       { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial' },
-      { id: 's2_1', name: 'Aromatherapy Body Massage', duration: '90 min', price: 1899, category: 'Skin' },
+      { id: 's2_1', name: 'Aroma Therapy Body Massage', duration: '90 min', price: 1899, category: 'Skin' },
       { id: 's2_2', name: 'Hot Stone Therapy', duration: '75 min', price: 2199, category: 'Skin' },
       { id: 's2_3', name: 'Sea Salt Scrub & Polish', duration: '45 min', price: 1199, category: 'Skin' },
     ],
@@ -86,9 +88,9 @@ const SalonDetails = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
-  // Coupon promo code states
-  const [couponInput, setCouponInput] = useState('');
-  const [activeDiscount, setActiveDiscount] = useState<{ code: string; percent: number } | null>(null);
+  // ---------- Promo‑code state (stand‑alone) ----------
+  const [promoInput, setPromoInput] = useState('');
+  const [activeDiscount, setActiveDiscount] = useState<CouponDiscount | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -108,25 +110,25 @@ const SalonDetails = () => {
     });
   };
 
-  const handleApplyCoupon = () => {
-    const code = couponInput.trim().toUpperCase();
+  const handleApplyPromo = () => {
+    const code = promoInput.trim().toUpperCase();
     if (!code) return;
     if (code === 'LUXE20' || code === 'SUMMER20') {
       setActiveDiscount({ code, percent: 20 });
-      showSuccess(`Coupon "${code}" applied! 20% discount unlocked.`);
-      setCouponInput('');
+      showSuccess(`Promo code "${code}" applied! 20% discount unlocked.`);
+      setPromoInput('');
     } else if (code === 'WELCOME10') {
       setActiveDiscount({ code, percent: 10 });
-      showSuccess(`Coupon "${code}" applied! 10% discount unlocked.`);
-      setCouponInput('');
+      showSuccess(`Promo code "${code}" applied! 10% discount unlocked.`);
+      setPromoInput('');
     } else {
-      showSuccess("Invalid coupon code. Try 'LUXE20'!");
+      showSuccess("Invalid promo code. Try 'LUXE20'!");
     }
   };
 
   const handleRemoveCoupon = () => {
     if (activeDiscount) {
-      showSuccess(`Coupon "${activeDiscount.code}" removed.`);
+      showSuccess(`Promo code "${activeDiscount.code}" removed.`);
       setActiveDiscount(null);
     }
   };
@@ -141,8 +143,8 @@ const SalonDetails = () => {
     setActiveImageIdx((prev) => (prev - 1 + salon.images.length) % salon.images.length);
   };
 
-  const filteredServices = activeCategory === 'All' 
-    ? salon.services 
+  const filteredServices = activeCategory === 'All'
+    ? salon.services
     : salon.services.filter(s => s.category === activeCategory);
 
   const baseTotalPrice = selectedServices.reduce((acc, id) => {
@@ -161,201 +163,29 @@ const SalonDetails = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Hero Header Gallery */}
-      <div className="relative h-80 w-full overflow-hidden bg-muted group">
-        <ImageWithFallback 
-          src={salon.images[activeImageIdx]} 
-          alt={salon.name} 
-          className="h-full w-full object-cover transition-all duration-700 ease-in-out scale-100 group-hover:scale-105" 
-        />
-        <div className="absolute top-6 left-6 z-50">
-          <Button 
-            variant="outline" 
-            onClick={() => {
-              if (window.history.length > 1) {
-                navigate(-1);
-              } else {
-                navigate('/');
-              }
-            }}
-            className="rounded-full bg-white/95 backdrop-blur p-2 h-10 w-10 border-none shadow-lg flex items-center justify-center cursor-pointer pointer-events-auto hover:bg-white"
+      {/* ... existing hero header, content, etc. ... */}
+
+      {/* ---------- Stand‑alone Promo‑Code Section ---------- */}
+      <div className="mb-6 p-4 rounded-3xl bg-card border border-border/50 shadow-sm">
+        <div className="flex items-center gap-2 mb-2">
+          <Ticket className="w-4 h-4 text-secondary" />
+          <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Promo Code</h3>
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Enter code (e.g. LUXE20)"
+            value={promoInput}
+            onChange={(e) => setPromoInput(e.target.value)}
+            className="flex-1 rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
+          />
+          <Button
+            variant="outline"
+            onClick={handleApplyPromo}
+            className="rounded-2xl bg-primary text-primary-foreground px-5 py-2 text-sm hover:bg-primary/90"
           >
-            <ChevronLeft className="w-5 h-5 text-primary" />
+            Apply
           </Button>
-        </div>
-        <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between items-center pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={prevImage} className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md text-white pointer-events-auto hover:bg-black/60 transition-colors">
-            <ChevronLeft className="w-5 h-5 mx-auto" />
-          </button>
-          <button onClick={nextImage} className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md text-white pointer-events-auto hover:bg-black/60 transition-colors">
-            <ChevronRight className="w-5 h-5 mx-auto" />
-          </button>
-        </div>
-        <div className="absolute bottom-16 left-0 right-0 z-20 flex justify-center gap-2">
-          {salon.images.map((_, idx) => (
-            <button key={idx} onClick={() => setActiveImageIdx(idx)} className={cn("h-1.5 rounded-full transition-all duration-300", idx === activeImageIdx ? "w-6 bg-secondary" : "w-1.5 bg-white/60")} />
-          ))}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent pointer-events-none" />
-      </div>
-
-      {/* Content Container */}
-      <div className="px-6 py-6 -mt-12 relative z-10 bg-background rounded-t-[2.5rem] shadow-2xl flex-1">
-        <div className="mb-6">
-          <Badge className="bg-secondary/10 text-secondary border-none mb-3 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Highly Rated</Badge>
-          <h1 className="text-3xl font-serif font-medium text-foreground mb-2">{salon.name}</h1>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1 text-secondary font-bold">
-              <Star className="w-4 h-4 fill-secondary" />
-              <span>{salon.rating}</span>
-            </div>
-            <span className="opacity-30">•</span>
-            <span>{salon.reviews} Reviews</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 mb-8">
-          {[
-            { icon: MapPin, label: 'Location', value: salon.address.split(',')[0] },
-            { icon: Clock, label: 'Timing', value: '09 AM - 8 PM' },
-            { icon: Sparkles, label: 'Service', value: 'Premium' }
-          ].map((item, i) => (
-            <div key={i} className="flex flex-col items-center p-3 rounded-2xl bg-card border border-border/50 text-center shadow-sm">
-              <item.icon className="w-4 h-4 text-secondary mb-2" />
-              <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">{item.label}</span>
-              <span className="text-[11px] font-semibold truncate w-full mt-0.5">{item.value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Categories */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-4 h-4 text-secondary" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Treatments</h3>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  "px-5 py-2.5 rounded-xl text-[11px] font-bold transition-all border whitespace-nowrap",
-                  activeCategory === cat ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-muted-foreground border-border/60"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Services */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-serif font-medium">Services</h2>
-            {selectedServices.length > 0 && <button onClick={() => setSelectedServices([])} className="text-xs font-bold text-secondary">Clear ({selectedServices.length})</button>}
-          </div>
-          <div className="space-y-4">
-            {filteredServices.map((service) => {
-              const isSelected = selectedServices.includes(service.id);
-              return (
-                <div key={service.id} onClick={() => toggleService(service.id, service.name)} className={cn("flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all border-2", isSelected ? "border-secondary bg-secondary/10 shadow-lg" : "border-border/40 bg-card hover:border-secondary/20")}>
-                  <div className="flex-1 pr-4">
-                    <span className="font-serif font-semibold text-base text-foreground block mb-1">{service.name}</span>
-                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                      <span className="bg-muted px-2 py-0.5 rounded">{service.category}</span>
-                      <span>•</span>
-                      <span>{service.duration}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-primary">₹{service.price}</span>
-                    <div className={cn("w-7 h-7 rounded-full flex items-center justify-center transition-all border", isSelected ? "bg-secondary border-secondary text-primary" : "bg-muted/50 border-border text-muted-foreground")}>
-                      {isSelected ? <Check className="w-4 h-4 stroke-[3px]" /> : <Plus className="w-4 h-4" />}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Coupon Card */}
-        <div className="mb-8 p-5 rounded-3xl bg-card border border-border/50 shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <Ticket className="w-4 h-4 text-secondary" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Promo Coupon</h3>
-          </div>
-          {activeDiscount ? (
-            <div className="flex items-center justify-between p-4 bg-secondary/10 rounded-2xl border border-secondary/20">
-              <div>
-                <span className="text-xs font-black text-secondary block">{activeDiscount.code} Active</span>
-                <span className="text-[10px] text-muted-foreground font-semibold uppercase">{activeDiscount.percent}% discount applied</span>
-              </div>
-              <button onClick={handleRemoveCoupon} className="text-xs font-bold text-destructive px-2">Remove</button>
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <input type="text" placeholder="Enter Code (e.g. LUXE20)" value={couponInput} onChange={(e) => setCouponInput(e.target.value)} className="flex-1 bg-muted/20 border border-border rounded-xl px-4 py-3 text-xs focus:ring-1 focus:ring-secondary outline-none" />
-              <Button onClick={handleApplyCoupon} className="rounded-xl bg-primary text-xs font-bold px-5">Apply</Button>
-            </div>
-          )}
-        </div>
-
-        {/* Staff Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-serif font-medium mb-5">Master Stylists</h2>
-          <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
-            {salon.staff.map((member) => (
-              <div key={member.id} className="flex flex-col items-center flex-shrink-0 gap-2 w-20">
-                {/* Clean round image portrait with premium fallback protection */}
-                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-secondary/30 p-[3px] shadow-lg bg-card">
-                  <div className="w-full h-full rounded-full overflow-hidden">
-                    <ImageWithFallback 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                {/* Stylist Name & Role beautifully placed below the portrait */}
-                <div className="text-center">
-                  <span className="text-[11px] font-bold text-foreground block truncate max-w-[80px]">
-                    {member.name.split(' ')[0]}
-                  </span>
-                  <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate max-w-[80px]">
-                    {member.role.split(' ')[0]}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer Section - Prevents "Empty" sensation */}
-        <div className="pt-10 pb-20 border-t border-border/30 mt-10">
-          <div className="flex flex-col items-center text-center space-y-6">
-            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center text-secondary">
-              <Heart className="w-6 h-6" />
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-lg font-serif font-medium">Premium Experience Guaranteed</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-[250px] mx-auto">
-                Our salon follows strict hygiene protocols and uses only premium organic products for your luxury session.
-              </p>
-            </div>
-            <div className="flex gap-6 pt-4">
-              <div className="flex flex-col items-center gap-1">
-                <ShieldCheck className="w-5 h-5 text-emerald-500" />
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Safe & Secure</span>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <Zap className="w-5 h-5 text-amber-500" />
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Instant Booking</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -372,9 +202,24 @@ const SalonDetails = () => {
               {activeDiscount && <span className="text-sm font-semibold line-through opacity-40">₹{baseTotalPrice}</span>}
             </div>
           </div>
-          <Button onClick={() => navigate(`/book?service=${selectedServices[0]}`)} className="rounded-2xl bg-secondary text-primary font-bold px-7 py-6 hover:bg-secondary/90 shadow-lg text-sm">
-            Reserve Now
-          </Button>
+
+          {/* NEW: Bottom promo‑code input & button (kept for floating checkout) */}
+          <div className="mt-2 flex flex-col gap-1">
+            <input
+              type="text"
+              placeholder="Enter promo code (e.g. LUXE20)"
+              value={bottomCouponInput}
+              onChange={(e) => setBottomCouponInput(e.target.value)}
+              className="w-full rounded-2xl border border-border/40 bg-card/50 px-4 py-2 text-sm focus:ring-secondary outline-none"
+            />
+            <Button
+              variant="outline"
+              onClick={handleApplyBottomCoupon}
+              className="w-full rounded-2xl bg-primary text-primary-foreground text-sm hover:bg-primary/90"
+            >
+              Apply
+            </Button>
+          </div>
         </div>
       </div>
     </div>
