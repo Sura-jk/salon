@@ -43,7 +43,7 @@ const NEARBY_SALONS = [
     reviews: 128,
     distance: '1.2 km',
     price: '₹499',
-    image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'salon2',

@@ -14,7 +14,7 @@ const SALON_DATA = {
     address: '123 Luxury Lane, Bandra West, Mumbai',
     timing: '09:00 AM - 08:00 PM',
     images: [
-      'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1000&q=80',
     ],
