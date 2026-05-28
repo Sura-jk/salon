@@ -266,69 +266,67 @@ const Home = () => {
 
       {/* Expertise Categories Selection Slider with Premium Custom Navigation Controls */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
-        <Carousel setApi={setCarouselApi} className="w-full relative">
-          <div className="flex justify-between items-end mb-6">
-            <div>
-              <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
-              <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Select your service style</p>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate('/services')}
-                className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em] transition-colors hover:text-primary"
-              >
-                All Services
-              </Button>
-              
-              {/* Premium Custom Navigation Arrows */}
-              <div className="flex gap-1.5">
-                <button 
-                  onClick={() => carouselApi?.scrollPrev()}
-                  className="flex items-center justify-center h-9 w-9 rounded-full border border-secondary/30 bg-card/65 text-secondary hover:bg-secondary/10 hover:border-secondary active:scale-90 transition-all duration-300 shadow-sm"
-                  aria-label="Previous category"
-                >
-                  <ChevronLeft className="w-4 h-4 stroke-[1.75]" />
-                </button>
-                <button 
-                  onClick={() => carouselApi?.scrollNext()}
-                  className="flex items-center justify-center h-9 w-9 rounded-full border border-secondary/30 bg-card/65 text-secondary hover:bg-secondary/10 hover:border-secondary active:scale-90 transition-all duration-300 shadow-sm"
-                  aria-label="Next category"
-                >
-                  <ChevronRight className="w-4 h-4 stroke-[1.75]" />
-                </button>
-              </div>
-            </div>
+        <div className="flex justify-between items-end mb-6">
+          <div>
+            <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
+            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Select your service style</p>
           </div>
           
-          <CarouselContent className="-ml-2">
-            {CATEGORIES.map((cat) => (
-              <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
-                <div 
-                  onClick={() => navigate('/services')}
-                  className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
-                >
-                  <div className="w-11 h-11 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
-                    <ImageWithFallback 
-                      src={cat.image} 
-                      alt={cat.label} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                    />
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/services')}
+            className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em] transition-colors hover:text-primary"
+          >
+            All Services
+          </Button>
+        </div>
+
+        <div className="relative w-full">
+          <Carousel setApi={setCarouselApi} className="w-full relative px-2">
+            <CarouselContent className="-ml-2">
+              {CATEGORIES.map((cat) => (
+                <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
+                  <div 
+                    onClick={() => navigate('/services')}
+                    className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
+                  >
+                    <div className="w-11 h-11 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
+                      <ImageWithFallback 
+                        src={cat.image} 
+                        alt={cat.label} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight truncate">
+                        {cat.label}
+                      </span>
+                      <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate">
+                        {cat.description}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight truncate">
-                      {cat.label}
-                    </span>
-                    <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate">
-                      {cat.description}
-                    </span>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            {/* Premium Absolute Navigation Arrows floating on Left and Right sides */}
+            <button 
+              onClick={() => carouselApi?.scrollPrev()}
+              className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              aria-label="Previous category"
+            >
+              <ChevronLeft className="w-4 h-4 stroke-[2]" />
+            </button>
+            <button 
+              onClick={() => carouselApi?.scrollNext()}
+              className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
+              aria-label="Next category"
+            >
+              <ChevronRight className="w-4 h-4 stroke-[2]" />
+            </button>
+          </Carousel>
+        </div>
       </section>
 
       {/* Nearby Salons */}
