@@ -7,6 +7,7 @@ import SalonDetails from './pages/SalonDetails';
 import BookingFlow from './pages/Booking';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
+import Services from './pages/Services';
 import BottomNav from './components/BottomNav';
 
 const AppContent = () => {
@@ -25,6 +26,7 @@ const AppContent = () => {
         <Route path="/book" element={<BookingFlow />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/services" element={<Services />} />
       </Routes>
       
       {showNav && (
