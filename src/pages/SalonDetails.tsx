@@ -90,7 +90,8 @@ const AVAILABLE_PROMOS = [
 const SalonDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const salon = SALON_DATA[id as keyof typeof SALON_DATA] || SALON_DATA.salon1;
+  const salonId = id || 'salon1';
+  const salon = SALON_DATA[salonId as keyof typeof SALON_DATA] || SALON_DATA.salon1;
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
@@ -100,9 +101,34 @@ const SalonDetails = () => {
   const [activeDiscount, setActiveDiscount] = useState<CouponDiscount | null>(null);
   const [bottomCouponInput, setBottomCouponInput] = useState('');
 
+  // Favorite states
+  const [isFavorited, setIsFavorited] = useState(false);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [id]);
+    
+    // Check if favorited initially
+    const saved = localStorage.getItem('favorite_salons');
+    const currentFavs = saved ? JSON.parse(saved) : ['salon1', 'salon2'];
+    setIsFavorited(currentFavs.includes(salonId));
+  }, [salonId]);
+
+  const toggleFavorite = () => {
+    const saved = localStorage.getItem('favorite_salons');
+    const currentFavs = saved ? JSON.parse(saved) : ['salon1', 'salon2'];
+    let updatedFavs: string[];
+    
+    if (isFavorited) {
+      updatedFavs = currentFavs.filter((favId: string) => favId !== salonId);
+      showSuccess(`Removed "${salon.name}" from your favorites.`);
+    } else {
+      updatedFavs = [...currentFavs, salonId];
+      showSuccess(`Added "${salon.name}" to your favorites!`);
+    }
+    
+    localStorage.setItem('favorite_salons', JSON.stringify(updatedFavs));
+    setIsFavorited(!isFavorited);
+  };
 
   const categories = ['All', 'Hair', 'Facial', 'Nails', 'Skin'];
 
@@ -192,9 +218,10 @@ const SalonDetails = () => {
           <Button
             variant="ghost"
             size="sm"
+            onClick={toggleFavorite}
             className="rounded-full bg-card/50 border border-border/50 h-8 w-8 p-0"
           >
-            <Heart className="w-4 h-4" />
+            <Heart className={cn("w-4 h-4 transition-all duration-300", isFavorited ? "fill-destructive text-destructive scale-110" : "")} />
           </Button>
         </div>
       </div>

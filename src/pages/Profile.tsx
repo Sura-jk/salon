@@ -15,11 +15,18 @@ import { cn } from '@/lib/utils';
 
 type TabId = 'personal' | 'favorites' | 'notifications' | 'settings' | null;
 
+const SALONS_MAP = {
+  salon1: { name: 'Luxe Aura Studio', location: 'Bandra West', rating: 4.9, img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=400' },
+  salon2: { name: 'Velvet Touch Spa', location: 'Juhu', rating: 4.7, img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=400' },
+  salon3: { name: 'Golden Glow Parlour', location: 'Colaba', rating: 4.8, img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400' }
+};
+
 const Profile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>(null);
   const [points, setPoints] = useState(0);
   const [visits, setVisits] = useState(0);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   // Auto-scroll to top when active tab changes
   useEffect(() => {
@@ -34,9 +41,22 @@ const Profile = () => {
     return () => { clearInterval(pInterval); clearInterval(vInterval); };
   }, []);
 
+  // Fetch favorited salons list dynamically on component load / tab open
+  useEffect(() => {
+    const saved = localStorage.getItem('favorite_salons');
+    setFavorites(saved ? JSON.parse(saved) : ['salon1', 'salon2']);
+  }, [activeTab]);
+
   const handleLogout = () => {
     showSuccess("Logged out successfully.");
     navigate('/auth');
+  };
+
+  const handleRemoveFavorite = (salonId: string, salonName: string) => {
+    const updated = favorites.filter(fid => fid !== salonId);
+    setFavorites(updated);
+    localStorage.setItem('favorite_salons', JSON.stringify(updated));
+    showSuccess(`Removed "${salonName}" from favorites`);
   };
 
   const renderHeader = (title: string) => (
@@ -94,28 +114,52 @@ const Profile = () => {
     <div className="animate-in slide-in-from-right-4 duration-500">
       {renderHeader("Favorite Salons")}
       <div className="space-y-6 pb-12">
-        {[
-          { name: 'Luxe Aura Studio', location: 'Bandra West', rating: 4.9, img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=400' },
-          { name: 'Velvet Touch Spa', location: 'Juhu', rating: 4.7, img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=400' }
-        ].map((salon, i) => (
-          <div key={i} className="flex gap-4 p-3 rounded-2xl bg-card border border-border group hover:border-secondary transition-all cursor-pointer" onClick={() => navigate('/salon/salon1')}>
-            <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-              <img src={salon.img} className="w-full h-full object-cover" alt="" />
-            </div>
-            <div className="flex-1 py-1">
-              <h4 className="font-serif font-medium">{salon.name}</h4>
-              <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-bold mt-1">
-                <MapPin className="w-3 h-3 text-secondary" /> {salon.location}
+        {favorites.length > 0 ? (
+          favorites.map((salonId) => {
+            const salon = SALONS_MAP[salonId as keyof typeof SALONS_MAP];
+            if (!salon) return null;
+            return (
+              <div 
+                key={salonId} 
+                className="flex gap-4 p-3 rounded-2xl bg-card border border-border group hover:border-secondary transition-all cursor-pointer" 
+                onClick={() => navigate(`/salon/${salonId}`)}
+              >
+                <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                  <img src={salon.img} className="w-full h-full object-cover" alt="" />
+                </div>
+                <div className="flex-1 py-1">
+                  <h4 className="font-serif font-medium">{salon.name}</h4>
+                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-bold mt-1">
+                    <MapPin className="w-3 h-3 text-secondary" /> {salon.location}
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] text-secondary font-black mt-1">
+                    <Star className="w-3 h-3 fill-secondary" /> {salon.rating}
+                  </div>
+                </div>
+                <div 
+                  className="flex items-center pr-2" 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    handleRemoveFavorite(salonId, salon.name); 
+                  }}
+                >
+                  <Heart className="w-5 h-5 fill-destructive text-destructive hover:scale-110 transition-transform" />
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-[10px] text-secondary font-black mt-1">
-                <Star className="w-3 h-3 fill-secondary" /> {salon.rating}
-              </div>
-            </div>
-            <div className="flex items-center pr-2">
-              <Heart className="w-5 h-5 fill-destructive text-destructive" />
-            </div>
+            );
+          })
+        ) : (
+          <div className="text-center py-16 bg-card border border-dashed border-border rounded-3xl p-8">
+            <Heart className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-muted-foreground text-sm font-medium">No favorite salons found.</p>
+            <Button 
+              onClick={() => navigate('/')} 
+              className="mt-4 rounded-xl bg-secondary text-primary font-bold px-6 py-2 hover:bg-secondary/90 transition-all"
+            >
+              Explore Salons
+            </Button>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
