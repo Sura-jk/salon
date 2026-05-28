@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, Clock, User, Trash2, RotateCcw, Star, CalendarX } from 'lucide-react';
+import { CalendarDays, Clock, User, Trash2, RotateCcw, Star, CalendarX, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 import ImageWithFallback from '@/components/ImageWithFallback';
@@ -12,24 +12,24 @@ const INITIAL_BOOKINGS = [
   {
     id: 'b1',
     salonName: 'Luxe Aura Studio',
-    serviceName: 'Signature Haircut',
+    serviceName: 'Signature Hair Sculpt',
     stylistName: 'Elena Rose',
     date: new Date(Date.now() + 86400000 * 2).toISOString(),
     time: '10:00 AM',
     status: 'upcoming',
-    price: '₹499',
-    image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=120&q=80'
+    price: '₹850',
+    image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=600&auto=format&fit=crop'
   },
   {
     id: 'b2',
     salonName: 'Velvet Touch Spa',
-    serviceName: 'Luxury Facial',
+    serviceName: 'Cellular Glow Facial',
     stylistName: 'Sophia Chen',
     date: new Date(Date.now() - 86400000 * 5).toISOString(),
     time: '02:00 PM',
     status: 'completed',
     price: '₹1299',
-    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=120&q=80'
+    image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop'
   }
 ];
 
@@ -39,28 +39,16 @@ const Bookings = () => {
   const [allBookings, setAllBookings] = useState<any[]>([]);
 
   useEffect(() => {
-    // Load bookings from local storage and combine with initial data
     const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
     setAllBookings([...stored, ...INITIAL_BOOKINGS]);
   }, []);
 
-  const handleReschedule = (serviceName: string) => {
-    showSuccess(`Select a new date/time to reschedule "${serviceName}"`);
-    navigate('/book');
-  };
-
   const handleCancelBooking = (bookingId: string, serviceName: string) => {
     const updated = allBookings.filter(b => b.id !== bookingId);
     setAllBookings(updated);
-    // Also update local storage (only filter out the ones that are in local storage)
     const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
     localStorage.setItem('user_bookings', JSON.stringify(stored.filter((b: any) => b.id !== bookingId)));
-    
-    showSuccess(`Booking for "${serviceName}" cancelled successfully.`);
-  };
-
-  const handleRateExperience = (salonName: string) => {
-    showSuccess(`Thank you for rating your experience at ${salonName}! 5 Stars recorded!`);
+    showSuccess(`Cancelled "${serviceName}"`);
   };
 
   const filteredBookings = allBookings.filter((booking) => booking.status === activeTab);
@@ -70,131 +58,98 @@ const Bookings = () => {
       <div className="w-full max-w-lg md:max-w-2xl">
         <div className="mb-8">
           <h1 className="text-4xl font-serif font-medium text-foreground mb-2">My Bookings</h1>
-          <p className="text-muted-foreground text-sm">Your history of luxury experiences</p>
+          <p className="text-muted-foreground text-sm">Your luxury beauty schedule</p>
         </div>
 
-        {/* Tab Controls */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 mb-8">
           <Button 
             onClick={() => setActiveTab('upcoming')}
-            variant={activeTab === 'upcoming' ? 'default' : 'outline'}
             className={cn(
-              "flex-1 rounded-xl py-6 font-bold transition-all duration-300 active:scale-95",
-              activeTab === 'upcoming' 
-                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10" 
-                : "border-border hover:bg-muted text-muted-foreground"
+              "flex-1 rounded-2xl py-6 font-bold transition-all",
+              activeTab === 'upcoming' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10" : "bg-card border border-border text-muted-foreground"
             )}
           >
             Upcoming
           </Button>
           <Button 
             onClick={() => setActiveTab('completed')}
-            variant={activeTab === 'completed' ? 'default' : 'outline'}
             className={cn(
-              "flex-1 rounded-xl py-6 font-bold transition-all duration-300 active:scale-95",
-              activeTab === 'completed' 
-                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10" 
-                : "border-border hover:bg-muted text-muted-foreground"
+              "flex-1 rounded-2xl py-6 font-bold transition-all",
+              activeTab === 'completed' ? "bg-primary text-primary-foreground shadow-lg shadow-primary/10" : "bg-card border border-border text-muted-foreground"
             )}
           >
             Completed
           </Button>
         </div>
 
-        {/* Bookings List */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {filteredBookings.length > 0 ? (
             filteredBookings.map((booking) => (
               <Card 
                 key={booking.id} 
-                className="p-0 overflow-hidden border-border/50 rounded-3xl luxury-shadow bg-card animate-in slide-in-from-bottom-4 duration-500"
+                className="p-0 overflow-hidden border-border/50 rounded-[2.5rem] luxury-shadow bg-card animate-in slide-in-from-bottom-4 duration-500"
               >
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-border/60 shadow-sm flex-shrink-0">
-                        <ImageWithFallback 
-                          src={booking.image} 
-                          alt={booking.salonName} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <h3 className="font-serif font-medium text-lg text-foreground leading-tight">{booking.salonName}</h3>
-                        <span className="text-xs text-muted-foreground">{booking.serviceName}</span>
-                      </div>
+                <div className="relative h-48 overflow-hidden">
+                  <ImageWithFallback src={booking.image} alt={booking.serviceName} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <Badge className={cn(
+                    "absolute top-4 right-4 text-[9px] uppercase font-black px-3 py-1 rounded-full border-none",
+                    booking.status === 'upcoming' ? "bg-secondary text-primary" : "bg-white/20 text-white backdrop-blur-md"
+                  )}>
+                    {booking.status}
+                  </Badge>
+                  <div className="absolute bottom-4 left-6">
+                    <h3 className="font-serif font-medium text-2xl text-white leading-tight">{booking.serviceName}</h3>
+                    <div className="flex items-center gap-1.5 mt-1 text-white/70 text-[10px] font-bold uppercase tracking-widest">
+                      <MapPin className="w-3 h-3" /> {booking.salonName}
                     </div>
-                    <Badge className={cn(
-                      "text-[10px] uppercase font-bold px-2.5 py-1 rounded-full pointer-events-none select-none",
-                      booking.status === 'upcoming' 
-                        ? "bg-secondary text-primary hover:bg-secondary hover:text-primary" 
-                        : "bg-muted text-muted-foreground hover:bg-muted hover:text-muted-foreground"
-                    )}>
-                      {booking.status}
-                    </Badge>
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 py-4 border-y border-border/50 mb-4">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <CalendarDays className="w-3.5 h-3.5 text-secondary" />
-                      <span>{new Date(booking.date).toDateString()}</span>
+                </div>
+                
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-4 py-2 mb-6">
+                    <div className="space-y-1">
+                      <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-widest block">Date & Time</span>
+                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                        <CalendarDays className="w-3.5 h-3.5 text-secondary" />
+                        <span>{new Date(booking.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} • {booking.time}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Clock className="w-3.5 h-3.5 text-secondary" />
-                      <span>{booking.time}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <User className="w-3.5 h-3.5 text-secondary" />
-                      <span>{booking.stylistName}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs font-bold text-primary">
-                      <span>Total: {booking.price}</span>
+                    <div className="space-y-1">
+                      <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-widest block">Specialist</span>
+                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                        <User className="w-3.5 h-3.5 text-secondary" />
+                        <span>{booking.stylistName}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex gap-3">
-                    {booking.status === 'upcoming' ? (
-                      <>
-                        <Button 
-                          variant="outline" 
-                          onClick={() => handleReschedule(booking.serviceName)}
-                          className="flex-1 py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
-                        >
-                          <RotateCcw className="w-3 h-3" /> Reschedule
+                  <div className="flex items-center justify-between gap-4 pt-4 border-t border-border/40">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-widest">Price Paid</span>
+                      <span className="text-lg font-black text-primary">{booking.price}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      {booking.status === 'upcoming' ? (
+                        <>
+                          <Button variant="outline" onClick={() => navigate('/book')} className="rounded-xl text-xs font-bold px-4 py-2 h-auto border-border">Reschedule</Button>
+                          <Button variant="ghost" onClick={() => handleCancelBooking(booking.id, booking.serviceName)} className="rounded-xl text-destructive hover:bg-destructive/10 p-2 h-auto"><Trash2 className="w-4 h-4" /></Button>
+                        </>
+                      ) : (
+                        <Button variant="outline" onClick={() => showSuccess("Feedback recorded!")} className="rounded-xl text-xs font-bold px-6 py-2 h-auto border-border flex items-center gap-2">
+                          <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> Review
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          onClick={() => handleCancelBooking(booking.id, booking.serviceName)}
-                          className="p-6 rounded-2xl text-destructive hover:bg-destructive/10 transition-all"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </>
-                    ) : (
-                      <Button 
-                        variant="outline" 
-                        onClick={() => handleRateExperience(booking.salonName)}
-                        className="w-full py-6 rounded-2xl text-xs font-bold border-border flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
-                      >
-                        <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Rate Experience
-                      </Button>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </Card>
             ))
           ) : (
             <div className="py-20 text-center flex flex-col items-center justify-center">
-              <div className="w-16 h-16 bg-muted/40 rounded-full flex items-center justify-center mb-4 text-muted-foreground">
-                <CalendarX className="w-8 h-8" />
-              </div>
-              <p className="text-muted-foreground text-sm font-medium">No {activeTab} bookings found.</p>
-              <Button 
-                onClick={() => navigate('/')} 
-                className="mt-4 rounded-xl bg-secondary text-primary font-bold px-6 py-2 hover:bg-secondary/90 transition-all"
-              >
-                Book a Treatment
-              </Button>
+              <CalendarX className="w-12 h-12 text-muted-foreground/30 mb-4" />
+              <p className="text-muted-foreground text-sm font-medium">No {activeTab} experiences found.</p>
+              <Button onClick={() => navigate('/')} className="mt-6 rounded-2xl bg-secondary text-primary font-bold px-8 py-3 hover:bg-secondary/90 transition-all shadow-xl">Book Now</Button>
             </div>
           )}
         </div>
