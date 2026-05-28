@@ -7,11 +7,11 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { cn } from '@/lib/utils';
 
 const CATEGORIES = [
-  { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' },
-  { id: 'nails', label: 'Nails', image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=400&auto=format&fit=crop' },
-  { id: 'spa', label: 'Spa', image: 'https://images.unsplash.com/photo-1540555768197-be656005c935?q=80&w=400&auto=format&fit=crop' },
-  { id: 'makeup', label: 'Makeup', image: 'https://images.unsplash.com/photo-1522338242967-57daa675667a?q=80&w=400&auto=format&fit=crop' },
-  { id: 'facial', label: 'Facial', image: 'https://images.unsplash.com/photo-1570172619644-60776839737a?q=80&w=400&auto=format&fit=crop' },
+  { id: 'hair', label: 'Hair', image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=400&q=80' },
+  { id: 'nails', label: 'Nails', image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?auto=format&fit=crop&w=400&q=80' },
+  { id: 'spa', label: 'Spa', image: 'https://images.unsplash.com/photo-1540555768197-be656005c935?auto=format&fit=crop&w=400&q=80' },
+  { id: 'makeup', label: 'Makeup', image: 'https://images.unsplash.com/photo-1522338242967-57daa675667a?auto=format&fit=crop&w=400&q=80' },
+  { id: 'facial', label: 'Facial', image: 'https://images.unsplash.com/photo-1570172619644-60776839737a?auto=format&fit=crop&w=400&q=80' },
 ];
 
 const NEARBY_SALONS = [
@@ -22,7 +22,7 @@ const NEARBY_SALONS = [
     reviews: 128,
     distance: '1.2 km',
     price: '₹499',
-    image: 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'salon2',
@@ -31,7 +31,7 @@ const NEARBY_SALONS = [
     reviews: 85,
     distance: '2.5 km',
     price: '₹899',
-    image: 'https://images.unsplash.com/photo-1521566626196-f77d7737307a?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1521566626196-f77d7737307a?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'salon3',
@@ -40,15 +40,15 @@ const NEARBY_SALONS = [
     reviews: 210,
     distance: '0.8 km',
     price: '₹399',
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?auto=format&fit=crop&w=1000&q=80',
   },
 ];
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const heroImage = 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?q=80&w=1000&auto=format&fit=crop';
-  const placeholder = '/placeholder.svg';
+  const heroImage = 'https://images.unsplash.com/photo-1560066982-73a8579Bf77a?auto=format&fit=crop&w=1000&q=80';
+  const placeholder = 'https://via.placeholder.com/1000x600?text=LuxeSalon';
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24">
@@ -117,7 +117,12 @@ const Home = () => {
               onClick={() => navigate('/services')}
             >
               <div className="w-20 h-20 rounded-3xl overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-md group-hover:shadow-secondary/20">
-                <img src={cat.image} alt={cat.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img 
+                  src={cat.image} 
+                  alt={cat.label} 
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = placeholder; }}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                />
               </div>
               <span className="text-xs font-bold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-widest">
                 {cat.label}
@@ -173,7 +178,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </div>
+    </div
   );
 };
 
