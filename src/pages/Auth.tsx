@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, Chrome, Apple } from 'lucide-react';
+import { Phone, Chrome, Apple } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -22,11 +21,7 @@ const Auth = () => {
   return (
     <div className="h-screen w-full bg-background flex flex-col px-8 py-16">
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h1 className="text-4xl font-serif font-medium text-foreground mb-4">
             {step === 'login' ? 'Welcome Back' : 'Verify Phone'}
           </h1>
@@ -35,17 +30,11 @@ const Auth = () => {
               ? 'Enter your details to access the luxury experience' 
               : 'Enter the 4-digit code sent to your phone'}
           </p>
-        </motion.div>
+        </div>
 
-        <AnimatePresence mode="wait">
-          {step === 'login' ? (
-            <motion.div 
-              key="login"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="space-y-6"
-            >
+        <div className="transition-all duration-300">
+          {step === ' la-login' || step === 'login' ? (
+            <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="relative">
                   <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -88,15 +77,9 @@ const Auth = () => {
                   Apple
                 </Button>
               </div>
-            </motion.div>
+            </div>
           ) : (
-            <motion.div 
-              key="otp"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-6"
-            >
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
               <form onSubmit={handleVerify} className="space-y-6">
                 <div className="flex justify-center gap-4">
                   {[0, 1, 2, 3].map((i) => (
@@ -118,9 +101,9 @@ const Auth = () => {
               <p className="text-center text-sm text-muted-foreground">
                 Didn't receive code? <span className="text-secondary font-medium cursor-pointer">Resend</span>
               </p>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Sparkles, Scissors, Calendar, Award } from 'lucide-react';
+import { ChevronRight, Sparkles, Calendar, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ONBOARDING_STEPS = [
@@ -40,35 +39,29 @@ const Onboarding = () => {
   return (
     <div className="h-screen w-full bg-background flex flex-col overflow-hidden">
       <div className="flex-1 relative">
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={currentStep}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0"
-          >
-            <img 
-              src={ONBOARDING_STEPS[currentStep].image} 
-              className="h-full w-full object-cover opacity-60" 
-              alt="Onboarding"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-            
-            <div className="absolute bottom-0 left-0 right-0 px-8 pb-20">
-              <div className="flex items-center justify-center w-16 h-16 bg-secondary rounded-2xl mb-6 shadow-xl">
-                {ONBOARDING_STEPS[currentStep].icon}
-              </div>
-              <h1 className="text-4xl font-serif font-medium text-foreground mb-4 leading-tight">
-                {ONBOARDING_STEPS[currentStep].title}
-              </h1>
-              <p className="text-muted-foreground text-base mb-8 leading-relaxed">
-                {ONBOARDING_STEPS[currentStep].description}
-              </p>
+        <div 
+          key={currentStep}
+          className="absolute inset-0 transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-right-10"
+        >
+          <img 
+            src={ONBOARDING_STEPS[currentStep].image} 
+            className="h-full w-full object-cover opacity-60" 
+            alt="Onboarding"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+          
+          <div className="absolute bottom-0 left-0 right-0 px-8 pb-20">
+            <div className="flex items-center justify-center w-16 h-16 bg-secondary rounded-2xl mb-6 shadow-xl">
+              {ONBOARDING_STEPS[currentStep].icon}
             </div>
-          </motion.div>
-        </AnimatePresence>
+            <h1 className="text-4xl font-serif font-medium text-foreground mb-4 leading-tight">
+              {ONBOARDING_STEPS[currentStep].title}
+            </h1>
+            <p className="text-muted-foreground text-base mb-8 leading-relaxed">
+              {ONBOARDING_STEPS[currentStep].description}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="px-8 pb-12 pt-4 flex flex-col gap-6">
