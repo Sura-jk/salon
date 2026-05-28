@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   User, Settings, Heart, LogOut, Bell, 
   ChevronRight, Crown, ChevronLeft, Save, Plus, 
-  MapPin, Star
+  MapPin, Star, Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -121,29 +121,37 @@ const Profile = () => {
             return (
               <div 
                 key={salonId} 
-                className="flex gap-4 p-3 rounded-2xl bg-card border border-border group hover:border-secondary transition-all cursor-pointer" 
+                className="flex flex-col gap-3 p-4 rounded-3xl bg-card border border-border/60 group hover:border-secondary transition-all cursor-pointer shadow-sm relative overflow-hidden" 
                 onClick={() => navigate(`/salon/${salonId}`)}
               >
-                <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                  <img src={salon.img} className="w-full h-full object-cover" alt="" />
-                </div>
-                <div className="flex-1 py-1">
-                  <h4 className="font-serif font-medium">{salon.name}</h4>
-                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-bold mt-1">
-                    <MapPin className="w-3 h-3 text-secondary" /> {salon.location}
+                <div className="flex gap-4">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border border-border/50">
+                    <img src={salon.img} className="w-full h-full object-cover" alt="" />
                   </div>
-                  <div className="flex items-center gap-1 text-[10px] text-secondary font-black mt-1">
-                    <Star className="w-3 h-3 fill-secondary" /> {salon.rating}
+                  <div className="flex-1 py-1">
+                    <h4 className="font-serif font-medium text-lg text-foreground group-hover:text-secondary transition-colors">{salon.name}</h4>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-secondary" /> {salon.location}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-secondary font-black mt-1.5">
+                      <Star className="w-3.5 h-3.5 fill-secondary text-secondary" /> {salon.rating}
+                    </div>
                   </div>
                 </div>
-                <div 
-                  className="flex items-center pr-2" 
-                  onClick={(e) => { 
-                    e.stopPropagation(); 
-                    handleRemoveFavorite(salonId, salon.name); 
-                  }}
-                >
-                  <Heart className="w-5 h-5 fill-destructive text-destructive hover:scale-110 transition-transform" />
+
+                {/* Explicit Clean Action Bar inside card for clear "Remove" action */}
+                <div className="flex justify-end gap-2 pt-2 border-t border-border/30 mt-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveFavorite(salonId, salon.name);
+                    }}
+                    className="h-8 text-xs font-bold text-destructive hover:text-destructive hover:bg-destructive/10 rounded-xl px-3 flex items-center gap-1.5 transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" /> Remove
+                  </Button>
                 </div>
               </div>
             );
