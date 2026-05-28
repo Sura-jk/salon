@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,7 +42,7 @@ const MASTER_ARTISTS = [
     name: 'Chloe Dubois', 
     shortName: 'Chloe', 
     role: 'Nail Artist', 
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&h=200&auto=format&fit=crop',
     active: true 
   },
   { 
@@ -131,17 +131,6 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTag, setSelectedTag] = useState('All');
-
-  // Master Artists spotlight slide state
-  const artistsScrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollArtists = (dir: 'left' | 'right') => {
-    if (artistsScrollRef.current) {
-      const scrollAmount = 240; // Approx width of 3 artist stories
-      const delta = dir === 'left' ? -scrollAmount : scrollAmount;
-      artistsScrollRef.current.scrollBy({ left: delta, behavior: 'smooth' });
-    }
-  };
 
   const handleClaimOffer = () => {
     const toastId = showLoading("Activating Summer promo discount...");
@@ -254,36 +243,16 @@ const Home = () => {
         )}
       </section>
 
-      {/* Circle Previews (Master Artists Stories UI with Navigation Arrows) */}
-      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155 relative group/artists">
+      {/* Circle Previews (Master Artists Stories UI with Thin Scrollbar Only) */}
+      <section className="px-6 py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-4 h-4 text-secondary" />
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Master Artists Spotlight</h2>
         </div>
         
-        {/* Relative container holding horizontal scroll + hover arrows */}
         <div className="relative">
-          {/* Slide Left Button */}
-          <button 
-            onClick={() => scrollArtists('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md opacity-0 group-hover/artists:opacity-100"
-            aria-label="Slide artists left"
-          >
-            <ChevronLeft className="w-3.5 h-3.5 stroke-[2]" />
-          </button>
-
-          {/* Slide Right Button */}
-          <button 
-            onClick={() => scrollArtists('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md opacity-0 group-hover/artists:opacity-100"
-            aria-label="Slide artists right"
-          >
-            <ChevronRight className="w-3.5 h-3.5 stroke-[2]" />
-          </button>
-
           <div 
-            ref={artistsScrollRef}
-            className="flex gap-5 overflow-x-auto pb-2 no-scrollbar scroll-smooth"
+            className="flex gap-5 overflow-x-auto pb-3 thin-scrollbar scroll-smooth"
           >
             {MASTER_ARTISTS.map((artist) => (
               <div 

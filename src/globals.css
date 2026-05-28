@@ -107,4 +107,23 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+  /* Elegant Thin Scrollbar */
+  .thin-scrollbar::-webkit-scrollbar {
+    height: 3px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--secondary) / 0.3);
+    border-radius: 9999px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--secondary) / 0.6);
+  }
+  .thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--secondary) / 0.3) transparent;
+  }
 }
