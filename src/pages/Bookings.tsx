@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { CalendarDays, Clock, User, Trash2, RotateCcw, Star, CalendarX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
+import ImageWithFallback from '@/components/ImageWithFallback';
 
 const Bookings = () => {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ const Bookings = () => {
       date: new Date(Date.now() + 86400000 * 2),
       time: '10:00 AM',
       status: 'upcoming',
-      price: '₹499'
+      price: '₹499',
+      image: 'https://images.unsplash.com/photo-1560066982-3f83097c023d?auto=format&fit=crop&w=120&q=80'
     },
     {
       id: 'b2',
@@ -30,7 +32,8 @@ const Bookings = () => {
       date: new Date(Date.now() - 86400000 * 5),
       time: '02:00 PM',
       status: 'completed',
-      price: '₹1299'
+      price: '₹1299',
+      image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=120&q=80'
     }
   ];
 
@@ -96,8 +99,12 @@ const Bookings = () => {
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">
-                        {booking.salonName[0]}
+                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-border/60 shadow-sm flex-shrink-0">
+                        <ImageWithFallback 
+                          src={booking.image} 
+                          alt={booking.salonName} 
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div className="flex flex-col">
                         <h3 className="font-serif font-medium text-lg text-foreground leading-tight">{booking.salonName}</h3>
