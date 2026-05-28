@@ -60,7 +60,7 @@ const CATEGORIES = [
     id: 'hair', 
     label: 'Hair Artistry', 
     description: 'Sculpt & Style',
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
@@ -312,7 +312,7 @@ const Home = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end px-8 pb-10">
                     <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-secondary text-primary text-[9px] font-bold uppercase tracking-widest mb-4">
-                      <Sparkles className="w-3 h-3 animate-pulse" />
+                      <Sparkles className="w-3.5 h-3.5 animate-pulse" />
                       <span>Exclusive Privilege</span>
                     </div>
                     <h3 className="text-white text-4xl font-serif font-medium mb-2 leading-none">
