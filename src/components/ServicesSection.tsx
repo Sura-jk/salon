@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Scissors, Sparkles, User, Heart, Palette, Cut } from 'lucide-react';
+import { Scissors, Sparkles, User, Heart, Palette } from 'lucide-react';
 
 const services = [
   {
@@ -17,7 +17,7 @@ const services = [
     price: 'Starting from $80',
   },
   {
-    icon: Cut,
+    icon: Scissors,
     title: 'Hair Treatments',
     description: 'Deep conditioning, keratin treatments, and hair repair services',
     price: 'Starting from $60',
