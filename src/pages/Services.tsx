@@ -14,13 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { showSuccess } from '@/utils/toast';
-import ImageWithFallback from '@/components/ImageWithFallback';
 
 const SERVICES_DATA = {
   hair: {
     label: 'Hair',
     icon: Scissors,
-    heroImage: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'hair_1', 
@@ -54,7 +52,6 @@ const SERVICES_DATA = {
   skincare: {
     label: 'Skincare',
     icon: Sparkles,
-    heroImage: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'skin_1', 
@@ -79,7 +76,6 @@ const SERVICES_DATA = {
   nails: {
     label: 'Nails',
     icon: Palette,
-    heroImage: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'nail_1', 
@@ -104,7 +100,6 @@ const SERVICES_DATA = {
   makeup: {
     label: 'Makeup',
     icon: Wand2,
-    heroImage: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'makeup_1', 
@@ -129,7 +124,6 @@ const SERVICES_DATA = {
   spa: {
     label: 'Spa',
     icon: Flower2,
-    heroImage: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop',
     items: [
       { 
         id: 'spa_1', 
@@ -241,20 +235,22 @@ const Services = () => {
       </div>
 
       <div className="max-w-md mx-auto w-full px-6 pt-8">
-        <header className="mb-8">
+        <header className="mb-6">
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Luxury Selection</span>
           <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">The Treatment Gallery</h1>
         </header>
 
         <Tabs defaultValue="hair" value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="flex w-full bg-muted/40 p-1.5 rounded-2xl mb-8 backdrop-blur-md border border-border/50 overflow-x-auto no-scrollbar justify-start sm:justify-between">
+          {/* Minimalist, Premium Tab Menu */}
+          <TabsList className="flex w-full bg-transparent p-0 gap-2 mb-8 overflow-x-auto no-scrollbar justify-start border-b border-border/30 pb-2">
             {Object.entries(SERVICES_DATA).map(([key, value]) => {
               const Icon = value.icon;
+              const isActive = activeTab === key;
               return (
                 <TabsTrigger 
                   key={key} 
                   value={key} 
-                  className="flex-shrink-0 sm:flex-1 rounded-xl transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl font-bold text-[10px] uppercase tracking-widest py-3 px-6"
+                  className="flex-shrink-0 rounded-full transition-all duration-300 font-bold text-[11px] uppercase tracking-widest py-2 px-5 border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary border-border/60 text-muted-foreground bg-card/40"
                 >
                   <div className="flex items-center gap-2">
                     <Icon className="w-3.5 h-3.5" />
@@ -265,20 +261,7 @@ const Services = () => {
             })}
           </TabsList>
 
-          <TabsContent value={activeTab} className="space-y-8 mt-0 focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Category Banner Image */}
-            <div className="relative h-44 w-full rounded-3xl overflow-hidden shadow-xl">
-              <ImageWithFallback 
-                src={currentCategoryData.heroImage} 
-                alt={currentCategoryData.label} 
-                className="h-full w-full object-cover transition-transform duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
-                <h2 className="text-white text-xl font-serif font-medium">{currentCategoryData.label} Collection</h2>
-                <p className="text-white/80 text-[10px] uppercase font-bold tracking-widest mt-1">Professional Care & Artistry</p>
-              </div>
-            </div>
-
+          <TabsContent value={activeTab} className="space-y-6 mt-0 focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="grid grid-cols-1 gap-6">
               {filteredItems.length > 0 ? (
                 filteredItems.map((service) => (
