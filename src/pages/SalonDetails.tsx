@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Filter, Ticket, ShieldCheck, Zap, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
@@ -300,13 +301,18 @@ const SalonDetails = () => {
         {/* Staff Section */}
         <div className="mb-12">
           <h2 className="text-2xl font-serif font-medium mb-5">Master Stylists</h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+          <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
             {salon.staff.map((member) => (
-              <div key={member.id} className="flex flex-col items-center gap-2 min-w-[80px]">
-                <ImageWithFallback src={member.image} alt={member.name} className="w-16 h-16 rounded-full object-cover border-2 border-secondary/20 p-0.5" />
+              <div key={member.id} className="flex flex-col items-center gap-2 min-w-[90px]">
+                <Avatar className="w-16 h-16 border-2 border-secondary/20 p-0.5 shadow-md">
+                  <AvatarImage src={member.image} alt={member.name} className="rounded-full object-cover" />
+                  <AvatarFallback className="bg-secondary/10 text-secondary font-bold text-xs uppercase">
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
                 <div className="text-center">
                   <span className="text-[10px] font-bold block text-foreground leading-tight">{member.name}</span>
-                  <span className="text-[8px] text-muted-foreground block mt-0.5 uppercase">{member.role}</span>
+                  <span className="text-[8px] text-muted-foreground block mt-0.5 uppercase tracking-wide">{member.role}</span>
                 </div>
               </div>
             ))}
