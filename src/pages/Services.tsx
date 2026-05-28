@@ -42,26 +42,26 @@ const Services = () => {
   const [activeTab, setActiveTab] = useState('hair');
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-8">
+    <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-12">
       <div className="max-w-md mx-auto w-full">
-        <div className="mb-8">
-          <h1 className="text-4xl font-serif font-medium text-foreground mb-2">Our Services</h1>
-          <p className="text-muted-foreground text-sm">Curated treatments for the modern individual</p>
+        <div className="mb-10">
+          <h1 className="text-4xl font-serif font-medium text-foreground mb-3 tracking-tight">Our Services</h1>
+          <p className="text-muted-foreground text-sm font-medium tracking-wide">Curated treatments for the modern individual</p>
         </div>
 
         <Tabs defaultValue="hair" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 w-full bg-muted/50 p-1 rounded-2xl mb-8">
+          <TabsList className="grid grid-cols-3 w-full bg-muted/40 p-1.5 rounded-2xl mb-10 backdrop-blur-sm border border-border/50">
             {Object.entries(SERVICES_DATA).map(([key, value]) => {
               const Icon = value.icon;
               return (
                 <TabsTrigger 
                   key={key} 
                   value={key} 
-                  className="rounded-xl transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="rounded-xl transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-bold text-xs uppercase tracking-widest"
                 >
                   <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4" />
-                    <span className="text-xs font-medium">{value.label}</span>
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{value.label}</span>
                   </div>
                 </TabsTrigger>
               );
@@ -69,8 +69,8 @@ const Services = () => {
           </TabsList>
 
           {Object.entries(SERVICES_DATA).map(([key, value]) => (
-            <TabsContent key={key} value={key} className="space-y-4 mt-0">
-              <div className="grid grid-cols-1 gap-4">
+            <TabsContent key={key} value={key} className="space-y-5 mt-0 focus-visible:ring-0">
+              <div className="grid grid-cols-1 gap-5">
                 {value.items.map((service) => (
                   <ServiceCard 
                     key={service.id}
