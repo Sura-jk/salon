@@ -10,30 +10,114 @@ const SERVICES_DATA = {
     label: 'Hair',
     icon: Scissors,
     items: [
-      { id: 'h1', name: 'Luxury Hair Sculpt', description: 'Precision cutting and styling tailored to your unique facial structure.', price: '$85', duration: '90 min' },
-      { id: 'h2', name: 'Balayage Artistry', description: 'Hand-painted highlights for a natural, sun-kissed look.', price: '$180', duration: '180 min' },
-      { id: 'h3', name: 'Deep Conditioning', description: 'Intense hydration and repair for damaged hair.', price: '$50', duration: '60 min' },
-      { id: 'h4', name: 'Men\'s Executive Cut', description: 'Classic grooming with a modern touch.', price: '$60', duration: '45 min' },
+      { 
+        id: 'h1', 
+        name: 'Luxury Hair Sculpt', 
+        description: 'Precision cutting and styling tailored to your unique facial structure.', 
+        price: '₹850', 
+        duration: '90 min',
+        image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'h2', 
+        name: 'Balayage Artistry', 
+        description: 'Hand-painted highlights for a natural, sun-kissed look.', 
+        price: '₹2499', 
+        duration: '180 min',
+        image: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'h3', 
+        name: 'Deep Conditioning', 
+        description: 'Intense hydration and repair for damaged hair.', 
+        price: '₹599', 
+        duration: '60 min',
+        image: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'h4', 
+        name: "Men's Executive Cut", 
+        description: 'Classic grooming with a modern touch and scalp massage.', 
+        price: '₹600', 
+        duration: '45 min',
+        image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=400&auto=format&fit=crop'
+      },
     ]
   },
   skincare: {
     label: 'Skincare',
     icon: Sparkles,
     items: [
-      { id: 's1', name: 'Signature Glow Facial', description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.', price: '$120', duration: '60 min' },
-      { id: 's2', name: 'Diamond Microdermabrasion', description: 'Deep exfoliation for a smoother, clearer complexion.', price: '$150', duration: '75 min' },
-      { id: 's3', name: 'Anti-Aging Ritual', description: 'Targeted treatment to reduce fine lines and wrinkles.', price: '$170', duration: '90 min' },
-      { id: 's4', name: 'Hydra-Lift Treatment', description: 'Intense hydration and lifting for a youthful glow.', price: '$140', duration: '60 min' },
+      { 
+        id: 's1', 
+        name: 'Signature Glow Facial', 
+        description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.', 
+        price: '₹1299', 
+        duration: '60 min',
+        image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 's2', 
+        name: 'Diamond Microdermabrasion', 
+        description: 'Deep exfoliation for a smoother, clearer complexion.', 
+        price: '₹1599', 
+        duration: '75 min',
+        image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 's3', 
+        name: 'Anti-Aging Ritual', 
+        description: 'Targeted treatment to reduce fine lines and wrinkles.', 
+        price: '₹1799', 
+        duration: '90 min',
+        image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 's4', 
+        name: 'Hydra-Lift Treatment', 
+        description: 'Intense hydration and lifting for a youthful glow.', 
+        price: '₹1400', 
+        duration: '60 min',
+        image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=400&auto=format&fit=crop'
+      },
     ]
   },
   nails: {
     label: 'Nails',
     icon: Palette,
     items: [
-      { id: 'n1', name: 'Royal Manicure', description: 'Complete hand care with a premium polish and relaxing massage.', price: '$45', duration: '45 min' },
-      { id: 'n2', name: 'Imperial Pedicure', description: 'Luxury foot care with exfoliating scrub and massage.', price: '$65', duration: '60 min' },
-      { id: 'n3', name: 'Gel Extensions', description: 'Durable and elegant nail extensions with custom art.', price: '$80', duration: '90 min' },
-      { id: 'n4', name: 'Nail Art Session', description: 'Custom detailed designs for a bold statement.', price: '$30', duration: '30 min' },
+      { 
+        id: 'n1', 
+        name: 'Royal Manicure', 
+        description: 'Complete hand care with a premium polish and relaxing massage.', 
+        price: '₹499', 
+        duration: '45 min',
+        image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'n2', 
+        name: 'Imperial Pedicure', 
+        description: 'Luxury foot care with exfoliating scrub and hot stone massage.', 
+        price: '₹699', 
+        duration: '60 min',
+        image: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'n3', 
+        name: 'Gel Extensions', 
+        description: 'Durable and elegant nail extensions with custom art styling.', 
+        price: '₹899', 
+        duration: '90 min',
+        image: 'https://images.unsplash.com/photo-1632345031435-8797b2d58045?q=80&w=400&auto=format&fit=crop'
+      },
+      { 
+        id: 'n4', 
+        name: 'Nail Art Session', 
+        description: 'Custom hand-drawn detailed designs for a bold personal statement.', 
+        price: '₹300', 
+        duration: '30 min',
+        image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=400&auto=format&fit=crop'
+      },
     ]
   }
 };
@@ -96,6 +180,7 @@ const Services = () => {
                     price={service.price}
                     duration={service.duration}
                     category={SERVICES_DATA[activeTab as keyof typeof SERVICES_DATA].label}
+                    image={service.image}
                     onClick={() => navigate(`/book?service=${service.id}`)}
                   />
                 ))
