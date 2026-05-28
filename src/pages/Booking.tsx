@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Receipt } from 'lucide-react';
+import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Receipt, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
 
@@ -110,10 +110,10 @@ const BookingFlow = () => {
           </div>
         </div>
         
-        <div className="flex gap-4 w-full max-w-md">
+        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
           <Button 
             onClick={() => navigate('/bookings')}
-            className="flex-1 py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20"
+            className="flex-1 py-6 rounded-2xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 text-sm"
           >
             View Bookings
           </Button>
@@ -122,7 +122,7 @@ const BookingFlow = () => {
             onClick={() => {
               showSuccess("Appointment added to your device Calendar!");
             }}
-            className="flex-1 py-7 rounded-2xl border-border font-medium"
+            className="flex-1 py-6 rounded-2xl border-border font-medium text-sm"
           >
             Add to Calendar
           </Button>
@@ -132,8 +132,21 @@ const BookingFlow = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto">
-      <div className="max-w-md mx-auto w-full">
+    <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto items-center">
+      <div className="max-w-lg md:max-w-2xl w-full flex flex-col">
+        {/* Sticky Back Arrow Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate(-1)}
+            className="rounded-full bg-card border border-border h-10 w-10 p-0 text-foreground"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Back to Salon</span>
+        </div>
+
         {/* Dynamic Service Receipt Summary Card */}
         <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -194,7 +207,7 @@ const BookingFlow = () => {
             <Button 
               disabled={!selectedStylist}
               onClick={() => setStep(2)}
-              className="w-full py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
+              className="w-full py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20 text-sm"
             >
               Continue
             </Button>
@@ -207,17 +220,17 @@ const BookingFlow = () => {
               <h2 className="text-3xl font-serif font-medium mb-2">Select Date & Time</h2>
               <p className="text-xs text-muted-foreground">Pick a slot convenient for you</p>
             </div>
-            <div className="flex justify-center bg-card rounded-3xl p-3 border border-border shadow-sm overflow-hidden">
+            <div className="flex justify-center bg-card rounded-3xl p-3 border border-border shadow-sm overflow-hidden max-w-full">
               <Calendar 
                 mode="single" 
                 selected={selectedDate} 
                 onSelect={setSelectedDate} 
-                className="rounded-3xl border-none shadow-none p-0 max-w-full"
+                className="rounded-3xl border-none shadow-none p-0 w-full"
               />
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-3">Available Time Slots</span>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-3">
                 {TIME_SLOTS.map(t => (
                   <button 
                     key={t}
@@ -236,14 +249,14 @@ const BookingFlow = () => {
               <Button 
                 variant="outline"
                 onClick={() => setStep(1)}
-                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium"
+                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium text-sm"
               >
                 Back
               </Button>
               <Button 
                 disabled={!selectedTime}
                 onClick={() => setStep(3)}
-                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
+                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20 text-sm"
               >
                 Continue
               </Button>
@@ -272,7 +285,7 @@ const BookingFlow = () => {
                   <Wallet className="w-5 h-5 text-secondary" />
                 </div>
                 <div className="flex-1">
-                  <span className="font-medium block text-foreground">Pay at Salon</span>
+                  <span className="font-medium block text-foreground text-sm">Pay at Salon</span>
                   <span className="text-xs text-muted-foreground">Pay after your service</span>
                 </div>
                 {paymentMethod === 'pay_at_salon' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
@@ -291,7 +304,7 @@ const BookingFlow = () => {
                   <Smartphone className="w-5 h-5 text-secondary" />
                 </div>
                 <div className="flex-1">
-                  <span className="font-medium block text-foreground">UPI / QR Code</span>
+                  <span className="font-medium block text-foreground text-sm">UPI / QR Code</span>
                   <span className="text-xs text-muted-foreground">Fast and secure payment</span>
                 </div>
                 {paymentMethod === 'upi' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
@@ -310,7 +323,7 @@ const BookingFlow = () => {
                   <CreditCard className="w-5 h-5 text-secondary" />
                 </div>
                 <div className="flex-1">
-                  <span className="font-medium block text-foreground">Credit / Debit Card</span>
+                  <span className="font-medium block text-foreground text-sm">Credit / Debit Card</span>
                   <span className="text-xs text-muted-foreground">Save card for future use</span>
                 </div>
                 {paymentMethod === 'card' && <CheckCircle2 className="w-5 h-5 text-secondary" />}
@@ -320,13 +333,13 @@ const BookingFlow = () => {
               <Button 
                 variant="outline"
                 onClick={() => setStep(2)}
-                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium"
+                className="flex-1 py-7 rounded-2xl border-border text-muted-foreground font-medium text-sm"
               >
                 Back
               </Button>
               <Button 
                 onClick={handleConfirm}
-                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20"
+                className="flex-[2] py-7 rounded-2xl bg-primary text-primary-foreground font-bold shadow-xl shadow-primary/20 text-sm"
               >
                 Confirm Booking
               </Button>
