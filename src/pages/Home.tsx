@@ -1,36 +1,41 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { Search, MapPin, Bell, Star, Sparkles, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import { showSuccess, showLoading, dismissToast } from '@/utils/toast';
 
 const CATEGORIES = [
   { 
     id: 'hair', 
-    label: 'Hair', 
+    label: 'Hair Artistry', 
+    description: 'Sculpting, coloring & luxury care',
     image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
-    label: 'Nails', 
+    label: 'Royal Nails', 
+    description: 'Manicures, extensions & custom art',
     image: 'https://images.unsplash.com/photo-1604654771876-22273993930a?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'spa', 
-    label: 'Spa', 
+    label: 'Spa & Wellness', 
+    description: 'Massages & hot stone rituals',
     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'makeup', 
-    label: 'Makeup', 
+    label: 'Elite Makeup', 
+    description: 'Makeovers & designer cosmetics',
     image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'facial', 
-    label: 'Facial', 
+    label: 'Glow Facials', 
+    description: 'Rejuvenating organic skin therapy',
     image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=400&auto=format&fit=crop' 
   },
 ];
@@ -154,15 +159,15 @@ const Home = () => {
               </div>
             </CarouselItem>
           </CarouselContent>
-</Carousel>
+        </Carousel>
       </section>
 
-      {/* Categories */}
+      {/* Categories Carousel (One by One Slide) */}
       <section className="px-6 py-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-300">
         <div className="flex justify-between items-end mb-8">
           <div>
             <h2 className="text-2xl font-serif font-medium text-foreground leading-tight">Expertise</h2>
-            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Refined Categories</p>
+            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-1">Select your service style</p>
           </div>
           <Button 
             variant="ghost" 
@@ -173,25 +178,42 @@ const Home = () => {
           </Button>
         </div>
         
-        <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
-          {CATEGORIES.map((cat) => (
-            <div 
-              key={cat.id} 
-              className="flex flex-col items-center gap-4 min-w-[85px] cursor-pointer group"
-              onClick={() => navigate('/services')}
-            >
-              <div className="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-transparent group-hover:border-secondary transition-all shadow-lg group-hover:shadow-secondary/20 p-1">
-                <ImageWithFallback 
-                  src={cat.image} 
-                  alt={cat.label} 
-                  className="w-full h-full object-cover rounded-[1.75rem] group-hover:scale-110 transition-transform duration-700" 
-                />
-              </div>
-              <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-[0.15em]">
-                {cat.label}
-              </span>
-            </div>
-          ))}
+        <div className="relative px-1">
+          <Carousel 
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {CATEGORIES.map((cat) => (
+                <CarouselItem key={cat.id} className="pl-4 basis-[85%] xs:basis-[70%] sm:basis-[50%]">
+                  <div 
+                    onClick={() => navigate('/services')}
+                    className="group relative h-48 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg border border-border/40 hover:border-secondary/40 transition-all active:scale-[0.98]"
+                  >
+                    <ImageWithFallback 
+                      src={cat.image} 
+                      alt={cat.label} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10 flex flex-col justify-end p-5" />
+                    
+                    <div className="absolute bottom-5 left-5 right-5 z-10">
+                      <span className="text-[9px] font-bold text-secondary uppercase tracking-widest block mb-1">Expert Option</span>
+                      <h3 className="text-base font-serif font-medium text-white leading-tight">
+                        {cat.label}
+                      </h3>
+                      <p className="text-[10px] text-white/70 font-normal truncate mt-1">
+                        {cat.description}
+                      </p>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </section>
 
