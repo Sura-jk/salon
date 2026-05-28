@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ServiceCard from '@/components/ServiceCard';
-import { Scissors, Sparkles, Palette } from 'lucide-react';
+import { Scissors, Sparkles, Palette, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 const SERVICES_DATA = {
   hair: {
@@ -40,13 +41,29 @@ const SERVICES_DATA = {
 const Services = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('hair');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredItems = SERVICES_DATA[activeTab as keyof typeof SERVICES_DATA].items.filter(item => 
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-24 px-6 pt-12">
       <div className="max-w-md mx-auto w-full">
-        <div className="mb-10">
+        <div className="mb-8">
           <h1 className="text-4xl font-serif font-medium text-foreground mb-3 tracking-tight">Our Services</h1>
           <p className="text-muted-foreground text-sm font-medium tracking-wide">Curated treatments for the modern individual</p>
+        </div>
+
+        <div className="relative mb-8 group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+          <Input 
+            placeholder="Search treatments..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-12 py-6 rounded-2xl border-border bg-card/50 backdrop-blur-sm focus:ring-secondary shadow-sm transition-all" 
+          />
         </div>
 
         <Tabs defaultValue="hair" value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -68,26 +85,30 @@ const Services = () => {
             })}
           </TabsList>
 
-          {Object.entries(SERVICES_DATA).map(([key, value]) => (
-            <TabsContent key={key} value={key} className="space-y-5 mt-0 focus-visible:ring-0">
-              <div className="grid grid-cols-1 gap-5">
-                {value.items.map((service) => (
+          <TabsContent value={activeTab} className="space-y-5 mt-0 focus-visible:ring-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="grid grid-cols-1 gap-5">
+              {filteredItems.length > 0 ? (
+                filteredItems.map((service) => (
                   <ServiceCard 
                     key={service.id}
                     name={service.name}
                     description={service.description}
                     price={service.price}
                     duration={service.duration}
-                    category={value.label}
+                    category={SERVICES_DATA[activeTab as keyof typeof SERVICES_DATA].label}
                     onClick={() => navigate(`/book?service=${service.id}`)}
                   />
-                ))}
-              </div>
-            </TabsContent>
-          ))}
+                ))
+              ) : (
+                <div className="py-20 text-center">
+                  <p className="text-muted-foreground italic">No luxury treatments found matching your search.</p>
+                </div>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </div_
   );
 };
 

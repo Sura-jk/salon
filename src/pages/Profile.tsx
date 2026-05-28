@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, CreditCard, Heart, LogOut, Bell, ChevronRight } from 'lucide-react';
+import { User, Settings, CreditCard, Heart, LogOut, Bell, ChevronRight, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [points, setPoints] = useState(0);
+  const [visits, setVisits] = useState(0);
+
+  useEffect(() => {
+    // Animate numbers on load
+    const targetPoints = 1250;
+    const targetVisits = 12;
+    
+    const pInterval = setInterval(() => {
+      setPoints(prev => (prev < targetPoints ? prev + 25 : targetPoints));
+    }, 20);
+    
+    const vInterval = setInterval(() => {
+      setVisits(prev => (prev < targetVisits ? prev + 1 : targetVisits));
+    }, 100);
+
+    return () => {
+      clearInterval(pInterval);
+      clearInterval(vInterval);
+    };
+  }, []);
 
   const menuItems = [
     { icon: User, label: 'Personal Information', description: 'Manage your profile and details' },
@@ -30,16 +52,28 @@ const Profile = () => {
               <div className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
             </div>
           </div>
-          <h2 className="text-3xl font-serif font-medium mt-6 tracking-tight">Alex Johnson</h2>
-          <p className="text-muted-foreground text-sm font-medium uppercase tracking-widest mt-1">Premium Member since 2023</p>
           
-          <div className="flex gap-4 mt-8">
-            <div className="px-6 py-3 rounded-2xl bg-card border border-border text-center shadow-sm hover:border-secondary transition-colors cursor-default">
-              <span className="block text-xl font-bold text-primary">1,250</span>
+          <div className="text-center mt-6">
+            <h2 className="text-3xl font-serif font-medium tracking-tight">Alex Johnson</h2>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <Badge className="bg-secondary text-primary font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                <Crown className="w-3 h-3" />
+                Platinum Member
+              </Badge>
+            </div>
+          </div>
+          
+          <div className="flex gap-4 mt-8 w-full">
+            <div className="flex-1 p-4 rounded-2xl bg-card border border-border text-center shadow-sm hover:border-secondary transition-colors cursor-default group">
+              <span className="block text-2xl font-bold text-primary group-hover:scale-110 transition-transform">
+                {points.toLocaleString()}
+              </span>
               <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Loyalty Points</span>
             </div>
-            <div className="px-6 py-3 rounded-2xl bg-card border border-border text-center shadow-sm hover:border-secondary transition-colors cursor-default">
-              <span className="block text-xl font-bold text-primary">12</span>
+            <div className="flex-1 p-4 rounded-2xl bg-card border border-border text-center shadow-sm hover:border-secondary transition-colors cursor-default group">
+              <span className="block text-2xl font-bold text-primary group-hover:scale-110 transition-transform">
+                {visits}
+              </span>
               <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Total Visits</span>
             </div>
           </div>

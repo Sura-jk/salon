@@ -34,7 +34,7 @@ const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border px-6 py-3 pb-safe">
+    <nav className="fixed bottom-6 left-6 right-6 z-50 bg-background/60 backdrop-blur-xl border border-border/50 rounded-[2rem] px-6 py-3 shadow-2xl shadow-black/10">
       <div className="flex justify-between items-center max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
@@ -44,12 +44,20 @@ const BottomNav = () => {
               key={item.id}
               to={item.path}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 transition-all duration-300",
+                "flex flex-col items-center justify-center gap-1 transition-all duration-300 p-2 rounded-2xl",
                 isActive ? "text-primary scale-110" : "text-muted-foreground hover:text-primary"
               )}
             >
-              <Icon className={cn("w-6 h-6", isActive && "stroke-[2.5px]")} />
-              <span className="text-[10px] font-medium uppercase tracking-wider">
+              <div className={cn(
+                "p-2 rounded-xl transition-all duration-300",
+                isActive ? "bg-secondary/20 text-primary" : "bg-transparent"
+              )}>
+                <Icon className={cn("w-6 h-6", isActive && "stroke-[2.5px]")} />
+              </div>
+              <span className={cn(
+                "text-[10px] font-bold uppercase tracking-wider transition-all",
+                isActive ? "opacity-100" : "opacity-60"
+              )}>
                 {item.label}
               </span>
             </Link>
