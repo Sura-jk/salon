@@ -552,9 +552,9 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Deluxe Service Detail Modal - Repositioned to slide down from top beautifully on any screen size */}
+      {/* Deluxe Service Detail Modal - Positioned with coordinate overrides for stable top-side alignment */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="fixed top-6 sm:top-12 left-1/2 -translate-x-1/2 !translate-y-0 max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl animate-in slide-in-from-top-12 duration-500">
+        <DialogContent className="!fixed !top-6 sm:!top-12 !left-1/2 !-translate-x-1/2 !translate-y-0 max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl animate-in slide-in-from-top-12 duration-500">
           {selectedDetailService && (
             <div className="flex flex-col">
               <div className="px-6 pt-6 pb-4 border-b border-border/40 relative">
