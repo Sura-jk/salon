@@ -60,7 +60,8 @@ const CATEGORIES = [
     id: 'hair', 
     label: 'Hair Artistry', 
     description: 'Sculpt & Style',
-    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
+    // Using a verified high-availability Unsplash URL for hair styling
+    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
@@ -350,7 +351,7 @@ const Home = () => {
             <Carousel setApi={setCarouselApi} className="w-full relative">
               <CarouselContent className="-ml-3">
                 {CATEGORIES.map((cat) => (
-                  <CarouselItem key={cat.id} className="pl-3 basis-[70%] sm:basis-[45%] md:basis-[35%] flex-shrink-0">
+                  <CarouselItem key={cat.id} className="pl-3 basis-[60%] sm:basis-[45%] md:basis-[35%] flex-shrink-0">
                     <div 
                       onClick={() => handleCategoryClick(cat.id)}
                       className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-3 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16 w-full"
@@ -359,6 +360,7 @@ const Home = () => {
                         <ImageWithFallback 
                           src={cat.image} 
                           alt={cat.label} 
+                          fallbackCategory={cat.id === 'hair' ? 'Hair' : cat.id === 'nails' ? 'Nails' : cat.id === 'skincare' ? 'Skincare' : cat.id === 'makeup' ? 'Makeup' : 'Facial'}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                         />
                       </div>
