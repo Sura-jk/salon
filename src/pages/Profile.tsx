@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   User, Settings, Heart, LogOut, Bell, 
   ChevronRight, Crown, ChevronLeft, Save, Plus, 
-  MapPin, Star, Trash2
+  MapPin, Star, Trash2, ShieldAlert
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -234,6 +234,23 @@ const Profile = () => {
               <span className="block text-2xl font-bold text-primary">{visits}</span>
               <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-tighter">Total Visits</span>
             </div>
+          </div>
+        </div>
+
+        {/* Quick Admin Navigation Entry */}
+        <div className="mb-6">
+          <div 
+            onClick={() => navigate('/admin')}
+            className="p-5 rounded-2xl bg-secondary/15 border border-secondary/30 flex items-center gap-4 cursor-pointer hover:bg-secondary/25 transition-all group shadow-sm active:scale-[0.98]"
+          >
+            <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-primary">
+              <ShieldAlert className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <span className="block font-bold text-sm text-foreground">Admin Portal</span>
+              <span className="text-[10px] text-muted-foreground font-medium">Salon schedule, status controls, overrides</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
 

@@ -10,14 +10,15 @@ import BookingFlow from './pages/Booking';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
 import Services from './pages/Services';
+import AdminDashboard from './pages/AdminDashboard';
 import BottomNav from './components/BottomNav';
 
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Hide navigation bar on intro/booking screens and specific salon details
-  const hideNavPaths = ['/splash', '/onboarding', '/auth', '/book'];
+  // Hide navigation bar on intro/booking/admin screens and specific salon details
+  const hideNavPaths = ['/splash', '/onboarding', '/auth', '/book', '/admin'];
   const isSalonDetail = location.pathname.startsWith('/salon/');
   const showNav = !hideNavPaths.includes(location.pathname) && !isSalonDetail;
 
@@ -44,6 +45,7 @@ const AppContent = () => {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       
       {showNav && (
