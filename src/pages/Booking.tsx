@@ -155,11 +155,14 @@ const BookingFlow = () => {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      if (window.history.length > 1) {
-        navigate(-1);
-      } else {
-        navigate('/', { replace: true });
-      }
+      // Direct navigation back
+      navigate(-1);
+      // Fail-safe in case history stack is empty inside single frame sandbox
+      setTimeout(() => {
+        if (window.location.pathname === '/book') {
+          navigate('/', { replace: true });
+        }
+      }, 150);
     }
   };
 
@@ -227,11 +230,21 @@ const BookingFlow = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto items-center">
       <div className="max-w-lg md:max-w-2xl w-full flex flex-col">
-        <div className="flex items-center gap-3 mb-6">
-          <Button variant="ghost" size="icon" onClick={handleBackNavigation} className="rounded-full bg-card border border-border h-10 w-10 p-0 text-foreground">
-            <ChevronLeft className="w-5 h-5" />
+        {/* Unified Back Hotspot with Pointer Events Handling */}
+        <div 
+          onClick={handleBackNavigation}
+          className="flex items-center gap-3 mb-6 cursor-pointer group active:opacity-75 transition-opacity"
+        >
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="rounded-full bg-card border border-border h-10 w-10 p-0 text-foreground pointer-events-none"
+          >
+            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
           </Button>
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Back</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground select-none">
+            Back
+          </span>
         </div>
 
         {/* Selected Services Cards Header Section */}
