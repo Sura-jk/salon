@@ -34,6 +34,8 @@ const Onboarding = () => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
       setCurrentStep(s => s + 1);
     } else {
+      // Complete first-time user flag and navigate to sign-in
+      localStorage.setItem('luxe_onboarded', 'true');
       navigate('/auth');
     }
   };
