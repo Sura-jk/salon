@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart, Info, CornerDownRight } from 'lucide-react';
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight, Plus, Check, Sparkles, Ticket, Heart, Info, CornerDownRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -78,7 +78,7 @@ const SALON_DATA = {
       { id: 's4', name: 'Royal Manicure', duration: '45 min', price: 699, category: 'Nails', description: 'Exfoliation, aromatic cuticle care, and non-toxic high-shine gel finish.' },
       { id: 's3_1', name: 'Imperial Gel Pedicure', duration: '60 min', price: 899, category: 'Nails', description: 'Himalayan salt bath, sugar exfoliation scrub, and durable luxury shellac.' },
       { id: 's3_2', name: 'Diamond Glow Whitening Facial', duration: '60 min', price: 1599, category: 'Facial', description: 'Premium micro-diamond dermabrasion coupled with highly concentrated Vit-C serums.' },
-      { id: 's3_3', name: 'Luxury Makeup Makeover', duration: '75 min', price: 2999, category: 'Skin', description: 'Bespoke high-definition event styling and custom lash extensions placement.' },
+      { id: 's3_3', name: 'Luxury Makeup Makeover', duration: '75 min', price: 2999, category: 'Skin', description: 'Bespoke high-definition event styling and custom luxury lashes placement.' },
     ],
     staff: [
       { id: 'st2', name: 'Marcus Thorne', role: 'Creative Director / Makeup', exp: '5 years', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop' },
@@ -552,14 +552,23 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Deluxe Service Detail Modal */}
+      {/* Deluxe Service Detail Modal - Repositioned to slide down from top beautifully on any screen size */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl">
+        <DialogContent className="fixed top-6 sm:top-12 left-1/2 -translate-x-1/2 !translate-y-0 max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl animate-in slide-in-from-top-12 duration-500">
           {selectedDetailService && (
             <div className="flex flex-col">
-              <div className="px-6 pt-6 pb-4 border-b border-border/40">
+              <div className="px-6 pt-6 pb-4 border-b border-border/40 relative">
+                
+                {/* Float close button inside details modal */}
+                <button 
+                  onClick={() => setSelectedDetailService(null)}
+                  className="absolute top-4 right-4 z-50 h-7 w-7 rounded-full bg-muted/60 flex items-center justify-center text-muted-foreground hover:bg-muted/95 transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-serif font-medium text-foreground tracking-tight leading-tight flex items-center gap-2">
+                  <DialogTitle className="text-2xl font-serif font-medium text-foreground tracking-tight leading-tight flex items-center gap-2 pr-6">
                     <Sparkles className="w-5 h-5 text-secondary" /> {selectedDetailService.name}
                   </DialogTitle>
                 </DialogHeader>

@@ -428,9 +428,9 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Deluxe Treatment Details Modal with Coupon Option - Fully Optimized for Small Responsive Viewports */}
+      {/* Deluxe Treatment Details Modal - Aligned and sliding down from the top */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="max-w-md w-[92%] max-h-[90vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar relative">
+        <DialogContent className="fixed top-6 sm:top-12 left-1/2 -translate-x-1/2 !translate-y-0 max-w-md w-[92%] max-h-[85vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar relative animate-in slide-in-from-top-12 duration-500">
           {selectedDetailService && (
             <div className="flex flex-col min-h-full">
               {/* Cover Image */}
