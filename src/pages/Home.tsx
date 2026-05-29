@@ -60,8 +60,7 @@ const CATEGORIES = [
     id: 'hair', 
     label: 'Hair Artistry', 
     description: 'Sculpt & Style',
-    // Using a highly reliable hair salon image
-    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
@@ -351,7 +350,7 @@ const Home = () => {
             <Carousel setApi={setCarouselApi} className="w-full relative">
               <CarouselContent className="-ml-3">
                 {CATEGORIES.map((cat) => (
-                  <CarouselItem key={cat.id} className="pl-3 basis-[55%] xs:basis-[45%] sm:basis-[33%] md:basis-[28%] flex-shrink-0">
+                  <CarouselItem key={cat.id} className="pl-3 basis-[70%] sm:basis-[45%] md:basis-[35%] flex-shrink-0">
                     <div 
                       onClick={() => handleCategoryClick(cat.id)}
                       className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-3 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16 w-full"
