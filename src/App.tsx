@@ -1,26 +1,27 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Toaster } from 'sonner';
-import Splash from './apps/user/pages/Splash';
-import Onboarding from './apps/user/pages/Onboarding';
-import Auth from './apps/user/pages/Auth';
-import Home from './apps/user/pages/Home';
-import SalonDetails from './apps/user/pages/SalonDetails';
-import BookingFlow from './apps/user/pages/Booking';
-import Bookings from './apps/user/pages/Bookings';
-import Profile from './apps/user/pages/Profile';
-import Services from './apps/user/pages/Services';
-import AdminDashboard from './apps/admin/pages/Dashboard';
-import BottomNav from './components/shared/BottomNav';
+import Splash from './pages/Splash';
+import Onboarding from './pages/Onboarding';
+import Auth from './pages/Auth';
+import Home from './pages/Home';
+import SalonDetails from './pages/SalonDetails';
+import BookingFlow from './pages/Booking';
+import Bookings from './pages/Bookings';
+import Profile from './pages/Profile';
+import Services from './pages/Services';
+import BottomNav from './components/BottomNav';
 
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const hideNavPaths = ['/splash', '/onboarding', '/auth', '/book', '/admin'];
+  // Hide navigation bar on intro/booking/auth screens and specific salon details
+  const hideNavPaths = ['/splash', '/onboarding', '/auth', '/book'];
   const isSalonDetail = location.pathname.startsWith('/salon/');
   const showNav = !hideNavPaths.includes(location.pathname) && !isSalonDetail;
 
+  // First-time visit auto-redirect check for native premium app feel
   useEffect(() => {
     const onboarded = localStorage.getItem('luxe_onboarded');
     if (!onboarded && location.pathname === '/') {
@@ -30,6 +31,7 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
+      {/* Toast notifications container */}
       <Toaster position="top-center" expand={false} richColors closeButton />
 
       <Routes>
@@ -42,7 +44,6 @@ const AppContent = () => {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       
       {showNav && (
