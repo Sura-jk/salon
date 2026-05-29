@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ShieldAlert, Calendar, Users, Search, 
-  Trash2, RefreshCw, Check, X, Clock, ChevronLeft, Sparkles
+  ShieldCheck, Calendar, Users, Search, 
+  Trash2, RefreshCw, Check, X, Clock, ChevronLeft, Sparkles, LayoutDashboard
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -92,88 +92,79 @@ const AdminDashboard = () => {
     .reduce((sum, b) => sum + parseInt(b.price || '0', 10), 0);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-36 px-6 pt-12 items-center animate-in fade-in duration-500">
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 pb-36 px-6 pt-12 items-center animate-in fade-in duration-500">
       <div className="w-full max-w-lg md:max-w-2xl">
-        {/* Header */}
-        <header className="mb-8 flex flex-col gap-3">
+        {/* Manager Navigation Bar */}
+        <header className="mb-8 flex flex-col gap-4">
           <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="bg-primary p-1.5 rounded-lg">
+                <LayoutDashboard className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Luxe Manager</h1>
+            </div>
             <Button 
-              variant="ghost" 
+              variant="outline" 
               onClick={() => navigate('/profile')} 
-              className="rounded-full bg-card/60 p-2 border border-border h-9 px-3 flex items-center gap-1.5"
+              className="rounded-xl border-slate-200 h-9 px-4 flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-primary transition-all"
             >
-              <ChevronLeft className="w-4 h-4" /> Back to Profile
+              <ChevronLeft className="w-3.5 h-3.5" /> Back to App
             </Button>
-            <Badge className="bg-secondary text-primary font-black px-3 py-1 text-[10px] tracking-widest uppercase">
-              Admin Portal Active
-            </Badge>
           </div>
 
-          <div className="mt-3">
-            <div className="flex items-center gap-2 mb-1.5">
-              <ShieldAlert className="w-4 h-4 text-secondary" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary">Salon Control Center</span>
+          <div className="p-6 rounded-[2rem] bg-slate-900 text-white shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform">
+              <Sparkles className="w-24 h-24" />
             </div>
-            <h1 className="text-4xl font-serif font-medium tracking-tight">Booking Management</h1>
-            <p className="text-muted-foreground text-sm mt-1">Real-time schedule monitoring & salon overrides</p>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-2">
+                <ShieldCheck className="w-4 h-4 text-secondary" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-secondary">Salon Administrator</span>
+              </div>
+              <h2 className="text-3xl font-serif font-medium">Business Overview</h2>
+              <p className="text-slate-400 text-xs mt-1">Monitoring active sessions & revenue flow</p>
+            </div>
           </div>
         </header>
 
-        {/* Dashboard Analytics Widgets */}
+        {/* Analytics Grid */}
         <div className="grid grid-cols-3 gap-3 mb-8">
-          <div className="bg-card border border-border p-4 rounded-2xl flex flex-col justify-between shadow-sm">
-            <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider block">Total Sessions</span>
-            <div className="flex items-baseline gap-1.5 mt-2">
-              <span className="text-2xl font-black text-primary">{totalBookings}</span>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border p-4 rounded-2xl flex flex-col justify-between shadow-sm">
-            <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider block">Upcoming Slots</span>
-            <div className="flex items-baseline gap-1.5 mt-2">
-              <span className="text-2xl font-black text-secondary">{activeBookingsCount}</span>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border p-4 rounded-2xl flex flex-col justify-between shadow-sm">
-            <span className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider block">Est. Revenue</span>
-            <div className="flex items-baseline gap-1.5 mt-2">
-              <span className="text-xl font-black text-primary">₹{totalRevenue}</span>
-            </div>
-          </div>
+          <Card className="bg-white border-none p-4 rounded-2xl shadow-sm">
+            <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Sessions</span>
+            <span className="text-2xl font-black text-slate-900 mt-1 block">{totalBookings}</span>
+          </Card>
+          <Card className="bg-white border-none p-4 rounded-2xl shadow-sm">
+            <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Active</span>
+            <span className="text-2xl font-black text-secondary mt-1 block">{activeBookingsCount}</span>
+          </Card>
+          <Card className="bg-white border-none p-4 rounded-2xl shadow-sm">
+            <span className="text-[9px] uppercase font-black text-slate-400 tracking-wider block">Revenue</span>
+            <span className="text-xl font-black text-slate-900 mt-1 block">₹{totalRevenue}</span>
+          </Card>
         </div>
 
-        {/* Filters and Search Bar */}
-        <div className="space-y-4 mb-6">
+        {/* Search & Filter */}
+        <div className="space-y-4 mb-8">
           <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
             <Input 
-              placeholder="Search by client, therapist, or category..." 
+              placeholder="Search appointments..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-11 pr-10 py-6 rounded-2xl border-border bg-card/50 text-sm font-medium"
+              className="pl-11 py-6 rounded-2xl border-none bg-white shadow-sm text-sm font-medium focus:ring-2 focus:ring-primary/20"
             />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
           </div>
 
-          {/* Quick status filter pills */}
-          <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {['all', 'upcoming', 'completed', 'cancelled'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setStatusFilter(tab as any)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-xs font-bold transition-all border uppercase tracking-wider whitespace-nowrap",
+                  "px-4 py-2 rounded-xl text-[10px] font-black transition-all border-none uppercase tracking-widest whitespace-nowrap",
                   statusFilter === tab 
-                    ? "bg-primary text-primary-foreground border-primary" 
-                    : "bg-card text-muted-foreground border-border hover:border-secondary"
+                    ? "bg-primary text-white shadow-lg" 
+                    : "bg-white text-slate-500 hover:bg-slate-100"
                 )}
               >
                 {tab}
@@ -182,114 +173,69 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Live Bookings List */}
+        {/* List Content */}
         <div className="space-y-4">
           <div className="flex justify-between items-center px-1 mb-2">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Appointments ({filteredBookings.length})
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+              Appointment Feed ({filteredBookings.length})
             </span>
-            <button 
-              onClick={loadBookings} 
-              className="text-xs text-secondary font-black hover:underline flex items-center gap-1.5"
-            >
-              <RefreshCw className="w-3.5 h-3.5" /> Reload List
+            <button onClick={loadBookings} className="text-xs text-primary font-black flex items-center gap-1.5 opacity-60 hover:opacity-100">
+              <RefreshCw className="w-3.5 h-3.5" /> Sync
             </button>
           </div>
 
           {filteredBookings.length > 0 ? (
             filteredBookings.map((b) => (
-              <Card 
-                key={b.id} 
-                className="p-5 border-border bg-card rounded-3xl shadow-sm hover:border-secondary/30 transition-all flex flex-col gap-4"
-              >
-                {/* Booking Header */}
+              <Card key={b.id} className="p-5 border-none bg-white rounded-3xl shadow-sm flex flex-col gap-4">
                 <div className="flex justify-between items-start gap-3">
                   <div>
-                    <span className="text-[9px] font-bold text-secondary uppercase tracking-widest block mb-0.5">
+                    <span className="text-[9px] font-black text-secondary uppercase tracking-widest block mb-0.5">
                       {b.salonName}
                     </span>
-                    <h3 className="font-serif font-medium text-lg leading-snug text-foreground">
-                      {b.serviceName}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Artist: <strong className="text-foreground">{b.stylistName}</strong>
-                    </p>
+                    <h3 className="font-bold text-slate-900">{b.serviceName}</h3>
+                    <p className="text-xs text-slate-500 mt-1">Artist: <strong className="text-slate-900">{b.stylistName}</strong></p>
                   </div>
-
                   <Badge className={cn(
-                    "text-[9px] uppercase font-bold px-2.5 py-1 rounded-full border-none shadow-sm",
-                    b.status === 'upcoming' && "bg-blue-100 text-blue-800",
-                    b.status === 'completed' && "bg-green-100 text-green-800",
-                    b.status === 'cancelled' && "bg-red-100 text-red-800"
+                    "text-[9px] font-black px-2.5 py-1 rounded-lg border-none",
+                    b.status === 'upcoming' && "bg-blue-50 text-blue-600",
+                    b.status === 'completed' && "bg-emerald-50 text-emerald-600",
+                    b.status === 'cancelled' && "bg-rose-50 text-rose-600"
                   )}>
-                    {b.status}
+                    {b.status.toUpperCase()}
                   </Badge>
                 </div>
 
-                {/* Booking Schedule Details */}
-                <div className="grid grid-cols-2 gap-4 py-2 border-y border-border/40 text-xs">
-                  <div>
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-muted-foreground block mb-0.5">Schedule Time</span>
-                    <span className="font-bold text-foreground">
-                      {new Date(b.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} at {b.time}
-                    </span>
+                <div className="flex justify-between items-center py-3 border-t border-slate-50">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="text-xs font-bold text-slate-600">{b.time}</span>
                   </div>
-                  <div>
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-muted-foreground block mb-0.5">Session Value</span>
-                    <span className="font-bold text-secondary">₹{b.price}</span>
-                  </div>
+                  <span className="text-sm font-black text-slate-900">₹{b.price}</span>
                 </div>
 
-                {/* Admin Actions Panel */}
-                <div className="flex items-center justify-between gap-2.5 pt-1">
-                  <div className="flex gap-1.5">
+                <div className="flex items-center justify-between gap-3 pt-1">
+                  <div className="flex gap-2">
                     {b.status !== 'completed' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleUpdateStatus(b.id, 'completed')}
-                        className="h-8 rounded-xl text-[10px] uppercase font-bold tracking-wider px-3 border-green-200 text-green-700 bg-green-50 hover:bg-green-100"
-                      >
-                        <Check className="w-3.5 h-3.5 mr-1" /> Complete
+                      <Button size="sm" onClick={() => handleUpdateStatus(b.id, 'completed')} className="h-8 rounded-xl text-[10px] font-black uppercase tracking-wider px-3 bg-emerald-600 hover:bg-emerald-700">
+                        <Check className="w-3.5 h-3.5 mr-1" /> Mark Done
                       </Button>
                     )}
-                    {b.status !== 'cancelled' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleUpdateStatus(b.id, 'cancelled')}
-                        className="h-8 rounded-xl text-[10px] uppercase font-bold tracking-wider px-3 border-red-200 text-red-700 bg-red-50 hover:bg-red-100"
-                      >
-                        <X className="w-3.5 h-3.5 mr-1" /> Cancel
-                      </Button>
-                    )}
-                    {b.status !== 'upcoming' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleUpdateStatus(b.id, 'upcoming')}
-                        className="h-8 rounded-xl text-[10px] uppercase font-bold tracking-wider px-3 border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100"
-                      >
-                        <Clock className="w-3.5 h-3.5 mr-1" /> Re-open
+                    {b.status === 'upcoming' && (
+                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(b.id, 'cancelled')} className="h-8 rounded-xl text-[10px] font-black uppercase tracking-wider px-3 border-rose-100 text-rose-600 hover:bg-rose-50">
+                        Cancel
                       </Button>
                     )}
                   </div>
-
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => handleDeleteBooking(b.id, b.serviceName)}
-                    className="h-8 w-8 text-destructive hover:bg-destructive/10 rounded-xl"
-                  >
+                  <Button size="icon" variant="ghost" onClick={() => handleDeleteBooking(b.id, b.serviceName)} className="h-8 w-8 text-slate-300 hover:text-rose-600 rounded-xl">
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </Card>
             ))
           ) : (
-            <div className="py-16 text-center bg-card border border-border rounded-3xl p-6">
-              <Calendar className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
-              <p className="text-muted-foreground text-sm font-medium">No bookings match the search / filter criteria.</p>
+            <div className="py-20 text-center bg-white rounded-3xl p-6">
+              <Calendar className="w-10 h-10 text-slate-200 mx-auto mb-3" />
+              <p className="text-slate-400 text-sm font-bold uppercase tracking-widest">Feed Empty</p>
             </div>
           )}
         </div>

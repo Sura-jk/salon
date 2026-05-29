@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   User, Settings, Heart, LogOut, Bell, 
   ChevronRight, Crown, ChevronLeft, Save, Plus, 
-  MapPin, Star, Trash2, ShieldAlert
+  MapPin, Star, Trash2, ShieldCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -139,7 +139,6 @@ const Profile = () => {
                   </div>
                 </div>
 
-                {/* Explicit Clean Action Bar inside card for clear "Remove" action */}
                 <div className="flex justify-end gap-2 pt-2 border-t border-border/30 mt-1">
                   <Button
                     variant="ghost"
@@ -237,24 +236,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Quick Admin Navigation Entry */}
-        <div className="mb-6">
-          <div 
-            onClick={() => navigate('/admin')}
-            className="p-5 rounded-2xl bg-secondary/15 border border-secondary/30 flex items-center gap-4 cursor-pointer hover:bg-secondary/25 transition-all group shadow-sm active:scale-[0.98]"
-          >
-            <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-primary">
-              <ShieldAlert className="w-5 h-5" />
-            </div>
-            <div className="flex-1">
-              <span className="block font-bold text-sm text-foreground">Admin Portal</span>
-              <span className="text-[10px] text-muted-foreground font-medium">Salon schedule, status controls, overrides</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-
-        <div className="space-y-4">
+        <div className="space-y-4 mb-10">
           <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] px-2 mb-2">Account Management</h3>
           {menuItems.map((item) => (
             <div 
@@ -274,7 +256,7 @@ const Profile = () => {
           ))}
         </div>
 
-        <div className="mt-12">
+        <div className="mt-12 space-y-6">
           <Button 
             variant="ghost" 
             onClick={handleLogout}
@@ -282,7 +264,17 @@ const Profile = () => {
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </Button>
-          <p className="text-center text-[10px] text-muted-foreground mt-4 uppercase tracking-widest font-bold">LuxeSalon v1.0.4</p>
+          
+          <div className="pt-8 border-t border-border/40">
+            <button 
+              onClick={() => navigate('/admin')}
+              className="w-full flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-secondary transition-colors group"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 transition-transform group-hover:scale-110" /> 
+              Switch to Luxe Manager
+            </button>
+            <p className="text-center text-[10px] text-muted-foreground/30 mt-2 uppercase tracking-widest font-bold">LuxeSalon v1.0.4</p>
+          </div>
         </div>
       </div>
     </div>
