@@ -7,7 +7,7 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 
 const FEATURED_SERVICES = [
   {
-    id: 's1',
+    id: 's3',
     name: 'Signature Glow Facial',
     description: 'A rejuvenating treatment that leaves your skin radiant and refreshed.',
     price: '₹1299',
@@ -16,7 +16,7 @@ const FEATURED_SERVICES = [
     image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: 'h1',
+    id: 's1',
     name: 'Luxury Hair Sculpt',
     description: 'Precision cutting and styling tailored to your unique facial structure.',
     price: '₹850',
@@ -25,7 +25,7 @@ const FEATURED_SERVICES = [
     image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: 'n1',
+    id: 's4',
     name: 'Royal Manicure',
     description: 'Complete hand care with a premium polish and relaxing massage.',
     price: '₹499',
