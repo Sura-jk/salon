@@ -420,13 +420,13 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Deluxe Treatment Details Modal with Coupon Option */}
+      {/* Deluxe Treatment Details Modal with Coupon Option - Fully Optimized for Small Responsive Viewports */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl">
+        <DialogContent className="max-w-md w-[92%] max-h-[90vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar">
           {selectedDetailService && (
-            <div className="flex flex-col">
+            <div className="flex flex-col min-h-full">
               {/* Cover Image */}
-              <div className="relative h-48 w-full overflow-hidden">
+              <div className="relative h-40 xs:h-44 sm:h-48 w-full overflow-hidden flex-shrink-0">
                 <ImageWithFallback 
                   src={selectedDetailService.image} 
                   alt={selectedDetailService.name} 
@@ -439,17 +439,17 @@ const Services = () => {
               </div>
 
               {/* Title & Stats */}
-              <div className="px-6 pt-5 pb-4 border-b border-border/40">
+              <div className="px-5 pt-4 pb-3 border-b border-border/40">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-serif font-medium text-foreground tracking-tight leading-tight">
+                  <DialogTitle className="text-xl sm:text-2xl font-serif font-medium text-foreground tracking-tight leading-tight">
                     {selectedDetailService.name}
                   </DialogTitle>
                 </DialogHeader>
-                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                   {selectedDetailService.description}
                 </p>
 
-                <div className="flex items-center gap-6 mt-4">
+                <div className="flex items-center gap-6 mt-3">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
                     <Clock className="w-3.5 h-3.5 text-secondary" />
                     <span>{selectedDetailService.duration}</span>
@@ -468,20 +468,20 @@ const Services = () => {
               </div>
 
               {/* Promo Section */}
-              <div className="px-6 py-4 bg-muted/20 border-b border-border/40">
-                <div className="flex items-center gap-2 mb-3">
+              <div className="px-5 py-3.5 bg-muted/20 border-b border-border/40">
+                <div className="flex items-center gap-2 mb-2">
                   <Ticket className="w-3.5 h-3.5 text-secondary" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-foreground">Available Offers</span>
                 </div>
                 
                 {/* Clickable Promo Code Pills */}
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-1.5 mb-3">
                   {AVAILABLE_PROMOS.map((promo) => (
                     <button
                       key={promo.code}
                       onClick={() => handleApplyPromoCode(promo.code)}
                       className={cn(
-                        "px-3 py-2 rounded-xl border text-[10px] font-bold transition-all flex flex-col items-start gap-0.5",
+                        "px-2.5 py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-bold transition-all flex flex-col items-start gap-0.5",
                         activeDiscount?.code === promo.code
                           ? "border-secondary bg-secondary text-primary-foreground shadow-sm scale-105"
                           : "border-dashed border-secondary/40 bg-secondary/5 text-secondary hover:bg-secondary/15"
@@ -503,12 +503,12 @@ const Services = () => {
                       placeholder="Or enter custom code" 
                       value={promoInput}
                       onChange={(e) => setPromoInput(e.target.value)}
-                      className="pl-8 h-9 rounded-xl border-border/40 bg-background text-[11px] focus:ring-secondary"
+                      className="pl-8 h-8 rounded-xl border-border/40 bg-background text-[10px] focus:ring-secondary"
                     />
                   </div>
                   <Button 
                     onClick={() => handleApplyPromoCode(promoInput)}
-                    className="h-9 px-4 rounded-xl bg-secondary text-primary font-bold text-[10px] uppercase tracking-wider"
+                    className="h-8 px-3 rounded-xl bg-secondary text-primary font-bold text-[10px] uppercase tracking-wider"
                   >
                     Apply
                   </Button>
@@ -516,38 +516,38 @@ const Services = () => {
               </div>
 
               {/* Rich Narrative / Benefits */}
-              <div className="px-6 py-5 space-y-4 max-h-[160px] overflow-y-auto thin-scrollbar">
+              <div className="px-5 py-4 space-y-3">
                 <div>
                   <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground/80 mb-2 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-secondary" /> Highlights & Benefits
                   </h4>
-                  <ul className="space-y-2">
+                  <ul className="space-y-1.5">
                     {getRichDetails(selectedDetailService.id).benefits.map((benefit, idx) => (
                       <li key={idx} className="flex items-start gap-2 text-xs text-foreground/90 font-medium">
                         <Check className="w-3.5 h-3.5 text-secondary mt-0.5 flex-shrink-0" />
-                        <span>{benefit}</span>
+                        <span className="leading-tight">{benefit}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 pt-2">
+                <div className="grid grid-cols-1 gap-2 pt-1">
                   <div className="flex gap-2 text-xs">
                     <CornerDownRight className="w-3.5 h-3.5 text-secondary flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold block text-[10px] uppercase tracking-wider text-muted-foreground">Best For</span>
-                      <span className="text-foreground/90">{getRichDetails(selectedDetailService.id).skinHairType}</span>
+                      <span className="text-foreground/90 leading-tight block">{getRichDetails(selectedDetailService.id).skinHairType}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Booking Trigger CTA */}
-              <div className="p-4 bg-muted/30 border-t border-border/40 flex gap-3">
+              <div className="p-4 bg-muted/30 border-t border-border/40 flex gap-3 mt-auto sticky bottom-0 z-10 backdrop-blur-md">
                 <Button 
                   variant="outline" 
                   onClick={() => setSelectedDetailService(null)}
-                  className="flex-1 py-6 rounded-2xl border-border font-bold text-xs uppercase tracking-wider text-muted-foreground"
+                  className="flex-1 py-5 rounded-2xl border-border font-bold text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground h-auto"
                 >
                   Close
                 </Button>
@@ -558,7 +558,7 @@ const Services = () => {
                     setSelectedDetailService(null);
                     navigate(`/book?service=${id}${promoCode ? `&promo=${promoCode}` : ''}`);
                   }}
-                  className="flex-[2] py-6 rounded-2xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/25 hover:bg-primary/95"
+                  className="flex-[2] py-5 rounded-2xl bg-primary text-primary-foreground font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-lg shadow-primary/25 hover:bg-primary/95 h-auto"
                 >
                   Reserve Now
                 </Button>
