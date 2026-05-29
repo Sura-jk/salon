@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import ServiceCard from '@/components/ServiceCard';
 import { 
   Scissors, Sparkles, Palette, Search, SlidersHorizontal, 
-  ArrowUpDown, Wand2, Flower2, ChevronLeft, Clock, Info, Check, CornerDownRight, Ticket, Tag
+  ArrowUpDown, Wand2, Flower2, ChevronLeft, Clock, Info, Check, CornerDownRight, Ticket, Tag, X
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -332,8 +332,16 @@ const Services = () => {
                 placeholder="Search treatments..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-11 rounded-2xl border-border/40 bg-card/50 focus:ring-secondary text-sm font-medium" 
+                className="pl-10 pr-10 h-11 rounded-2xl border-border/40 bg-card/50 focus:ring-secondary text-sm font-medium" 
               />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/80 hover:text-foreground p-1.5 z-10 rounded-full hover:bg-muted/50 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -422,7 +430,7 @@ const Services = () => {
 
       {/* Deluxe Treatment Details Modal with Coupon Option - Fully Optimized for Small Responsive Viewports */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="max-w-md w-[92%] max-h-[90vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar">
+        <DialogContent className="max-w-md w-[92%] max-h-[90vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar relative">
           {selectedDetailService && (
             <div className="flex flex-col min-h-full">
               {/* Cover Image */}
@@ -436,6 +444,14 @@ const Services = () => {
                 <Badge className="absolute top-4 left-4 bg-secondary text-primary-foreground font-extrabold uppercase text-[9px] tracking-widest px-3 py-1 rounded-full border-none">
                   {currentCategoryData.label}
                 </Badge>
+                
+                {/* Floating blur-backed close button over image */}
+                <button 
+                  onClick={() => setSelectedDetailService(null)}
+                  className="absolute top-4 right-4 z-50 h-8 w-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/20 hover:bg-black/60 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
 
               {/* Title & Stats */}
