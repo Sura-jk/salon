@@ -60,7 +60,8 @@ const CATEGORIES = [
     id: 'hair', 
     label: 'Hair Artistry', 
     description: 'Sculpt & Style',
-    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=400&auto=format&fit=crop' 
+    // Using a highly reliable hair salon image
+    image: 'https://images.unsplash.com/photo-1562322140-87a27995777a?q=80&w=400&auto=format&fit=crop' 
   },
   { 
     id: 'nails', 
@@ -244,7 +245,7 @@ const Home = () => {
           )}
         </section>
 
-        {/* Circle Previews (Master Artists Stories UI with Thin Scrollbar Only) */}
+        {/* Circle Previews (Master Artists Spotlight) */}
         <section className="py-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-155">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-4 h-4 text-secondary" />
@@ -252,9 +253,7 @@ const Home = () => {
           </div>
           
           <div className="relative">
-            <div 
-              className="flex gap-5 overflow-x-auto pb-3 thin-scrollbar scroll-smooth"
-            >
+            <div className="flex gap-5 overflow-x-auto pb-3 thin-scrollbar scroll-smooth">
               {MASTER_ARTISTS.map((artist) => (
                 <div 
                   key={artist.id}
@@ -262,7 +261,6 @@ const Home = () => {
                   className="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer group"
                 >
                   <div className="relative">
-                    {/* Gold glowing ring for active state */}
                     <div className={`w-20 h-20 rounded-full flex items-center justify-center p-[3px] transition-all duration-500 group-hover:scale-105 ${
                       artist.active 
                         ? 'bg-gradient-to-tr from-secondary via-secondary/70 to-secondary/30 animate-pulse-slow' 
@@ -350,13 +348,13 @@ const Home = () => {
           </div>
 
           <div className="relative w-full">
-            <Carousel setApi={setCarouselApi} className="w-full relative px-2">
-              <CarouselContent className="-ml-2">
+            <Carousel setApi={setCarouselApi} className="w-full relative">
+              <CarouselContent className="-ml-3">
                 {CATEGORIES.map((cat) => (
-                  <CarouselItem key={cat.id} className="pl-2 basis-[60%] xs:basis-[48%] sm:basis-[33%] md:basis-[25%] flex-shrink-0">
+                  <CarouselItem key={cat.id} className="pl-3 basis-[55%] xs:basis-[45%] sm:basis-[33%] md:basis-[28%] flex-shrink-0">
                     <div 
                       onClick={() => handleCategoryClick(cat.id)}
-                      className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
+                      className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-3 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16 w-full"
                     >
                       <div className="w-11 h-11 rounded-full overflow-hidden border border-border/80 flex-shrink-0">
                         <ImageWithFallback 
@@ -369,7 +367,7 @@ const Home = () => {
                         <span className="text-[11px] font-bold text-foreground group-hover:text-secondary transition-colors leading-tight truncate">
                           {cat.label}
                         </span>
-                        <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate text-balance">
+                        <span className="text-[8px] text-muted-foreground font-semibold uppercase tracking-tight block truncate">
                           {cat.description}
                         </span>
                       </div>
@@ -378,19 +376,18 @@ const Home = () => {
                 ))}
               </CarouselContent>
 
+              {/* Enhanced Navigation buttons */}
               <button 
                 onClick={() => carouselApi?.scrollPrev()}
-                className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
-                aria-label="Previous category"
+                className="absolute -left-2 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground transition-all shadow-md"
               >
-                <ChevronLeft className="w-3 h-3 stroke-[2]" />
+                <ChevronLeft className="w-3 h-3 stroke-[2.5]" />
               </button>
               <button 
                 onClick={() => carouselApi?.scrollNext()}
-                className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground active:scale-90 transition-all duration-300 shadow-md"
-                aria-label="Next category"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-8 w-8 rounded-full border border-secondary/30 bg-background/85 backdrop-blur-md text-secondary hover:bg-secondary hover:text-primary-foreground transition-all shadow-md"
               >
-                <ChevronRight className="w-3 h-3 stroke-[2]" />
+                <ChevronRight className="w-3 h-3 stroke-[2.5]" />
               </button>
             </Carousel>
           </div>
@@ -408,7 +405,7 @@ const Home = () => {
               onClick={() => {
                 setSelectedTag('All');
                 setSearchQuery('');
-                showSuccess("Filters cleared! Showing all nearby studios.");
+                showSuccess("Filters cleared!");
               }}
               className="text-secondary text-[10px] font-black p-0 h-auto hover:bg-transparent uppercase tracking-[0.2em]"
             >
@@ -472,7 +469,7 @@ const Home = () => {
             ) : (
               <div className="py-16 text-center bg-card border border-dashed border-border rounded-3xl p-8">
                 <Sparkles className="w-8 h-8 text-secondary/40 mx-auto mb-3 animate-pulse" />
-                <p className="text-muted-foreground text-sm font-medium">No nearby studios found matching current filters.</p>
+                <p className="text-muted-foreground text-sm font-medium">No studios found.</p>
                 <button 
                   onClick={() => { setSelectedTag('All'); setSearchQuery(''); }}
                   className="mt-3 text-xs font-bold text-secondary uppercase tracking-widest hover:underline"
