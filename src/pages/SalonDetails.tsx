@@ -533,7 +533,17 @@ const SalonDetails = () => {
             </div>
 
             <Button
-              onClick={() => navigate('/book')}
+              onClick={() => {
+                // Save selected service IDs list to localStorage
+                localStorage.setItem('booking_selected_services', JSON.stringify(selectedServices));
+                // Store active discount if applicable
+                if (activeDiscount) {
+                  localStorage.setItem('booking_active_discount', JSON.stringify(activeDiscount));
+                } else {
+                  localStorage.removeItem('booking_active_discount');
+                }
+                navigate('/book');
+              }}
               className="rounded-xl bg-secondary text-primary font-bold px-4 py-2 text-sm hover:bg-secondary/90 ml-2"
             >
               Book

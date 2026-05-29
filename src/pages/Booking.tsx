@@ -25,6 +25,16 @@ const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: s
   's4': { name: 'Royal Manicure', price: '699', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop', category: 'Nails' },
   's5': { name: 'Glow Skincare Ritual', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop', category: 'Skincare' },
   
+  // Salon 2 extra items
+  's2_1': { name: 'Aroma Therapy Body Massage', price: '1899', duration: '90 min', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop', category: 'Spa' },
+  's2_2': { name: 'Hot Stone Therapy', price: '2199', duration: '75 min', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop', category: 'Spa' },
+  's2_3': { name: 'Sea Salt Scrub & Polish', price: '1199', duration: '45 min', image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=800&auto=format&fit=crop', category: 'Skincare' },
+
+  // Salon 3 extra items
+  's3_1': { name: 'Imperial Gel Pedicure', price: '899', duration: '60 min', image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=800&auto=format&fit=crop', category: 'Nails' },
+  's3_2': { name: 'Diamond Glow Whitening Facial', price: '1599', duration: '60 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop', category: 'Facial' },
+  's3_3': { name: 'Luxury Makeup Makeover', price: '2999', duration: '75 min', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop', category: 'Makeup' },
+
   // Gallery treatments IDs
   'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min', image: 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
   'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
@@ -42,8 +52,60 @@ const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: s
 const BookingFlow = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const serviceId = searchParams.get('service') || 'hair_1';
-  const activeService = SERVICES_LOOKUP[serviceId] || SERVICES_LOOKUP['hair_1'];
+
+  // Dynamically resolve custom treatments list loaded from landing, details, or local session storage
+  const [selectedServices] = useState<any[]>(() => {
+    const singleServiceId = searchParams.get('service');
+    if (singleServiceId && SERVICES_LOOKUP[singleServiceId]) {
+      return [SERVICES_LOOKUP[singleServiceId]];
+    }
+
+    // Attempt to load multiple active choices from Salon Details local memory
+    const saved = localStorage.getItem('booking_selected_services');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Resolve objects directly
+          return parsed.map((item: any) => {
+            if (typeof item === 'string') return SERVICES_LOOKUP[item];
+            if (item && item.id) return SERVICES_LOOKUP[item.id] || item;
+            return item;
+          }).filter(Boolean);
+        }
+      } catch (e) {
+        console.error("Failed to parse selected treatments:", e);
+      }
+    }
+
+    // Default premium fallback
+    return [SERVICES_LOOKUP['hair_1']];
+  });
+
+  // Calculate booking values
+  const activePromoDiscount = (() => {
+    const queryPromo = searchParams.get('promo');
+    if (queryPromo) {
+      return { code: queryPromo, percent: 20 };
+    }
+    const storedPromo = localStorage.getItem('booking_active_discount');
+    if (storedPromo) {
+      try {
+        return JSON.parse(storedPromo);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  })();
+
+  const rawTotalPrice = selectedServices.reduce((sum, svc) => sum + parseInt(svc.price || '0', 10), 0);
+  const discountAmount = activePromoDiscount ? Math.round((rawTotalPrice * activePromoDiscount.percent) / 100) : 0;
+  const finalTotalPrice = rawTotalPrice - discountAmount;
+
+  // Build combined summary titles
+  const servicesNameSummary = selectedServices.map(s => s.name).join(' + ');
+  const servicesDurationSummary = selectedServices.map(s => s.duration).join(', ');
 
   const [step, setStep] = useState(1);
   const [selectedStylist, setSelectedStylist] = useState('');
@@ -52,21 +114,28 @@ const BookingFlow = () => {
   const [paymentMethod, setPaymentMethod] = useState('pay_at_salon');
 
   const handleConfirm = () => {
+    const stylistObj = STYLISTS.find(s => s.id === selectedStylist) || { name: 'Any Stylist' };
+    
     const newBooking = {
       id: `b-${Date.now()}`,
       salonName: 'Luxe Aura Studio',
-      serviceName: activeService.name,
-      stylistName: STYLISTS.find(s => s.id === selectedStylist)?.name || 'Any Stylist',
+      serviceName: servicesNameSummary,
+      stylistName: stylistObj.name,
       date: selectedDate?.toISOString() || new Date().toISOString(),
       time: selectedTime,
       status: 'upcoming',
-      price: activeService.price,
-      image: activeService.image,
-      category: activeService.category
+      price: String(finalTotalPrice),
+      image: selectedServices[0]?.image || 'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?q=80&w=800',
+      category: selectedServices[0]?.category || 'Hair'
     };
 
+    // Save Booking
     const existingBookings = JSON.parse(localStorage.getItem('user_bookings') || '[]');
     localStorage.setItem('user_bookings', JSON.stringify([newBooking, ...existingBookings]));
+
+    // Clear selection cache
+    localStorage.removeItem('booking_selected_services');
+    localStorage.removeItem('booking_active_discount');
 
     showSuccess("Booking confirmed!");
     setStep(4);
@@ -82,7 +151,6 @@ const BookingFlow = () => {
     showSuccess(`Selected ${time}`);
   };
 
-  // Smart back navigation handling step states or history routing
   const handleBackNavigation = () => {
     if (step > 1) {
       setStep(step - 1);
@@ -106,10 +174,10 @@ const BookingFlow = () => {
         <div className="w-full max-w-md bg-card border border-border rounded-3xl p-0 overflow-hidden mb-8 text-left shadow-xl">
           <div className="h-40 relative">
             <ImageWithFallback 
-              src={activeService.image} 
-              fallbackCategory={activeService.category} 
+              src={selectedServices[0]?.image} 
+              fallbackCategory={selectedServices[0]?.category || 'Hair'} 
               className="w-full h-full object-cover" 
-              alt={activeService.name} 
+              alt={servicesNameSummary} 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
           </div>
@@ -120,9 +188,9 @@ const BookingFlow = () => {
             </div>
             
             <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground">Treatment:</span>
-                <span className="font-semibold text-foreground">{activeService.name}</span>
+              <div className="flex justify-between items-start text-sm gap-2">
+                <span className="text-muted-foreground flex-shrink-0">Treatments:</span>
+                <span className="font-semibold text-foreground text-right">{servicesNameSummary}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">Specialist:</span>
@@ -134,9 +202,15 @@ const BookingFlow = () => {
                 <span className="text-muted-foreground">Date & Time:</span>
                 <span className="font-semibold text-foreground">{selectedDate?.toDateString()} at {selectedTime}</span>
               </div>
+              {activePromoDiscount && (
+                <div className="flex justify-between items-center text-sm text-secondary">
+                  <span>Promo Code Applied:</span>
+                  <span className="font-bold">{activePromoDiscount.code} ({activePromoDiscount.percent}% off)</span>
+                </div>
+              )}
               <div className="flex justify-between items-center text-sm pt-2 border-t border-border/40">
                 <span className="font-bold text-foreground">Total:</span>
-                <span className="font-bold text-secondary text-base">₹{activeService.price}</span>
+                <span className="font-bold text-secondary text-base">₹{finalTotalPrice}</span>
               </div>
             </div>
           </div>
@@ -160,22 +234,36 @@ const BookingFlow = () => {
           <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Back</span>
         </div>
 
-        <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden border border-secondary/20">
-              <ImageWithFallback 
-                src={activeService.image} 
-                fallbackCategory={activeService.category} 
-                className="w-full h-full object-cover" 
-                alt={activeService.name} 
-              />
-            </div>
-            <div>
-              <span className="text-[10px] text-muted-foreground block uppercase font-bold tracking-wider">Booking Treatment</span>
-              <span className="text-xs font-bold text-foreground line-clamp-1">{activeService.name}</span>
-            </div>
+        {/* Selected Services Cards Header Section */}
+        <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 space-y-3">
+          <div className="flex items-center justify-between border-b border-secondary/20 pb-2">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Your Active Treatments Selection</span>
+            <span className="text-xs font-black text-secondary">₹{finalTotalPrice}</span>
           </div>
-          <span className="text-sm font-black text-secondary">₹{activeService.price}</span>
+
+          <div className="space-y-2">
+            {selectedServices.map((svc, idx) => (
+              <div key={idx} className="flex items-center gap-3 justify-between">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+                    <img src={svc.image} className="w-full h-full object-cover" alt="" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-foreground block truncate">{svc.name}</span>
+                    <span className="text-[10px] text-muted-foreground">{svc.duration}</span>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-foreground/80">₹{svc.price}</span>
+              </div>
+            ))}
+          </div>
+
+          {activePromoDiscount && (
+            <div className="flex justify-between items-center text-[10px] text-secondary font-black pt-1 border-t border-secondary/10">
+              <span>Code Active: &quot;{activePromoDiscount.code}&quot;</span>
+              <span>-₹{discountAmount} ({activePromoDiscount.percent}%)</span>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-between mb-8 gap-2">
