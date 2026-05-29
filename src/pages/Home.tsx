@@ -353,7 +353,7 @@ const Home = () => {
             <Carousel setApi={setCarouselApi} className="w-full relative px-2">
               <CarouselContent className="-ml-2">
                 {CATEGORIES.map((cat) => (
-                  <CarouselItem key={cat.id} className="pl-2 basis-[60%] sm:basis-[45%] flex-shrink-0">
+                  <CarouselItem key={cat.id} className="pl-2 basis-[60%] xs:basis-[48%] sm:basis-[33%] md:basis-[25%] flex-shrink-0">
                     <div 
                       onClick={() => handleCategoryClick(cat.id)}
                       className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
