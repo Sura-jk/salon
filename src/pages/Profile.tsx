@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   User, Settings, Heart, LogOut, Bell, 
   ChevronRight, Crown, ChevronLeft, Save, Plus, 
-  MapPin, Star, Trash2, ShieldCheck
+  MapPin, Star, Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -266,13 +266,6 @@ const Profile = () => {
           </Button>
           
           <div className="pt-8 border-t border-border/40">
-            <button 
-              onClick={() => navigate('/admin')}
-              className="w-full flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 hover:text-secondary transition-colors group"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 transition-transform group-hover:scale-110" /> 
-              Switch to Luxe Manager
-            </button>
             <p className="text-center text-[10px] text-muted-foreground/30 mt-2 uppercase tracking-widest font-bold">LuxeSalon v1.0.4</p>
           </div>
         </div>
