@@ -82,6 +82,19 @@ const BookingFlow = () => {
     showSuccess(`Selected ${time}`);
   };
 
+  // Smart back navigation handling step states or history routing
+  const handleBackNavigation = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    } else {
+      if (window.history.length > 1) {
+        navigate(-1);
+      } else {
+        navigate('/', { replace: true });
+      }
+    }
+  };
+
   if (step === 4) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background py-12 overflow-y-auto">
@@ -141,7 +154,7 @@ const BookingFlow = () => {
     <div className="flex flex-col min-h-screen bg-background pb-32 px-6 pt-8 overflow-y-auto items-center">
       <div className="max-w-lg md:max-w-2xl w-full flex flex-col">
         <div className="flex items-center gap-3 mb-6">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full bg-card border border-border h-10 w-10 p-0 text-foreground">
+          <Button variant="ghost" size="icon" onClick={handleBackNavigation} className="rounded-full bg-card border border-border h-10 w-10 p-0 text-foreground">
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Back</span>
