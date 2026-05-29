@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2, Clock, CreditCard, Wallet, Smartphone, Receipt, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { showSuccess } from '@/utils/toast';
+import ImageWithFallback from '@/components/ImageWithFallback';
 
 const STYLISTS = [
   { id: 'st1', name: 'Elena Rose', role: 'Master Stylist', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
@@ -15,25 +16,25 @@ const STYLISTS = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
-// Expanded lookup to handle both direct service IDs and salon-specific IDs
-const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string, image: string }> = {
-  'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop' },
-  'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop' },
-  'hair_3': { name: 'Keratin Infusion', price: '1800', duration: '120 min', image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=800&auto=format&fit=crop' },
-  'skin_1': { name: 'Cellular Glow Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' },
-  'skin_2': { name: 'Diamond Polishing', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop' },
-  'nail_1': { name: 'Luxe Manicure', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop' },
-  'nail_2': { name: 'Spa Pedicure', price: '699', duration: '60 min', image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=800&auto=format&fit=crop' },
-  'makeup_1': { name: 'Elite Glamour Look', price: '2999', duration: '90 min', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=800&auto=format&fit=crop' },
-  'makeup_2': { name: 'Bridal Artistry', price: '5500', duration: '150 min', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop' },
-  'spa_1': { name: 'Deep Tissue Relief', price: '1899', duration: '90 min', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop' },
-  'spa_2': { name: 'Aroma Zen Therapy', price: '1499', duration: '60 min', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop' },
+// Expanded lookup to handle both direct service IDs and salon-specific IDs with categories
+const SERVICES_LOOKUP: Record<string, { name: string, price: string, duration: string, image: string, category: 'Hair' | 'Skincare' | 'Nails' | 'Spa' | 'Facial' | 'Makeup' }> = {
+  'hair_1': { name: 'Signature Hair Sculpt', price: '850', duration: '90 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
+  'hair_2': { name: 'Artisan Balayage', price: '2499', duration: '180 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
+  'hair_3': { name: 'Keratin Infusion', price: '1800', duration: '120 min', image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
+  'skin_1': { name: 'Cellular Glow Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop', category: 'Skincare' },
+  'skin_2': { name: 'Diamond Polishing', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop', category: 'Skincare' },
+  'nail_1': { name: 'Luxe Manicure', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop', category: 'Nails' },
+  'nail_2': { name: 'Spa Pedicure', price: '699', duration: '60 min', image: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=800&auto=format&fit=crop', category: 'Nails' },
+  'makeup_1': { name: 'Elite Glamour Look', price: '2999', duration: '90 min', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=800&auto=format&fit=crop', category: 'Makeup' },
+  'makeup_2': { name: 'Bridal Artistry', price: '5500', duration: '150 min', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop', category: 'Makeup' },
+  'spa_1': { name: 'Deep Tissue Relief', price: '1899', duration: '90 min', image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop', category: 'Spa' },
+  'spa_2': { name: 'Aroma Zen Therapy', price: '1499', duration: '60 min', image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop', category: 'Spa' },
   // Mapping for IDs from SalonDetails
-  's1': { name: 'Signature Haircut', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop' },
-  's2': { name: 'Balayage Color', price: '2499', duration: '120 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop' },
-  's3': { name: 'Luxury Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' },
-  's4': { name: 'Royal Manicure', price: '699', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop' },
-  's5': { name: 'Glow Skincare Ritual', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop' },
+  's1': { name: 'Signature Haircut', price: '499', duration: '45 min', image: 'https://images.unsplash.com/photo-1560869713-7d0a29430863?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
+  's2': { name: 'Balayage Color', price: '2499', duration: '120 min', image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?q=80&w=800&auto=format&fit=crop', category: 'Hair' },
+  's3': { name: 'Luxury Facial', price: '1299', duration: '60 min', image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop', category: 'Facial' },
+  's4': { name: 'Royal Manicure', price: '699', duration: '45 min', image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop', category: 'Nails' },
+  's5': { name: 'Glow Skincare Ritual', price: '1599', duration: '75 min', image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop', category: 'Skincare' },
 };
 
 const BookingFlow = () => {
@@ -58,7 +59,8 @@ const BookingFlow = () => {
       time: selectedTime,
       status: 'upcoming',
       price: `₹${activeService.price}`,
-      image: activeService.image
+      image: activeService.image,
+      category: activeService.category
     };
 
     const existingBookings = JSON.parse(localStorage.getItem('user_bookings') || '[]');
@@ -88,7 +90,12 @@ const BookingFlow = () => {
         
         <div className="w-full max-w-md bg-card border border-border rounded-3xl p-0 overflow-hidden mb-8 text-left shadow-xl">
           <div className="h-40 relative">
-            <img src={activeService.image} className="w-full h-full object-cover" alt="" />
+            <ImageWithFallback 
+              src={activeService.image} 
+              fallbackCategory={activeService.category} 
+              className="w-full h-full object-cover" 
+              alt={activeService.name} 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
           </div>
           <div className="p-6 space-y-4">
@@ -141,7 +148,12 @@ const BookingFlow = () => {
         <div className="mb-6 p-4 rounded-2xl bg-secondary/10 border border-secondary/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl overflow-hidden border border-secondary/20">
-              <img src={activeService.image} className="w-full h-full object-cover" alt="" />
+              <ImageWithFallback 
+                src={activeService.image} 
+                fallbackCategory={activeService.category} 
+                className="w-full h-full object-cover" 
+                alt={activeService.name} 
+              />
             </div>
             <div>
               <span className="text-[10px] text-muted-foreground block uppercase font-bold tracking-wider">Booking Treatment</span>
