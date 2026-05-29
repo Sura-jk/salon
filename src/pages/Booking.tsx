@@ -220,7 +220,7 @@ const BookingFlow = () => {
         </div>
         
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-          <Button onClick={() => navigate('/bookings')} className="flex-1 py-6 rounded-2xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 text-sm">View Bookings</Button>
+          <Button onClick={() => navigate('/bookings')} className="flex-1 py-6 rounded-2xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/25 text-sm">View Bookings</Button>
           <Button variant="outline" onClick={() => navigate('/')} className="flex-1 py-6 rounded-2xl border-border font-medium text-sm">Back to Home</Button>
         </div>
       </div>
@@ -323,7 +323,7 @@ const BookingFlow = () => {
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-3">Time Slots</span>
-              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {TIME_SLOTS.map(t => (
                   <button key={t} onClick={() => handleTimeSelect(t)} className={cn("py-4 px-2 rounded-xl text-xs font-bold transition-all border", selectedTime === t ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border")}>{t}</button>
                 ))}

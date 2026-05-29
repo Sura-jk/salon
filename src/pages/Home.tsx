@@ -78,7 +78,7 @@ const CATEGORIES = [
     id: 'makeup', 
     label: 'Elite Makeup', 
     description: 'Designer Look',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=format&fit=crop' 
+    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=crop' 
   },
   { 
     id: 'facial', 
@@ -168,7 +168,7 @@ const Home = () => {
     <div className="flex flex-col min-h-screen bg-background pb-32 overflow-y-auto overflow-x-hidden items-center">
       <div className="w-full max-w-lg md:max-w-2xl px-4 md:px-0">
         {/* Sticky Top Header */}
-        <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700 border-b border-border/10">
+        <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl pt-10 pb-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-700 border-b border-b-border/10">
           <div className="flex justify-between items-start">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-1 block">Good Morning, Alex</span>
@@ -353,7 +353,7 @@ const Home = () => {
             <Carousel setApi={setCarouselApi} className="w-full relative px-2">
               <CarouselContent className="-ml-2">
                 {CATEGORIES.map((cat) => (
-                  <CarouselItem key={cat.id} className="pl-2 basis-[52%] xs:basis-[45%] flex-shrink-0">
+                  <CarouselItem key={cat.id} className="pl-2 basis-[60%] sm:basis-[45%] flex-shrink-0">
                     <div 
                       onClick={() => handleCategoryClick(cat.id)}
                       className="flex items-center gap-3 bg-card border border-border/50 hover:border-secondary pl-2 pr-4 py-2.5 rounded-full cursor-pointer transition-all active:scale-[0.96] shadow-sm hover:shadow-md group h-16"
