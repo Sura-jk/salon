@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ShieldAlert, Calendar, Users, IndianRupee, Search, 
-  Trash2, RefreshCw, Check, X, Clock, ChevronLeft, Sparkles, Filter
+  ShieldAlert, Calendar, Users, Search, 
+  Trash2, RefreshCw, Check, X, Clock, ChevronLeft, Sparkles
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -46,13 +46,13 @@ const AdminDashboard = () => {
   const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
 
   const loadBookings = () => {
-    const userStored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
-    // Combine mock system bookings + actual user-created bookings
-    const combined = [...userStored, ...DEFAULT_INITIAL_BOOKINGS];
-    
-    // De-duplicate in case of ID conflicts
-    const uniqueBookings = combined.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
-    setBookings(uniqueBookings);
+    const storedRaw = localStorage.getItem('user_bookings');
+    if (!storedRaw) {
+      localStorage.setItem('user_bookings', JSON.stringify(DEFAULT_INITIAL_BOOKINGS));
+      setBookings(DEFAULT_INITIAL_BOOKINGS);
+    } else {
+      setBookings(JSON.parse(storedRaw));
+    }
   };
 
   useEffect(() => {
@@ -60,26 +60,16 @@ const AdminDashboard = () => {
   }, []);
 
   const handleUpdateStatus = (bookingId: string, newStatus: string) => {
-    // 1. Update in local state
     const updated = bookings.map(b => b.id === bookingId ? { ...b, status: newStatus } : b);
     setBookings(updated);
-
-    // 2. Update persistent user_bookings key if it lives there
-    const userStored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
-    const updatedUserStored = userStored.map((b: any) => b.id === bookingId ? { ...b, status: newStatus } : b);
-    localStorage.setItem('user_bookings', JSON.stringify(updatedUserStored));
-
+    localStorage.setItem('user_bookings', JSON.stringify(updated));
     showSuccess(`Booking updated to "${newStatus}"!`);
   };
 
   const handleDeleteBooking = (bookingId: string, name: string) => {
     const updated = bookings.filter(b => b.id !== bookingId);
     setBookings(updated);
-
-    const userStored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
-    const updatedUserStored = userStored.filter((b: any) => b.id !== bookingId);
-    localStorage.setItem('user_bookings', JSON.stringify(updatedUserStored));
-
+    localStorage.setItem('user_bookings', JSON.stringify(updated));
     showSuccess(`Removed booking: ${name}`);
   };
 

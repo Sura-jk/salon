@@ -49,8 +49,8 @@ const SALON_DATA = {
     timing: '08:00 AM - 09:00 PM',
     images: [
       'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=1000&auto=format&fit=crop',
     ],
     services: [
       { id: 's3', name: 'Luxury Facial', duration: '60 min', price: 1299, category: 'Facial', description: 'Oxygenating treatment that revives dull skin and boosts immediate radiance.' },
@@ -552,9 +552,9 @@ const SalonDetails = () => {
         </div>
       </div>
 
-      {/* Deluxe Service Detail Modal - Positioned with coordinate overrides for stable top-side alignment */}
+      {/* Deluxe Service Detail Modal - Positioned with coordinate overrides for stable top-side alignment and scroll responsiveness */}
       <Dialog open={selectedDetailService !== null} onOpenChange={(open) => { if (!open) setSelectedDetailService(null); }}>
-        <DialogContent className="!fixed !top-6 sm:!top-12 !left-1/2 !-translate-x-1/2 !translate-y-0 max-w-md w-[92%] rounded-3xl p-0 overflow-hidden border-border bg-background shadow-2xl animate-in slide-in-from-top-12 duration-500">
+        <DialogContent className="!fixed !top-6 sm:!top-12 !left-1/2 !-translate-x-1/2 !translate-y-0 max-w-md w-[92%] max-h-[85vh] rounded-3xl p-0 overflow-y-auto border-border bg-background shadow-2xl thin-scrollbar animate-in slide-in-from-top-12 duration-500">
           {selectedDetailService && (
             <div className="flex flex-col">
               <div className="px-6 pt-6 pb-4 border-b border-border/40 relative">

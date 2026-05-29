@@ -47,15 +47,20 @@ const Bookings = () => {
   const [allBookings, setAllBookings] = useState<any[]>([]);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
-    setAllBookings([...stored, ...INITIAL_BOOKINGS]);
+    const storedRaw = localStorage.getItem('user_bookings');
+    if (!storedRaw) {
+      // Initialize with mock bookings on first visit
+      localStorage.setItem('user_bookings', JSON.stringify(INITIAL_BOOKINGS));
+      setAllBookings(INITIAL_BOOKINGS);
+    } else {
+      setAllBookings(JSON.parse(storedRaw));
+    }
   }, []);
 
   const handleCancelBooking = (bookingId: string, serviceName: string) => {
     const updated = allBookings.filter(b => b.id !== bookingId);
     setAllBookings(updated);
-    const stored = JSON.parse(localStorage.getItem('user_bookings') || '[]');
-    localStorage.setItem('user_bookings', JSON.stringify(stored.filter((b: any) => b.id !== bookingId)));
+    localStorage.setItem('user_bookings', JSON.stringify(updated));
     showSuccess(`Cancelled "${serviceName}"`);
   };
 
@@ -106,7 +111,6 @@ const Bookings = () => {
                 className="group p-0 overflow-hidden border-border/40 rounded-[2.5rem] luxury-shadow bg-card animate-in slide-in-from-bottom-6 duration-700 hover:border-secondary/30 transition-all"
               >
                 <div className="relative h-64 overflow-hidden">
-                  {/* Intelligent fallback system ensures a relevant high-quality image is ALWAYS shown */}
                   <ImageWithFallback 
                     src={booking.image} 
                     fallbackCategory={booking.category as any || 'Hair'}
